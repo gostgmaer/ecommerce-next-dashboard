@@ -25,69 +25,69 @@ const invoiceData = [
 const linkData = [
   {
     text: "Products",
-    href: "/ecommerce/products",
+    href: "/dashboard/products",
   },
   {
     text: "Product Details",
-    href: "/ecommerce/products/FC6723757651DB74",
+    href: "/dashboard/products/FC6723757651DB74",
   },
   {
     text: "Create Product",
-    href: "/ecommerce/products/create",
+    href: "/dashboard/products/create",
   },
   {
     text: "Edit Product",
-    href: "/ecommerce/products/FC6723757651DB74/edit",
+    href: "/dashboard/products/FC6723757651DB74/edit",
   },
   {
     text: "Categories",
-    href: "/ecommerce/categories",
+    href: "/dashboard/categories",
   },
   {
     text: "Create Category",
-    href: "/ecommerce/categories/create",
+    href: "/dashboard/categories/create",
   },
   {
     text: "Edit Category",
-    href: "/ecommerce/categories/FC6723757651DB74/edit",
+    href: "/dashboard/categories/FC6723757651DB74/edit",
   },
   {
     text: "Orders",
-    href: "/ecommerce/orders",
+    href: "/dashboard/orders",
   },
   {
     text: "Order Details",
-    href: "/ecommerce/orders/FC6723757651DB74",
+    href: "/dashboard/orders/FC6723757651DB74",
   },
   {
     text: "Create Order",
-    href: "/ecommerce/orders/create",
+    href: "/dashboard/orders/create",
   },
   {
     text: "Edit Order",
-    href: "/ecommerce/orders/FC6723757651DB74/edit",
+    href: "/dashboard/orders/FC6723757651DB74/edit",
   },
   {
     text: "Reviews",
-    href: "/ecommerce/reviews",
+    href: "/dashboard/reviews",
   },
   {
     text: "Shop",
-    href: "/ecommerce/shop",
+    href: "/dashboard/shop",
   },
   {
     text: "Cart",
-    href: "/ecommerce/cart",
+    href: "/dashboard/cart",
   },
   {
     text: "Checkout & Payment",
-    href: "/ecommerce/checkout",
+    href: "/dashboard/checkout",
   },
 ];
 
 const Sidebar = () => {
   return (
-    <div className="">
+    <div className="transition-all duration-200">
       <div className=" top-0 z-40 bg-gray-0/10 px-6 pb-5 bg-white  text-black pt-5 2xl:px-8 2xl:pt-6 text-center">
         <Link href="/" className="text-2xl font-semibold">
           Kishor Sarkar
