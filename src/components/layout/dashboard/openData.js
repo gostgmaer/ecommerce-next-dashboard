@@ -14,7 +14,7 @@ const OpenHover = ({ icon, heading, data, url }) => {
       role="collapse"
       aria-expanded="false"
       data-testid="collapse-parent"
-      className="rizzui-collapse-root transition-all duration-1000"
+      className="rizzui-collapse-root transition-all duration-200"
     >
       <div className="group relative mx-3 flex cursor-pointer items-center justify-between rounded-md px-3 py-2 font-medium lg:my-1 2xl:mx-5 2xl:my-2 text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-700/90 dark:hover:text-gray-700">
         <span className="flex items-center" onClick={() => setOpen(!open)}>
@@ -42,8 +42,8 @@ const OpenHover = ({ icon, heading, data, url }) => {
         />
       </div>
       <div
-        className={`rizzui-collapse-panel   ${
-          open ? "block transition-transform duration-1000}" : "hidden"
+        className={`rizzui-collapse-panel transition-all duration-200  ${
+          open ? "block }" : "hidden"
         } `}
       >
         {data.map((link, index) => (
