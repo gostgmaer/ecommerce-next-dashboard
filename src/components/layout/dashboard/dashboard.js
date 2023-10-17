@@ -14,7 +14,9 @@ const Dashboardlayout = ({ children }) => {
       <div className="flex w-full flex-col xl:ms-[270px] xl:w-[calc(100%-270px)] 2xl:ms-72 2xl:w-[calc(100%-288px)]">
         <Header />
 
-        {children}
+      <div className=" md:px-5 lg:px-6 2xl:py-5 3xl:px-8 4xl:px-10 text-black">
+      {children}
+      </div>
       </div>
     </div>
   );
