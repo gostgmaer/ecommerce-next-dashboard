@@ -9,7 +9,7 @@ const ConfirmForm = () => {
           Account Confirmed!
         </h1>
         <p className="text-gray-700 text-center mb-6">
-          Thank you for confirming your account. You can now access our
+          Thank you for confirming your account.  You can now access our
           services.
         </p>
        

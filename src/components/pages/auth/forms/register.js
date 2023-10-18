@@ -98,7 +98,7 @@ const RegisterForm = () => {
             </span>
 
             <PasswordField
-              placeholder="your password"
+              placeholder="Password"
               name="password"
               value={formik.values.password}
               handleChange={formik.handleChange}
@@ -114,7 +114,7 @@ const RegisterForm = () => {
               Confirm Password
             </span>
             <PasswordField
-              placeholder="confirm password"
+              placeholder="Confirm Password"
               name="confirmPassword"
               value={formik.values.confirmPassword}
               handleChange={formik.handleChange}
@@ -177,7 +177,7 @@ const RegisterForm = () => {
           </div>
         </div>
         <button
-          className="rizzui-button col-span-2 inline-flex font-medium items-center bg-blue-500 justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-5 py-2 text-base h-12 rounded-md border border-transparent focus-visible:ring-offset-2 bg-blue hover:enabled:bg-blue-500 focus-visible:ring-blue/30 text-white w-full"
+          className="rizzui-button col-span-2 inline-flex font-medium items-center bg-gray-900 hover:enabled::bg-gray-800 active:enabled:bg-gray-1000 focus-visible:ring-gray-900/30 text-gray-0  text-white justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-5 py-2 text-base h-12 rounded-md border border-transparent focus-visible:ring-offset-2 bg-blue hover:enabled:bg-blue-500 focus-visible:ring-blue/30 text-white w-full"
           type="submit"
           disabled={!formik.isValid}
         >

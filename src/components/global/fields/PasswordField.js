@@ -23,7 +23,7 @@ const PasswordField = ({ value, handleChange, placeholder, name }) => {
         required
       />
 
-      <button className="px-2" onClick={togglePasswordVisibility}>
+      <button className="px-2" type="button" onClick={togglePasswordVisibility}>
         {showPassword ? (
           <FaEyeSlash className=" w-5 h-5" onClick={togglePasswordVisibility} />
         ) : (
