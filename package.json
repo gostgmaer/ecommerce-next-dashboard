@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
+    "antd": "^5.10.1",
     "autoprefixer": "10.4.16",
     "axios": "^1.5.1",
     "eslint": "8.51.0",
@@ -20,6 +21,7 @@
     "next": "13.5.5",
     "nextjs-toploader": "^1.5.3",
     "postcss": "8.4.31",
+    "rc-table": "^7.35.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.11.0",
