@@ -16,7 +16,7 @@ const Heading = ({ data }) => {
         </h2>
         <div className="inline-flex items-center gap-2.5 flex-wrap">
           {segments.map((segment, index) => (
-            <div key={index} className=" flex gap-2.5 item-center capitalize">
+            <div key={index} className=" flex gap-2.5 items-center capitalize">
               {index < segments.length - 1 ? (
                 <Fragment>
                   <Link

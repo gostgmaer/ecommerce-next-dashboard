@@ -1,23 +1,115 @@
-import Table from "@/components/global/element/Table";
-import MyComponent from "@/components/global/element/tableFilter";
-import TableFilter from "@/components/global/element/tableFilter";
-import Dashboardlayout from "@/components/layout/dashboard/dashboard";
-import Heading from "@/components/pages/dashboard/heading";
+"use client";
 import React from "react";
-const filterOptions = ["Option 1", "Option 2", "Option 3"];
-const statusOptions = [
-  { value: "all", label: "All" },
-  { value: "active", label: "Active" },
-  { value: "inactive", label: "Inactive" },
-];
+import Table from "rc-table";
+import { Menu, Dropdown } from "antd";
+import Link from "next/link";
+import { FaEdit, FaEye, FaPen, FaPenAlt, FaTrash } from "react-icons/fa";
 
-const mydata = [
-  { column1: "Data 1", column2: "Data 2", column3: "Data 3" },
-  { column1: "Data 4", column2: "Data 5", column3: "Data 6" },
-  { column1: "Data 7", column2: "Data 8", column3: "Data 9" },
-  // Add more data as needed
+const coumndata = [
+  {
+    title: "Product",
+    dataIndex: "name",
+    key: "name",
+  },
+  {
+    title: "SKU",
+    dataIndex: "sku",
+    key: "sku",
+  },
+  {
+    title: "Stock",
+    dataIndex: "stock",
+    key: "stock",
+    sorter: (a, b) => a.stock - b.stock, // Enable sorting for this column
+  },
+  {
+    title: "Price",
+    dataIndex: "price",
+    key: "price",
+    sorter: (a, b) => a.price - b.price, // Enable sorting for this column
+  },
+  {
+    title: "Rating",
+    dataIndex: "rating",
+    key: "rating",
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
+    key: "status",
+  },
+  // Add actions column with a dropdown menu
 ];
-const products = [
+const columns = [
+  {
+    title: "Product",
+    dataIndex: "name",
+    key: "name",
+  },
+  {
+    title: "SKU",
+    dataIndex: "sku",
+    key: "sku",
+  },
+  {
+    title: "Stock",
+    dataIndex: "stock",
+    key: "stock",
+    sorter: (a, b) => a.stock - b.stock, // Enable sorting for this column
+  },
+  {
+    title: "Price",
+    dataIndex: "price",
+    key: "price",
+    sorter: (a, b) => a.price - b.price, // Enable sorting for this column
+  },
+  {
+    title: "Rating",
+    dataIndex: "rating",
+    key: "rating",
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
+    key: "status",
+  },
+  {
+    title: <div className="flex items-center gap-1 opacity-0"><div>Actions</div></div>,
+    key: "actions",
+    render: () => (
+      <div className="flex items-center justify-end gap-3 pe-4">
+        <Link href={"/dashboard/products/edit"}>
+          {" "}
+          <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
+            <FaPen />
+          </button>
+        </Link>
+        <Link href={"/dashboard/products/:id"}>
+          <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
+            <FaEye />
+          </button>
+        </Link>
+        <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700">
+          <FaTrash />
+        </button>
+      </div>
+    ),
+  },
+];
+// const getMenu = (record) => (
+//     <Menu>
+//       <Menu.Item key="1">
+//         <a href="#">Show</a>
+//       </Menu.Item>
+//       <Menu.Item key="2">
+//         <a href="#">Edit</a>
+//       </Menu.Item>
+//       <Menu.Item key="3">
+//         <a href="#">Delete</a>
+//       </Menu.Item>
+//     </Menu>
+//   );
+const data = [
   {
     id: "0o02051402",
     name: "Tasty Metal Shirt",
@@ -739,18 +831,17 @@ const products = [
     rating: [5, 5, 3],
   },
 ];
-const Page = () => {
+
+const ProductTable = ({ products }) => {
   return (
-    <Dashboardlayout>
-      <div>
-        <Heading data={undefined} />
-        <div>
-          <MyComponent />
-          <Table products={products} />
-        </div>
-      </div>
-    </Dashboardlayout>
+    <div className=" relative">
+      <Table
+        className="[&_.rc-table-content]:overflow-x-auto [&_table]:w-full [&_.rc-table-row:hover]:bg-gray-50 [&_.rc-table-row-expand-icon-cell]:w-14 [&_thead]:text-left [&_thead]:rtl:text-right [&_th.rc-table-cell]:uppercase [&_th.rc-table-cell]:text-xs [&_th.rc-table-cell]:font-semibold [&_th.rc-table-cell]:tracking-wider [&_th.rc-table-cell]:text-gray-500 [&_.rc-table-cell]:px-3 [&_th.rc-table-cell]:py-3 [&_td.rc-table-cell]:py-4 [&_thead_th]:bg-gray-100 [&_td.rc-table-cell]:border-b [&_td.rc-table-cell]:border-gray-200/70 [&_thead_.rc-table-row-expand-icon-cell]:bg-gray-100 overflow-hidden rounded-md border border-gray-200 text-sm shadow-sm [&_.rc-table-placeholder_.rc-table-expanded-row-fixed>div]:h-60 [&_.rc-table-placeholder_.rc-table-expanded-row-fixed>div]:justify-center [&_.rc-table-row:last-child_td.rc-table-cell]:border-b-0 [&_thead.rc-table-thead]:border-t-0 rc-table-ping-right rc-table-scroll-horizontal"
+        columns={columns}
+        data={data}
+      />
+    </div>
   );
 };
 
-export default Page;
+export default ProductTable;
