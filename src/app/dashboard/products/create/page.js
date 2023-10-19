@@ -1,11 +1,11 @@
 import Dashboardlayout from '@/components/layout/dashboard/dashboard'
-import Createproduct from '@/components/pages/dashboard/products/Createproduct'
+import ProductForm from '@/components/pages/dashboard/products/ProductForm'
 import React from 'react'
 
 const Page = () => {
   return (
     <Dashboardlayout>
-     <Createproduct/>
+     <ProductForm data={undefined} />
     </Dashboardlayout>
   )
 }
