@@ -7,9 +7,9 @@ import PaginatedList from "@/components/global/element/pagination";
 import TableFilter from "@/components/global/element/tableFilter";
 import Link from "next/link";
 import { FaEye, FaPen, FaTrash } from "react-icons/fa";
-import Dropdown from 'rc-dropdown';
 import { CiMenuKebab } from "react-icons/ci";
-
+import { Menu, Transition } from "@headlessui/react";
+import { useFloating } from "@floating-ui/react";
 
 const products = [
   {
@@ -737,6 +737,7 @@ const products = [
 const items = Array.from(Array(20).keys()).map((key) => key + 1);
 
 const ReviewElements = () => {
+  const { refs, floatingStyles } = useFloating();
   const columns = [
     {
       title: "ID",
@@ -772,24 +773,24 @@ const ReviewElements = () => {
       key: "status",
     },
     {
-        title: 'Action',
-        key: 'action',
-        render: (text, record) => (
-          <Dropdown
-            trigger={['click']}
-            animation="slide-up"
-           
-            overlay={
-              <ul className="bg-white border rounded-lg shadow-md p-2">
-                <li className="hover:bg-gray-100 cursor-pointer p-2">Edit</li>
-                <li className="hover:bg-gray-100 cursor-pointer p-2">Delete</li>
-              </ul>
-            }
+      title:  <div className="">
+        <CiMenuKebab className="hidden" />
+      </div>,
+      key: "action",
+      render: (text, record) => (
+        <div className="relative inline-block">
+          <button
+            id="apple-imac-27-dropdown-button"
+            data-dropdown-toggle="apple-imac-27-dropdown"
+            className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
+            type="button"
           >
-            <span className="cursor-pointer text-blue-500">Actions</span>
-          </Dropdown>
-        ),
-      },
+            <CiMenuKebab />
+          </button>
+      
+        </div>
+      ),
+    },
   ];
   return (
     <div>
