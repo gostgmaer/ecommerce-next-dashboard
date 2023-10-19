@@ -1,25 +1,24 @@
-"use client";
-import React, { useState } from "react";
-import Table from "rc-table";
-import { Menu, Dropdown } from "antd";
-import Link from "next/link";
-import { FaEdit, FaEye, FaPen, FaPenAlt, FaTrash } from "react-icons/fa";
-// import 'rc-table/assets/index.css';
+import React from "react";
+import Heading from "../heading";
+import Table from "@/components/global/element/Table";
+// import Pagination from '@/components/global/element/pagination';
+import PaginatedList from "@/components/global/element/pagination";
+import TableFilter from "@/components/global/element/tableFilter";
 
-// const getMenu = (record) => (
-//     <Menu>
-//       <Menu.Item key="1">
-//         <a href="#">Show</a>
-//       </Menu.Item>
-//       <Menu.Item key="2">
-//         <a href="#">Edit</a>
-//       </Menu.Item>
-//       <Menu.Item key="3">
-//         <a href="#">Delete</a>
-//       </Menu.Item>
-//     </Menu>
-//   );
-const data = [
+const filterOptions = ["Option 1", "Option 2", "Option 3"];
+const statusOptions = [
+  { value: "all", label: "All" },
+  { value: "active", label: "Active" },
+  { value: "inactive", label: "Inactive" },
+];
+
+const mydata = [
+  { column1: "Data 1", column2: "Data 2", column3: "Data 3" },
+  { column1: "Data 4", column2: "Data 5", column3: "Data 6" },
+  { column1: "Data 7", column2: "Data 8", column3: "Data 9" },
+  // Add more data as needed
+];
+const products = [
   {
     id: "0o02051402",
     name: "Tasty Metal Shirt",
@@ -741,121 +740,18 @@ const data = [
     rating: [5, 5, 3],
   },
 ];
-
-const ProductTable = ({ products }) => {
-  const [selectAll, setSelectAll] = useState(false);
-  const [selectedRows, setSelectedRows] = useState([]);
-
-  const handleSelect = (record) => {
-    const selectedRowKeys = [...selectedRows];
-    if (selectedRowKeys.includes(record.id)) {
-      selectedRowKeys.splice(selectedRowKeys.indexOf(record.id), 1);
-    } else {
-      selectedRowKeys.push(record.id);
-    }
-    setSelectedRows(selectedRowKeys);
-    setSelectAll(selectedRowKeys.length === data.length);
-    console.log(selectedRows);
-  };
-
-  const handleSelectAll = () => {
-    if (selectAll) {
-      setSelectedRows([]);
-      setSelectAll(false);
-    } else {
-      const allRowKeys = data.map((record) => record.id);
-      setSelectedRows(allRowKeys);
-      setSelectAll(true);
-      console.log(selectedRows);
-    }
-    console.log(selectedRows);
-  };
-
-  const columns = [
-    {
-      title: (
-        <input type="checkbox" onChange={handleSelectAll} checked={selectAll} />
-      ),
-      dataIndex: "selection",
-      key: "selection",
-      render: (text, record) => (
-        <input
-          type="checkbox"
-          onChange={() => handleSelect(record)}
-          checked={selectedRows.includes(record.id)}
-        />
-      ),
-    },
-
-    {
-      title: "Product",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "SKU",
-      dataIndex: "sku",
-      key: "sku",
-    },
-    {
-      title: "Stock",
-      dataIndex: "stock",
-      key: "stock",
-      sorter: (a, b) => a.stock - b.stock, // Enable sorting for this column
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-      sorter: (a, b) => a.price - b.price, // Enable sorting for this column
-    },
-    {
-      title: "Rating",
-      dataIndex: "rating",
-      key: "rating",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-    },
-    {
-      title: (
-        <div className="flex items-center gap-1 opacity-0">
-          <div>Actions</div>
-        </div>
-      ),
-      key: "actions",
-      render: () => (
-        <div className="flex items-center justify-end gap-3 pe-4">
-          <Link href={"/dashboard/products/edit"}>
-            {" "}
-            <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
-              <FaPen />
-            </button>
-          </Link>
-          <Link href={"/dashboard/products/:id"}>
-            <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
-              <FaEye />
-            </button>
-          </Link>
-          <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700">
-            <FaTrash />
-          </button>
-        </div>
-      ),
-    },
-  ];
-
+const items = Array.from(Array(20).keys()).map((key) => key + 1);
+const ProductsPageElement = () => {
   return (
-    <div className="relative">
-      <Table
-        className="[&_.rc-table-content]:overflow-x-auto rounded-t-none [&_table]:w-full [&_.rc-table-row:hover]:bg-gray-50 [&_.rc-table-row-expand-icon-cell]:w-14 [&_thead]:text-left [&_thead]:rtl:text-right [&_th.rc-table-cell]:uppercase [&_th.rc-table-cell]:text-xs [&_th.rc-table-cell]:font-semibold [&_th.rc-table-cell]:tracking-wider [&_th.rc-table-cell]:text-gray-500 [&_.rc-table-cell]:px-3 [&_th.rc-table-cell]:py-3 [&_td.rc-table-cell]:py-4 [&_thead_th]:bg-gray-100 [&_td.rc-table-cell]:border-b [&_td.rc-table-cell]:border-gray-200/70 [&_thead_.rc-table-row-expand-icon-cell]:bg-gray-100 overflow-hidden rounded-md border border-gray-200 text-sm shadow-sm [&_.rc-table-placeholder_.rc-table-expanded-row-fixed>div]:h-60 [&_.rc-table-placeholder_.rc-table-expanded-row-fixed>div]:justify-center [&_.rc-table-row:last-child_td.rc-table-cell]:border-b-0 [&_thead.rc-table-thead]:border-t-0 rc-table-ping-right rc-table-scroll-horizontal"
-        columns={columns}
-        data={data}
-      />
+    <div>
+      <Heading data={undefined} />
+      <div>
+        <TableFilter />
+        <Table products={products} />
+        <PaginatedList items={items} />
+      </div>
     </div>
   );
 };
 
-export default ProductTable;
+export default ProductsPageElement;
