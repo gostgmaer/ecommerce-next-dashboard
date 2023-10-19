@@ -786,15 +786,15 @@ const ProductsPageElement = () => {
         </div>
       ),
       key: "actions",
-      render: () => (
+      render: (item,index) => (
         <div className="flex items-center justify-end gap-3 pe-4">
-          <Link href={"/dashboard/products/edit"}>
+          <Link href={`/dashboard/products/${item.id}/edit`}>
             {" "}
             <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
               <FaPen />
             </button>
           </Link>
-          <Link href={"/dashboard/products/:id"}>
+          <Link href={`/dashboard/products/${item.id}`}>
             <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
               <FaEye />
             </button>
