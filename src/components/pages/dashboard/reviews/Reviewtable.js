@@ -5,22 +5,12 @@ import Table from "@/components/global/element/Table";
 // import Pagination from '@/components/global/element/pagination';
 import PaginatedList from "@/components/global/element/pagination";
 import TableFilter from "@/components/global/element/tableFilter";
-import { Menu, Dropdown } from "antd";
 import Link from "next/link";
-import { FaEdit, FaEye, FaPen, FaPenAlt, FaTrash } from "react-icons/fa";
-const filterOptions = ["Option 1", "Option 2", "Option 3"];
-const statusOptions = [
-  { value: "all", label: "All" },
-  { value: "active", label: "Active" },
-  { value: "inactive", label: "Inactive" },
-];
+import { FaEye, FaPen, FaTrash } from "react-icons/fa";
+import Dropdown from 'rc-dropdown';
+import { CiMenuKebab } from "react-icons/ci";
 
-const mydata = [
-  { column1: "Data 1", column2: "Data 2", column3: "Data 3" },
-  { column1: "Data 4", column2: "Data 5", column3: "Data 6" },
-  { column1: "Data 7", column2: "Data 8", column3: "Data 9" },
-  // Add more data as needed
-];
+
 const products = [
   {
     id: "0o02051402",
@@ -743,36 +733,38 @@ const products = [
     rating: [5, 5, 3],
   },
 ];
-const items = Array.from(Array(20).keys()).map((key) => key + 1);
-const ProductsPageElement = () => {
 
+const items = Array.from(Array(20).keys()).map((key) => key + 1);
+
+const ReviewElements = () => {
   const columns = [
     {
-      title: "Product",
-      dataIndex: "name",
-      key: "name",
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
     },
     {
-      title: "SKU",
-      dataIndex: "sku",
-      key: "sku",
+      title: "CUSTOMER REVIEW",
+      dataIndex: "review",
+      key: "review",
     },
-    {
-      title: "Stock",
-      dataIndex: "stock",
-      key: "stock",
-      sorter: (a, b) => a.stock - b.stock, // Enable sorting for this column
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-      sorter: (a, b) => a.price - b.price, // Enable sorting for this column
-    },
+
     {
       title: "Rating",
       dataIndex: "rating",
       key: "rating",
+    },
+    {
+      title: "Product",
+      dataIndex: "product",
+      key: "product",
+      sorter: (a, b) => a.product - b.product, // Enable sorting for this column
+    },
+    {
+      title: "Created",
+      dataIndex: "created",
+      key: "created",
+      sorter: (a, b) => a.created - b.created, // Enable sorting for this column
     },
     {
       title: "Status",
@@ -780,36 +772,28 @@ const ProductsPageElement = () => {
       key: "status",
     },
     {
-      title: (
-        <div className="flex items-center gap-1 opacity-0">
-          <div>Actions</div>
-        </div>
-      ),
-      key: "actions",
-      render: () => (
-        <div className="flex items-center justify-end gap-3 pe-4">
-          <Link href={"/dashboard/products/edit"}>
-            {" "}
-            <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
-              <FaPen />
-            </button>
-          </Link>
-          <Link href={"/dashboard/products/:id"}>
-            <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
-              <FaEye />
-            </button>
-          </Link>
-          <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700">
-            <FaTrash />
-          </button>
-        </div>
-      ),
-    },
+        title: 'Action',
+        key: 'action',
+        render: (text, record) => (
+          <Dropdown
+            trigger={['click']}
+            animation="slide-up"
+           
+            overlay={
+              <ul className="bg-white border rounded-lg shadow-md p-2">
+                <li className="hover:bg-gray-100 cursor-pointer p-2">Edit</li>
+                <li className="hover:bg-gray-100 cursor-pointer p-2">Delete</li>
+              </ul>
+            }
+          >
+            <span className="cursor-pointer text-blue-500">Actions</span>
+          </Dropdown>
+        ),
+      },
   ];
-
   return (
     <div>
-      <Heading data={undefined} label={"Products"} btn={"product"} />
+      <Heading data={undefined} label="Reviews" btn={"Review"} />
       <div>
         <TableFilter />
         <Table data={products} tableColumn={columns} />
@@ -819,4 +803,4 @@ const ProductsPageElement = () => {
   );
 };
 
-export default ProductsPageElement;
+export default ReviewElements;
