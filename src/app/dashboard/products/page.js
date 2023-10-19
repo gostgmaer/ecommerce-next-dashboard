@@ -9,8 +9,7 @@ import React from "react";
 const Page = () => {
   return (
     <Dashboardlayout>
-    <ProductsPageElement/>
-      
+      <ProductsPageElement />
     </Dashboardlayout>
   );
 };
