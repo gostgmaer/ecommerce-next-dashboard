@@ -1,10 +1,11 @@
 import Dashboardlayout from '@/components/layout/dashboard/dashboard'
+import CategoryElements from '@/components/pages/dashboard/category/categoryTable'
 import React from 'react'
 
 const Page = () => {
   return (
     <Dashboardlayout>
-      <div></div>
+     <CategoryElements/>
     </Dashboardlayout>
   )
 }

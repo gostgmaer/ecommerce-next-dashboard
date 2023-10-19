@@ -1,110 +1,84 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
-const Pagination = () => {
+const PaginatedList = ({ items}) => {
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalItems = items.length;
+  const totalPages = Math.ceil(totalItems / 5);
+
+  const startIndex = (currentPage - 1) * 5;
+  const endIndex = Math.min(startIndex + 5, totalItems);
+  const visibleItems = items.slice(startIndex, endIndex);
+ 
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+  const options = [5, 10, 20, 50];
+
   return (
-    <div>
-      <nav
-        className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
-        aria-label="Table navigation"
+    <nav
+      className="flex flex-col md:flex-row text-black justify-between items-start md:items-center space-y-3 md:space-y-0 py-2"
+      aria-label="Table navigation"
+    >
+     <div className="flex items-center space-x-4">
+      <span className="text-gray-600">Items per page:</span>
+      <select
+        value={itemsPerPage}
+        onChange={(e)=>setItemsPerPage(parseInt(e.target.value, 10))}
+        className="border border-gray-300 rounded-md px-2 py-1 text-gray-600 focus:outline-none focus:ring focus:border-indigo-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:focus:border-indigo-600"
       >
-        <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </div>
+      <div className="flex items-center gap-5">
+        <p className="text-sm flex gap-2 font-normal text-gray-500 dark:text-gray-400">
           Showing
-          <span className="font-semibold text-gray-900 dark:text-white">
-            1-10
-          </span>
+          <span className="font-semibold text-gray-900 ">1-10</span>
           of
-          <span className="font-semibold text-gray-900 dark:text-white">
-            1000
-          </span>
-        </span>
+          <span className="font-semibold text-gray-900 ">1000</span>
+        </p>
+
         <ul className="inline-flex items-stretch -space-x-px">
-          <li>
-            <a
-              href="#"
-              className="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              <span className="sr-only">Previous</span>
-              <svg
-                className="w-5 h-5"
-                aria-hidden="true"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </a>
+          <li
+            className={`flex items-center justify-center cursor-pointer w-10 h-10 py-3 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${
+              currentPage === 1 ? "pointer-events-none" : ""
+            }`}
+            onClick={() => goToPage(currentPage - 1)}
+          >
+            <span className="sr-only">Previous</span>
+            <MdKeyboardArrowLeft />
           </li>
-          <li>
-            <a
-              href="#"
-              className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+
+          {visibleItems.map((item, index) => (
+            <li
+              key={index}
+              className="flex w-10 h-10 items-center cursor-pointer justify-center text-sm py-3 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
             >
-              1
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              2
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              aria-current="page"
-              className="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-            >
-              3
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              ...
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              100
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              <span className="sr-only">Next</span>
-              <svg
-                className="w-5 h-5"
-                aria-hidden="true"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </a>
+              <span>{item}</span>
+            </li>
+          ))}
+
+          <li
+            className={`flex items-center justify-center w-10 h-10 cursor-pointer py-3 px-3 leading-tight text-gray-500 bg-white border rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${
+              currentPage === totalPages ? "pointer-events-none" : ""
+            }`}
+            onClick={() => goToPage(currentPage + 1)}
+          >
+            <span className="sr-only">Next</span>
+            <MdKeyboardArrowRight />
           </li>
         </ul>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 };
 
-export default Pagination;
+export default PaginatedList;
