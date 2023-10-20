@@ -5,7 +5,7 @@ import React from "react";
 
 const Page = () => {
   const {userId} = useAuthContext()
-  console.log(userId);
+
   return (
     <Dashboardlayout>
       <div>asdad</div>
