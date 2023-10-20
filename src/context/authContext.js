@@ -21,7 +21,7 @@ export const AuthContextProvider = ({ children }) => {
       const res = await post("/user/auth/login", body);
       const decoded = jwt_decode(res.access_token);
       const decodedrefersh = jwt_decode(res.refresh_token);
-      console.log(user);
+    
       setToken("accessToken", res.access_token, decoded["exp"], "ACCESS_TOKEN");
       setToken("refreshToken", res.refresh_token, decodedrefersh["exp"]);
       setUserId(decoded);
@@ -61,7 +61,7 @@ export const AuthContextProvider = ({ children }) => {
 
         if (decodedToken["user_id"]) {
           const res = await post("/user/auth/verify/session");
-          console.log(res);
+       
           const decoded = jwt_decode(res.access_token);
           setToken(
             "accessToken",
@@ -87,7 +87,6 @@ export const AuthContextProvider = ({ children }) => {
           token: refreshToken,
         });
         const decoded = jwt_decode(res.access_token);
-        console.log(user);
         setToken(
           "accessToken",
           res.access_token,
