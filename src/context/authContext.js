@@ -25,7 +25,7 @@ export const AuthContextProvider = ({ children }) => {
       setToken("accessToken", res.access_token, decoded["exp"], "ACCESS_TOKEN");
       setToken("refreshToken", res.refresh_token, decodedrefersh["exp"]);
       setUserId(decoded);
-      setUser(decoded);
+      setUser(jwt_decode(res.id_token));
       router.push("/dashboard");
     } catch (error) {
       console.log(error);
@@ -61,9 +61,16 @@ export const AuthContextProvider = ({ children }) => {
 
         if (decodedToken["user_id"]) {
           const res = await post("/user/auth/verify/session");
+          console.log(res);
           const decoded = jwt_decode(res.access_token);
+          setToken(
+            "accessToken",
+            res.access_token,
+            decoded["exp"],
+            "ACCESS_TOKEN"
+          );
           setUserId(decoded);
-          setUser(decoded);
+          setUser(jwt_decode(res.id_token));
         }
       }
     } catch (error) {
@@ -76,7 +83,7 @@ export const AuthContextProvider = ({ children }) => {
     try {
       const refreshToken = Cookies.get("refreshToken");
       if (refreshToken) {
-        const res = await post("/user/auth/session/refresh", {
+        const res = await post("/user/auth/session/refresh/token", {
           token: refreshToken,
         });
         const decoded = jwt_decode(res.access_token);
