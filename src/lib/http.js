@@ -42,16 +42,14 @@ export const get = async (endpint, query, id) => {
 };
 
 export const getsingle = async (endpint, id, query) => {
-  const cookies = parseCookies();
-  const token = cookies["accessToken"];
-  const session = cookies["session"];
+  const cookiesData = Cookies.get();
+  const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
 
   const option = {
     method: "get",
     url: baseURL + endpint + `/${id}`,
     headers: {
       Authorization: token,
-      session_id: session,
     },
     params: query,
   };
@@ -68,16 +66,13 @@ export const getsingle = async (endpint, id, query) => {
 };
 
 export const serverGetsingle = async (endpint, id, query) => {
-  const cookies = parseCookies();
-  const token = cookies["accessToken"];
-  const session = cookies["session"];
-
+  const cookiesData = Cookies.get();
+  const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
   const option = {
     method: "get",
     url: baseURL + endpint + `/${id}`,
     headers: {
       Authorization: token,
-      session_id: session,
     },
     params: query,
   };
@@ -94,16 +89,14 @@ export const serverGetsingle = async (endpint, id, query) => {
 };
 
 export const getServerSingle = async (endpint, query, id) => {
-  const cookies = parseCookies();
-  const token = cookies["accessToken"];
-  const session = cookies["session"];
+  const cookiesData = Cookies.get();
+  const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
 
   const option = {
     method: "get",
     url: baseURL + endpint + `/${id}`,
     headers: {
       Authorization: token,
-      session_id: session,
     },
     params: query,
   };
@@ -121,7 +114,6 @@ export const getServerSingle = async (endpint, query, id) => {
 
 export const post = async (endpint, data) => {
   const cookiesData = Cookies.get();
-  console.log(cookiesData);
   const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
   const option = {
     method: "post",
@@ -171,15 +163,13 @@ export const post = async (endpint, data) => {
 // };
 
 export const patch = async (endpint, data, id) => {
-  const cookies = parseCookies();
-  const token = cookies["accessToken"];
-  const session = cookies["session"];
+  const cookiesData = Cookies.get();
+  const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
   const option = {
     method: "patch",
     url: baseURL + endpint + `/${id}`,
     headers: {
       Authorization: token,
-      session_id: session,
     },
     params: {},
     data: data,
@@ -197,16 +187,14 @@ export const patch = async (endpint, data, id) => {
 };
 
 export const del = async (endpint, id) => {
-  const cookies = parseCookies();
-  const token = cookies["accessToken"];
-  const session = cookies["session"];
+  const cookiesData = Cookies.get();
+  const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
 
   const option = {
     method: "delete",
     url: baseURL + endpint + `/${id}`,
     headers: {
       Authorization: token,
-      session_id: session,
     },
     params: {},
     data: {},
