@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React from "react";
 import { FaSearch } from "react-icons/fa";
-import { MdNotificationsNone, MdSettings, MdMessage } from "react-icons/md";
+import { MdNotificationsNone, MdSettings, MdMessage, MdSearch } from "react-icons/md";
 import { Popover, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import Link from "next/link";
@@ -68,18 +68,8 @@ const Header = () => {
           </svg>
         </a>
         <button className="group inline-flex items-center focus:outline-none active:translate-y-px xl:h-10 xl:w-full xl:max-w-sm xl:rounded-xl xl:border xl:border-gray-200 xl:py-2 xl:pe-2 xl:ps-3.5 xl:shadow-sm xl:backdrop-blur-md xl:transition-colors xl:duration-200 xl:hover:border-gray-900 xl:hover:outline-double xl:hover:outline-[0.5px] xl:hover:outline-gray-900 xl:focus-visible:border-gray-900 xl:focus-visible:outline-double xl:focus-visible:outline-[0.5px] xl:focus-visible:outline-gray-900">
-          <svg
-            stroke="currentColor"
-            fill="currentColor"
-            stroke-width="0"
-            viewBox="0 0 256 256"
-            className="magnifying-glass me-2 h-[18px] w-[18px]"
-            height="1em"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M232.49,215.51,185,168a92.12,92.12,0,1,0-17,17l47.53,47.54a12,12,0,0,0,17-17ZM44,112a68,68,0,1,1,68,68A68.07,68.07,0,0,1,44,112Z"></path>
-          </svg>
+         <MdSearch className="magnifying-glass me-2 h-[18px] w-[18px]" />
+       
           <span className="placeholder-text hidden text-sm text-gray-600 group-hover:text-gray-900 xl:inline-flex">
             Type what you are looking for...
           </span>
@@ -87,7 +77,7 @@ const Header = () => {
             <svg
               stroke="currentColor"
               fill="currentColor"
-              stroke-width="1.3"
+              strokeWidth="1.3"
               viewBox="0 0 256 256"
               className="h-[15px] w-[15px]"
               height="1em"

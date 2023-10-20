@@ -15,7 +15,7 @@ const TextField = ({
     <div className=" flex flex-col">
       <label className="block">
         <span className=" block text-sm mb-1.5">{label}</span>
-        <span className=" flex items-center peer w-full transition duration-200 px-3.5 py-1 text-sm h-10 leading-[40px] rounded-md bg-transparent [&amp;.is-focus]:ring-[0.6px] border border-gray-300 [&amp;_input::placeholder]:text-gray-500 hover:border-gray-1000 [&amp;.is-focus]:border-gray-1000 [&amp;.is-focus]:ring-gray-1000">
+        <span className=" flex items-center peer bg-white w-full transition duration-200 px-3.5 py-1 text-sm h-10 leading-[40px] rounded-md bg-transparent [&amp;.is-focus]:ring-[0.6px] border border-gray-300 [&amp;_input::placeholder]:text-gray-500 hover:border-gray-1000 [&amp;.is-focus]:border-gray-1000 [&amp;.is-focus]:ring-gray-1000">
           {icon && <button className=" text-gray-500 pr-1">{icon}</button>}
           <input
             className={` appearance-none  border-none rounded w-full  text-gray-700 leading-tight focus:outline-none  ${classes}`}
