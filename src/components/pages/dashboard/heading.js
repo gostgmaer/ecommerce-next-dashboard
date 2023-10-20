@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import React, { Fragment } from "react";
 import { MdAdd, MdDownload } from "react-icons/md";
 
-const Heading = ({ data,ishow=true ,label,btn}) => {
+const Heading = ({ data,ishow=true ,label,btn,url}) => {
   const pathname = usePathname();
   const segments = pathname.split("/").filter((segment) => segment !== "");
 
@@ -42,12 +42,12 @@ const Heading = ({ data,ishow=true ,label,btn}) => {
           <MdDownload className="me-1.5 h-[17px] w-[17px]" />
           Export
         </button>}
-        <a className="w-full @lg:w-auto" href="/dashboard/products/create">
+       {btn && <a className="w-full @lg:w-auto" href={url}>
           <span className="rizzui-button inline-flex w-max font-medium items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-4 py-2 text-sm h-10 rounded-md border border-transparent focus-visible:ring-offset-2 bg-gray-900 hover:enabled::bg-gray-800 active:enabled:bg-gray-1000 focus-visible:ring-gray-900/30 text-gray-0 @lg:w-auto  text-white ">
             <MdAdd className="me-1.5 h-[17px] w-[17px]" />
             Add {btn}
           </span>
-        </a>
+        </a>}
       </div>
     </div>
   );

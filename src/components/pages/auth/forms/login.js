@@ -31,7 +31,7 @@ const LoginForm = () => {
             <input
               type="email"
               placeholder="Enter your email"
-              className="w-full px-4 py-2 placeholder:text-sm border rounded-md focus:outline-none focus:border-blue-500 pr-0"
+              className="w-full px-4 py-2 bg-white placeholder:text-sm border rounded-md focus:outline-none focus:border-blue-500 pr-0"
               name="email"
               value={formik.values.email}
               onChange={formik.handleChange}
@@ -64,7 +64,7 @@ const LoginForm = () => {
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                   stroke="currentColor"
                   className="rizzui-checkbox-icon peer-checked:opacity-100 absolute opacity-0 text-white top-0 left-0 h-5 w-5"
                 >

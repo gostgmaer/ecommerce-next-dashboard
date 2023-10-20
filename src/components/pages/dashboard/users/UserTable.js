@@ -5,22 +5,9 @@ import Table from "@/components/global/element/Table";
 // import Pagination from '@/components/global/element/pagination';
 import PaginatedList from "@/components/global/element/pagination";
 import TableFilter from "@/components/global/element/tableFilter";
-import { Menu, Dropdown } from "antd";
 import Link from "next/link";
-import { FaEdit, FaEye, FaPen, FaPenAlt, FaTrash } from "react-icons/fa";
-const filterOptions = ["Option 1", "Option 2", "Option 3"];
-const statusOptions = [
-  { value: "all", label: "All" },
-  { value: "active", label: "Active" },
-  { value: "inactive", label: "Inactive" },
-];
+import { FaEye, FaPen, FaTrash } from "react-icons/fa";
 
-const mydata = [
-  { column1: "Data 1", column2: "Data 2", column3: "Data 3" },
-  { column1: "Data 4", column2: "Data 5", column3: "Data 6" },
-  { column1: "Data 7", column2: "Data 8", column3: "Data 9" },
-  // Add more data as needed
-];
 const products = [
   {
     id: "0o02051402",
@@ -743,9 +730,10 @@ const products = [
     rating: [5, 5, 3],
   },
 ];
-const items = Array.from(Array(20).keys()).map((key) => key + 1);
-const ProductsPageElement = () => {
 
+const items = Array.from(Array(20).keys()).map((key) => key + 1);
+
+const UserTable = () => {
   const columns = [
     {
       title: "Product",
@@ -786,15 +774,15 @@ const ProductsPageElement = () => {
         </div>
       ),
       key: "actions",
-      render: (item,index) => (
+      render: (record, index) => (
         <div className="flex items-center justify-end gap-3 pe-4">
-          <Link href={`/dashboard/products/${item.id}/edit`}>
+          <Link href={`/dashboard/categories/${record.id}/edit`}>
             {" "}
             <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
               <FaPen />
             </button>
           </Link>
-          <Link href={`/dashboard/products/${item.id}`}>
+          <Link href={`/dashboard/categories/${record.id}`}>
             <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
               <FaEye />
             </button>
@@ -806,10 +794,9 @@ const ProductsPageElement = () => {
       ),
     },
   ];
-
   return (
     <div>
-      <Heading data={undefined} label={"Products"} btn={"product"} url={"/dashboard/products/create"} />
+      <Heading data={undefined} label="Users" btn={undefined} url={undefined} />
       <div>
         <TableFilter />
         <Table data={products} tableColumn={columns} />
@@ -819,4 +806,4 @@ const ProductsPageElement = () => {
   );
 };
 
-export default ProductsPageElement;
+export default UserTable;
