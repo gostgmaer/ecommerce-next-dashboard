@@ -1,13 +1,37 @@
 "use client";
 import PasswordField from "@/components/global/fields/PasswordField";
+import { post } from "@/lib/http";
 import { registerValidationSchema } from "@/utils/validation/validation";
 import { useFormik } from "formik";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { MdArrowForward } from "react-icons/md";
 
 const RegisterForm = () => {
-  const handleSubmit = (values) => {
-    console.log(values);
+  const [error, setError] = useState(null);
+  const router = useRouter();
+
+
+
+  const handleSubmit = async (values) => {
+    try {
+      const res = await post("/user/register", values);
+      if (res) {
+        router.push("/auth/login");
+      }
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    }
   };
+
+
+  
+  const handleRegistration = async (body) => {
+
+ 
+  };
+
 
   const formik = useFormik({
     initialValues: {
@@ -137,20 +161,7 @@ const RegisterForm = () => {
                   value={formik.values.isAgreed}
                   onChange={formik.handleChange}
                 />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  className="rizzui-checkbox-icon peer-checked:opacity-100 absolute opacity-0 text-white top-0 left-0 h-5 w-5"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M4.5 12.75l6 6 9-13.5"
-                  ></path>
-                </svg>
+               
               </span>
               <span className="rizzui-checkbox-label text-sm ml-1.5 rtl:mr-1.5">
                 By signing up you have agreed to our{" "}
@@ -177,23 +188,12 @@ const RegisterForm = () => {
           </div>
         </div>
         <button
-          className="rizzui-button col-span-2 inline-flex font-medium items-center bg-gray-900 hover:enabled::bg-gray-800 active:enabled:bg-gray-1000 focus-visible:ring-gray-900/30 text-gray-0  text-white justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-5 py-2 text-base h-12 rounded-md border border-transparent focus-visible:ring-offset-2 bg-blue hover:enabled:bg-blue-500 focus-visible:ring-blue/30 text-white w-full"
+          className="rizzui-button col-span-2 inline-flex font-medium items-center bg-gray-700 hover:enabled::bg-gray-800 active:enabled:bg-gray-1000 focus-visible:ring-gray-900/30 text-gray-0  text-white justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-5 py-2 text-base h-12 rounded-md border border-transparent focus-visible:ring-offset-2 bg-blue hover:enabled:bg-gray-900 focus-visible:ring-blue/30 text-white w-full"
           type="submit"
           disabled={!formik.isValid}
         >
           <span>Get Started</span>{" "}
-          <svg
-            stroke="currentColor"
-            fill="currentColor"
-            stroke-width="0"
-            viewBox="0 0 256 256"
-            className="ms-2 mt-0.5 h-5 w-5"
-            height="1em"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path>
-          </svg>
+          <MdArrowForward       className="ms-2 mt-0.5 h-5 w-5"/>
         </button>
       </div>
     </form>

@@ -15,12 +15,13 @@ export const Summery = ({ handleChange, data }) => {
           </p>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 w-[70%]">
+    
           <div>
             <TextField
               label={"Title"}
               type={"text"}
               placeholder={"Product title"}
-              additionalAttrs={undefined}
+              additionalAttrs={{ required: true }}
               value={data.title}
               onChange={handleChange}
               classes={undefined}
@@ -33,7 +34,7 @@ export const Summery = ({ handleChange, data }) => {
               label={"SKU"}
               type={"text"}
               placeholder={"HG98723867836"}
-              additionalAttrs={undefined}
+              additionalAttrs={{ required: true }}
               value={data.sku}
               onChange={handleChange}
               classes={undefined}
@@ -49,6 +50,7 @@ export const Summery = ({ handleChange, data }) => {
               ]}
               value={data.productType}
               onChange={handleChange}
+            
               id={"productType"}
               label={"Product Type"}
               placeholder={undefined}
@@ -413,7 +415,7 @@ export const ProductVariyant = (second) => {
 
 export const ProductTags = ({ handleChange, tags, setTags }) => {
   const [inputValue, setInputValue] = useState("");
- 
+
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleInputChange = (e) => {

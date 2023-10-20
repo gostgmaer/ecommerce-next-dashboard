@@ -36,8 +36,31 @@ const ProductForm = ({ data }) => {
     manufacturerPartNumber: "1459894",
     brandName: "Brand",
     productUPCEAN: "14572454",
-    tag: [],
   });
+
+
+   const initialValues = {
+       title: "Product title",
+    sku: "HG98723867836",
+    productType: "physical",
+    categories: "Fruits",
+    descriptions: "Descriptions",
+    images: [],
+    price: "0.00",
+    costPrice: "0.00",
+    retailPrice: "0.00",
+    salePrice: "0.00",
+    trackInventory: "yes",
+    currentStockLevel: "0",
+    lowStockLevel: "0",
+    gtin: "678ASD",
+    manufacturerPartNumber: "1459894",
+    brandName: "Brand",
+    productUPCEAN: "14572454",
+  };
+
+
+
   const [tags, setTags] = useState([]);
   const [status, setStatus] = useState("Draft");
   const [seo, setSeo] = useState({
@@ -85,8 +108,7 @@ const ProductForm = ({ data }) => {
         ishow={false}
         data={undefined}
         label={productID ? "Edit Product" : "Add Product"}
-        btn={"Product"}
-      />
+        btn={"Product"} url={"/dashboard/products/create"}      />
       <TopStepper />
       <div>
         <form className="[&amp;_label.block>span]:font-medium" onSubmit={SubmitForm}>
