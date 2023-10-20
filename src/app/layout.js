@@ -1,6 +1,10 @@
+import { AppProvider } from "@/context/contextAPi";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
+import { AuthContextProvider } from "@/context/authContext";
+import { Suspense } from "react";
+import Spinner from "@/components/global/element/loader/Spinner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -10,11 +14,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <NextTopLoader />
-        <main>{children}</main>
-      </body>
-    </html>
+    <AppProvider>
+      <AuthContextProvider>
+        <html lang="en">
+          <body className={inter.className} suppressHydrationWarning={true}>
+            <Suspense fallback=<Spinner></Spinner>>
+            <NextTopLoader/>
+              <main className="bg-light w-full min-h-screen text-dark">
+                {children}
+              </main>
+            </Suspense>
+          </body>
+        </html>
+      </AuthContextProvider>
+    </AppProvider>
   );
 }

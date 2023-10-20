@@ -2,19 +2,18 @@
 // import axios from "axios";
 
 import axios from "axios";
-import instance from '../lib/interceptors'
+import instance from "../lib/interceptors";
 import { parseCookies } from "nookies";
+import Cookies from "js-cookie";
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL; // Replace with your Firebase URL
-
 
 // axios.defaults.withCredentials=true
 
-
 export const get = async (endpint, query, id) => {
- 
-  const cookies = parseCookies();
-  const token = cookies["accessToken"];
-  const session = cookies["session"];
+  const cookiesData = Cookies.get();
+  console.log(cookiesData);
+  const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
+  // const session = cookies["session"];
   let reqUrl = undefined;
   if (id) {
     reqUrl = baseURL + endpint + `/${id}`;
@@ -27,7 +26,6 @@ export const get = async (endpint, query, id) => {
     url: reqUrl,
     headers: {
       Authorization: token,
-      session_id: session,
     },
     params: query,
   };
@@ -35,17 +33,15 @@ export const get = async (endpint, query, id) => {
   let error;
   try {
     response = await instance.request(option);
-
   } catch (e) {
     error = e.response.data;
-   
 
     throw new Error(JSON.stringify(e.response.data));
   }
   return response?.data ? response?.data : error; // or set initial value
 };
 
-export const getsingle = async (endpint, id,query) => {
+export const getsingle = async (endpint, id, query) => {
   const cookies = parseCookies();
   const token = cookies["accessToken"];
   const session = cookies["session"];
@@ -63,19 +59,15 @@ export const getsingle = async (endpint, id,query) => {
   let error;
   try {
     response = await instance.request(option);
-
-  
   } catch (e) {
     error = e.response.data;
-   
 
     throw new Error(JSON.stringify(e.response.data));
   }
   return response?.data ? response?.data : error; // or set initial value
 };
 
-
-export const serverGetsingle = async (endpint, id,query) => {
+export const serverGetsingle = async (endpint, id, query) => {
   const cookies = parseCookies();
   const token = cookies["accessToken"];
   const session = cookies["session"];
@@ -93,11 +85,8 @@ export const serverGetsingle = async (endpint, id,query) => {
   let error;
   try {
     response = await axios.request(option);
-
-  
   } catch (e) {
     error = e.response.data;
-   
 
     throw new Error(JSON.stringify(e.response.data));
   }
@@ -122,11 +111,8 @@ export const getServerSingle = async (endpint, query, id) => {
   let error;
   try {
     response = await axios.request(option);
-
-    
   } catch (e) {
     error = e.response.data;
-   
 
     throw new Error(JSON.stringify(e.response.data));
   }
@@ -134,15 +120,14 @@ export const getServerSingle = async (endpint, query, id) => {
 };
 
 export const post = async (endpint, data) => {
-  const cookies = parseCookies();
-  const token = cookies["accessToken"];
-  const session = cookies["session"];
+  const cookiesData = Cookies.get();
+  console.log(cookiesData);
+  const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
   const option = {
     method: "post",
     url: baseURL + endpint,
     headers: {
-      Authorization: token,
-      session_id: session,
+      Authorization: "Bearer " + token,
     },
     params: {},
     data: data,
@@ -151,10 +136,9 @@ export const post = async (endpint, data) => {
   let error;
   try {
     response = await instance.request(option);
-   
   } catch (e) {
     error = e.response.data;
-   
+
     throw new Error(JSON.stringify(e.response.data));
   }
 
@@ -204,10 +188,9 @@ export const patch = async (endpint, data, id) => {
   let error;
   try {
     response = await instance.request(option);
-    
   } catch (e) {
     error = e.response.data;
-   
+
     throw new Error(JSON.stringify(e.response.data));
   }
   return response?.data ? response?.data : error; // or set initial value
@@ -232,10 +215,9 @@ export const del = async (endpint, id) => {
   let error;
   try {
     response = await instance.request(option);
-  
   } catch (e) {
     error = e.response.data;
-   
+
     throw new Error(JSON.stringify(e.response.data));
   }
   return response?.data ? response?.data : error; // or set initial value
