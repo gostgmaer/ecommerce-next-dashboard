@@ -1,12 +1,13 @@
-import Dashboardlayout from '@/components/layout/dashboard/dashboard'
-import React from 'react'
+import Dashboardlayout from "@/components/layout/dashboard/dashboard";
+import CategoryForm from "@/components/pages/dashboard/category/CategoryForm";
+import React from "react";
 
 const Page = () => {
   return (
     <Dashboardlayout>
-      <div></div>
+      <CategoryForm data={undefined} />
     </Dashboardlayout>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;
