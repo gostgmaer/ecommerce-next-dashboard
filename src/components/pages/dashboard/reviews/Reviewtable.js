@@ -5,8 +5,7 @@ import Table from "@/components/global/element/Table";
 // import Pagination from '@/components/global/element/pagination';
 import PaginatedList from "@/components/global/element/pagination";
 import TableFilter from "@/components/global/element/tableFilter";
-import Link from "next/link";
-import { FaEye, FaPen, FaTrash } from "react-icons/fa";
+
 import { CiMenuKebab } from "react-icons/ci";
 import { Menu, Transition } from "@headlessui/react";
 import { useFloating } from "@floating-ui/react";
@@ -794,7 +793,7 @@ const ReviewElements = () => {
   ];
   return (
     <div>
-      <Heading data={undefined} label="Reviews" btn={"Review"} />
+      <Heading data={undefined} label="Reviews" btn={"Review"} url={undefined} />
       <div>
         <TableFilter />
         <Table data={products} tableColumn={columns} />

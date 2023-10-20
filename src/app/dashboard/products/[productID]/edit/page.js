@@ -1,5 +1,4 @@
 import Dashboardlayout from "@/components/layout/dashboard/dashboard";
-import EditProduct from "@/components/pages/dashboard/products/EditProduct";
 import ProductForm from "@/components/pages/dashboard/products/ProductForm";
 import Head from "next/head";
 import React from "react";

@@ -5,9 +5,12 @@ import { useFormik } from "formik";
 import { loginValidationSchema } from "@/utils/validation/validation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuthContext } from "@/context/authContext";
 
 const LoginForm = () => {
+  const { handleLoginAuth, user, userId } = useAuthContext();
   const route = useRouter();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -15,8 +18,7 @@ const LoginForm = () => {
     },
     validationSchema: loginValidationSchema,
     onSubmit: (values) => {
-      console.log(values);
-      route.push("/dashboard");
+      handleLoginAuth(values);
     },
   });
 
@@ -60,20 +62,7 @@ const LoginForm = () => {
                   className="rizzui-checkbox-input peer disabled:bg-gray-50 disabled:border-gray-200 h-5 w-5 rounded bg-transparent border border-gray-300 checked:!bg-gray-1000 focus:ring-gray-900/30 checked:!border-gray-1000 hover:enabled:border-gray-1000"
                   name="isRememberMe"
                 />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="rizzui-checkbox-icon peer-checked:opacity-100 absolute opacity-0 text-white top-0 left-0 h-5 w-5"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M4.5 12.75l6 6 9-13.5"
-                  ></path>
-                </svg>
+                
               </span>
               <span className="rizzui-checkbox-label text-sm ml-1.5 rtl:mr-1.5">
                 Remember Me

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Fa500Px, FaCheck } from "react-icons/fa";
+import { Fa500Px, FaBars, FaCheck } from "react-icons/fa";
 
 export default function Home() {
   return (
@@ -12,32 +12,18 @@ export default function Home() {
               SaaS
             </Link>
             <button className="md:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                aria-hidden="true"
-                className="w-8 h-8"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                ></path>
-              </svg>
+              <FaBars className="w-8 h-8" />
             </button>
             <div className="items-center justify-center md:flex-row md:flex md:relative md:bg-transparent md:shadow-none md:top-0 md:backdrop-blur-none md:space-x-3 hidden">
               <nav className="flex flex-col w-full space-x-0 space-y-3 text-center md:space-y-0 md:space-x-3 md:flex-row">
                 <Link
-                  className="w-full px-5 py-2 text-center text-white bg-blue-600 rounded shadow hover:bg-blue-500"
+                  className="w-full px-5 py-2 text-center capitalize text-white bg-blue-600 rounded shadow hover:bg-blue-500"
                   href={"/auth/register"}
                 >
                   signup
                 </Link>
                 <Link
-                  className="w-full px-5 py-2 text-center text-white bg-blue-600 rounded shadow hover:bg-blue-500"
+                  className="w-full px-5 py-2 capitalize text-center text-white bg-blue-600 rounded shadow hover:bg-blue-500"
                   href="/auth/login"
                 >
                   Login
@@ -178,129 +164,31 @@ export default function Home() {
                   <h6 className="uppercase">What&apos;s Included</h6>
                   <ul className="leading-10 list-disc list-inside">
                     <li className="flex items-center space-x-5">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                        className="w-5 h-5 text-green-600"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M4.5 12.75l6 6 9-13.5"
-                        ></path>
-                      </svg>
+                      <FaCheck className=" text-green-600" />
                       <span>Everything in Hobby</span>
                     </li>
                     <li className="flex items-center space-x-5">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                        className="w-5 h-5 text-green-600"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M4.5 12.75l6 6 9-13.5"
-                        ></path>
-                      </svg>
+                      <FaCheck className=" text-green-600" />
                       <span>Custom Domain Name</span>
                     </li>
                     <li className="flex items-center space-x-5">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                        className="w-5 h-5 text-green-600"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M4.5 12.75l6 6 9-13.5"
-                        ></path>
-                      </svg>
+                      <FaCheck className=" text-green-600" />
                       <span>Analytics</span>
                     </li>
                     <li className="flex items-center space-x-5">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                        className="w-5 h-5 text-green-600"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M4.5 12.75l6 6 9-13.5"
-                        ></path>
-                      </svg>
+                      <FaCheck className=" text-green-600" />
                       <span>Publishing Status</span>
                     </li>
                     <li className="flex items-center space-x-5">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                        className="w-5 h-5 text-green-600"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M4.5 12.75l6 6 9-13.5"
-                        ></path>
-                      </svg>
+                      <FaCheck className=" text-green-600" />
                       <span>Custom Favicon</span>
                     </li>
                     <li className="flex items-center space-x-5">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                        className="w-5 h-5 text-green-600"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M4.5 12.75l6 6 9-13.5"
-                        ></path>
-                      </svg>
+                      <FaCheck className=" text-green-600" />
                       <span>Custom Meta Tags</span>
                     </li>
                     <li className="flex items-center space-x-5">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                        className="w-5 h-5 text-green-600"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M4.5 12.75l6 6 9-13.5"
-                        ></path>
-                      </svg>
+                      <FaCheck className=" text-green-600" />
                       <span>Live Site Preview</span>
                     </li>
                   </ul>

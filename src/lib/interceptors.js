@@ -1,6 +1,5 @@
 // utils/axios.js
-
-import Spinner from "@/components/global/loader/Spinner";
+import Spinner from "@/components/global/element/loader/Spinner";
 import axios from "axios";
 import { useState } from "react";
 const instance = axios.create();

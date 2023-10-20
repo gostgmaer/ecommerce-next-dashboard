@@ -8,19 +8,7 @@ import TableFilter from "@/components/global/element/tableFilter";
 import { Menu, Dropdown } from "antd";
 import Link from "next/link";
 import { FaEdit, FaEye, FaPen, FaPenAlt, FaTrash } from "react-icons/fa";
-const filterOptions = ["Option 1", "Option 2", "Option 3"];
-const statusOptions = [
-  { value: "all", label: "All" },
-  { value: "active", label: "Active" },
-  { value: "inactive", label: "Inactive" },
-];
 
-const mydata = [
-  { column1: "Data 1", column2: "Data 2", column3: "Data 3" },
-  { column1: "Data 4", column2: "Data 5", column3: "Data 6" },
-  { column1: "Data 7", column2: "Data 8", column3: "Data 9" },
-  // Add more data as needed
-];
 const products = [
   {
     id: "0o02051402",

@@ -1,7 +1,11 @@
+"use client"
 import Dashboardlayout from "@/components/layout/dashboard/dashboard";
+import { useAuthContext } from "@/context/authContext";
 import React from "react";
 
-const page = () => {
+const Page = () => {
+  const {userId} = useAuthContext()
+  console.log(userId);
   return (
     <Dashboardlayout>
       <div>asdad</div>
@@ -9,4 +13,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
