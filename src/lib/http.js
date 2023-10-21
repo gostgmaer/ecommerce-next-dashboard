@@ -36,7 +36,7 @@ export const get = async (endpint, query, id) => {
   } catch (e) {
     error = e.response.data;
 
-    throw new Error(JSON.stringify(e.response.data));
+    //throw new Error(JSON.stringify(e.response.data));
   }
   return response?.data ? response?.data : error; // or set initial value
 };
@@ -83,7 +83,7 @@ export const serverGetsingle = async (endpint, id, query) => {
   } catch (e) {
     error = e.response.data;
 
-    throw new Error(JSON.stringify(e.response.data));
+  //  throw new Error(JSON.stringify(e.response.data));
   }
   return response?.data ? response?.data : error; // or set initial value
 };
@@ -107,7 +107,7 @@ export const getServerSingle = async (endpint, query, id) => {
   } catch (e) {
     error = e.response.data;
 
-    throw new Error(JSON.stringify(e.response.data));
+  //  throw new Error(JSON.stringify(e.response.data));
   }
   return response?.data ? response?.data : error; // or set initial value
 };
@@ -131,11 +131,11 @@ export const post = async (endpint, data) => {
   } catch (e) {
     error = e.response.data;
 
-    throw new Error(JSON.stringify(e.response.data));
+    // throw new Error(JSON.stringify(e.response));
   }
 
   // if success return value
-  return response?.data ? response?.data : error; // or set initial value
+  return response?.data ? response.data : error; // or set initial value
 };
 
 // export const put = async (endpint, id, data) => {
@@ -181,7 +181,7 @@ export const patch = async (endpint, data, id) => {
   } catch (e) {
     error = e.response.data;
 
-    throw new Error(JSON.stringify(e.response.data));
+    // throw new Error(JSON.stringify(e.response.data));
   }
   return response?.data ? response?.data : error; // or set initial value
 };
@@ -206,7 +206,7 @@ export const del = async (endpint, id) => {
   } catch (e) {
     error = e.response.data;
 
-    throw new Error(JSON.stringify(e.response.data));
+    // throw new Error(JSON.stringify(e.response.data));
   }
   return response?.data ? response?.data : error; // or set initial value
 };

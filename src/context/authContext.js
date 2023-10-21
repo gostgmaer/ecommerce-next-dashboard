@@ -1,7 +1,5 @@
 "use client";
-import { parseCookies, setCookie } from "nookies";
 import React, { useEffect, useState } from "react";
-
 import jwt_decode from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { post } from "@/lib/http";
@@ -18,39 +16,49 @@ export const AuthContextProvider = ({ children }) => {
   const router = useRouter();
 
   const handleLoginAuth = async (body) => {
+    // const res = await post("/user/auth/login", body);
+    // console.log(res);
     try {
       const res = await post("/user/auth/login", body);
-      const decoded = jwt_decode(res.access_token);
-      const decodedrefersh = jwt_decode(res.refresh_token);
-    
-      setToken("accessToken", res.access_token, decoded["exp"], "ACCESS_TOKEN");
-      setToken("refreshToken", res.refresh_token, decodedrefersh["exp"]);
-      setUserId(decoded);
-      setUser(jwt_decode(res.id_token));
-      setAuthError(undefined)
-      router.push("/dashboard");
-    } catch (error) {
-      setAuthError(JSON.parse(error.message))
-      console.log(error);
+      if (res.statusCode != 200) {
+        setAuthError(res);
+      } else {
+        const decoded = jwt_decode(res.access_token);
+        const decodedrefersh = jwt_decode(res.refresh_token);
+        setToken(
+          "accessToken",
+          res.access_token,
+          decoded["exp"],
+          "ACCESS_TOKEN"
+        );
+        setToken("refreshToken", res.refresh_token, decodedrefersh["exp"]);
+        setUserId(decoded);
+        setUser(jwt_decode(res.id_token));
+        setAuthError(undefined);
+        router.push("/dashboard");
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
   const Logout = async () => {
-    function deleteCookie(name) {
-      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    }
     try {
-      const res = await post("/user/auth/signout");
+      const res = await post("/user/auth/logout");
       if (res.statusCode == "200") {
-        sessionStorage.removeItem("user");
-        deleteCookie("accessToken");
-        deleteCookie("session");
+        router.push("/auth/login");
         window.sessionStorage.clear();
         window.localStorage.clear();
+        const cookies = Cookies.get();
+        for (const cookie in cookies) {
+          Cookies.remove(cookie);
+        }
         setUser(undefined);
         setUserId(undefined);
-        router.push("/auth/login");
-        setAuthError(undefined)
+
+        setAuthError(undefined);
+      }else{
+        setAuthError(res);
       }
     } catch (error) {}
   };
@@ -65,11 +73,11 @@ export const AuthContextProvider = ({ children }) => {
 
         if (decodedToken["user_id"]) {
           const res = await post("/user/auth/verify/session");
-       
-          const decoded = jwt_decode(res.access_token);
+
+          const decoded = jwt_decode(res.accessToken);
           setToken(
             "accessToken",
-            res.access_token,
+            res.accessToken,
             decoded["exp"],
             "ACCESS_TOKEN"
           );
@@ -77,11 +85,11 @@ export const AuthContextProvider = ({ children }) => {
           setUser(jwt_decode(res.id_token));
         }
       }
-      setAuthError(undefined)
+      setAuthError(undefined);
     } catch (error) {
       setUser(undefined);
       setUserId(undefined);
-      setAuthError(JSON.parse(error.message))
+      setAuthError(error.message);
     }
   };
 
@@ -100,12 +108,11 @@ export const AuthContextProvider = ({ children }) => {
           "ACCESS_TOKEN"
         );
         setUserId(decoded);
-        setUser(decoded);
       }
     } catch (error) {
       setUser(undefined);
       setUserId(undefined);
-      setAuthError(JSON.parse(error.message))
+     
     }
   };
 
@@ -120,7 +127,9 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, handleLoginAuth, Logout, userId,authError }}>
+    <AuthContext.Provider
+      value={{ user, handleLoginAuth, Logout, userId, authError }}
+    >
       {children}
     </AuthContext.Provider>
   );
