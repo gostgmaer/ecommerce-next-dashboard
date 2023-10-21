@@ -4,8 +4,9 @@ import { useAuthContext } from "@/context/authContext";
 import React from "react";
 
 const Page = () => {
-  const {userId} = useAuthContext()
+  const {userId,user} = useAuthContext()
 
+  console.log(userId,user);
   return (
     <Dashboardlayout>
       <div>asdad</div>
