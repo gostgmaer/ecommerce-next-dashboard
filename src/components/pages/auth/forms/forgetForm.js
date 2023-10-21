@@ -1,12 +1,29 @@
+// @ts-nocheck
 "use client";
+import { useAuthContext } from "@/context/authContext";
+import { post } from "@/lib/http";
+import { useAxios } from "@/lib/interceptors";
 import { forgetPasswordValidation } from "@/utils/validation/validation";
 import { useFormik } from "formik";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 const ForgetForm = () => {
-  const handleSubmit = (values) => {
-    console.log(values);
+  const { handleLoginAuth, user, userId } = useAuthContext();
+  const [axios, spinner] = useAxios();
+  const [error, setError] = useState(undefined);
+  const router = useRouter();
+
+  const handleSubmit = async (values) => {
+    try {
+      const res = await post("/user/auth/forget-password", values);
+      setError(res);
+      return res;
+    } catch (error) {
+      const myErr = error?.message;
+      setError(JSON.parse(myErr));
+    }
   };
 
   const formik = useFormik({
@@ -20,6 +37,12 @@ const ForgetForm = () => {
       handleSubmit(values);
     },
   });
+
+  useEffect(() => {
+    if (userId) {
+      router.push("/dashboard");
+    }
+  }, [userId]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -35,7 +58,7 @@ const ForgetForm = () => {
                 placeholder="Enter your email"
                 className="rizzui-input-field w-full border-0 bg-transparent p-0 focus:outline-none focus:ring-0"
                 type="email"
-                name="username"
+                name="email"
                 value={formik.values.email}
                 onChange={formik.handleChange}
               />
@@ -47,14 +70,19 @@ const ForgetForm = () => {
         </div>
 
         <button
-          className="rizzui-button inline-flex font-medium items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-8 py-2.5 text-base  rounded-md border border-transparent focus-visible:ring-offset-2 bg-gray-900 hover:enabled::bg-gray-800 active:enabled:bg-gray-1000 focus-visible:ring-gray-900/30 text-gray-0 w-full text-white"
+          className="rizzui-button disabled:bg-gray-400 inline-flex font-medium items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-8 py-2.5 text-base  rounded-md border border-transparent focus-visible:ring-offset-2 bg-gray-900 hover:enabled::bg-gray-800 active:enabled:bg-gray-1000 focus-visible:ring-gray-900/30 text-gray-0 w-full text-white"
           type="submit"
           disabled={!formik.isValid}
         >
-          <span>Reset Password</span>{" "}
-         <MdKeyboardArrowRight/>
+          <span>Reset Password</span> <MdKeyboardArrowRight />
         </button>
       </div>
+      {error && (
+        <div className={`error text-red-500 font-medium text-sm py-2 ${error["statusCode"]==200 && " text-green-700"} `}>
+          <p className="text-center">{error.message}</p>
+        </div>
+      )}
+      {spinner}
     </form>
   );
 };
