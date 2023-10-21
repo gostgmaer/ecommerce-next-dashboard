@@ -2,32 +2,41 @@
 import Image from "next/image";
 import React from "react";
 import { FaSearch } from "react-icons/fa";
-import { MdNotificationsNone, MdSettings, MdMessage, MdSearch } from "react-icons/md";
+import {
+  MdNotificationsNone,
+  MdSettings,
+  MdMessage,
+  MdSearch,
+} from "react-icons/md";
 import { Popover, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import Link from "next/link";
-
-
+import { useAuthContext } from "@/context/authContext";
 
 const navigation = [
-    { name: "My Profile", href: "/dashboard/profile", current: true, iscurrent: true },
-    {
-      name: "Account Settings",
-      href: "/dashboard/settings",
-      current: false,
-      iscurrent: true,
-    },
-    {
-      name: "Activity Logs",
-      href: "/dashboard/logs",
-      current: false,
-      iscurrent: true,
-    },
-  ];
-
-
+  {
+    name: "My Profile",
+    href: "/dashboard/profile",
+    current: true,
+    iscurrent: true,
+  },
+  {
+    name: "Account Settings",
+    href: "/dashboard/settings",
+    current: false,
+    iscurrent: true,
+  },
+  {
+    name: "Activity Logs",
+    href: "/dashboard/logs",
+    current: false,
+    iscurrent: true,
+  },
+];
 
 const Header = () => {
+  const { user, userId, Logout } = useAuthContext();
+
   return (
     <header className="sticky top-0 z-50 flex items-center bg-gray-0/80 px-4 py-4 backdrop-blur-xl  md:px-5 lg:px-6 2xl:py-5 3xl:px-8 4xl:px-10">
       <div className="flex w-full  items-center text-gray-700">
@@ -68,8 +77,8 @@ const Header = () => {
           </svg>
         </a>
         <button className="group inline-flex items-center focus:outline-none active:translate-y-px xl:h-10 xl:w-full xl:max-w-sm xl:rounded-xl xl:border xl:border-gray-200 xl:py-2 xl:pe-2 xl:ps-3.5 xl:shadow-sm xl:backdrop-blur-md xl:transition-colors xl:duration-200 xl:hover:border-gray-900 xl:hover:outline-double xl:hover:outline-[0.5px] xl:hover:outline-gray-900 xl:focus-visible:border-gray-900 xl:focus-visible:outline-double xl:focus-visible:outline-[0.5px] xl:focus-visible:outline-gray-900">
-         <MdSearch className="magnifying-glass me-2 h-[18px] w-[18px]" />
-       
+          <MdSearch className="magnifying-glass me-2 h-[18px] w-[18px]" />
+
           <span className="placeholder-text hidden text-sm text-gray-600 group-hover:text-gray-900 xl:inline-flex">
             Type what you are looking for...
           </span>
@@ -120,57 +129,57 @@ const Header = () => {
         <Popover className="relative bg-white">
           <Popover.Button className="hover:border-none active:border-none focus-visible:border-none focus-visible:outline-none">
             <img
-              src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars/avatar-11.webp"
-              alt="Albert Flores"
+              src={user?.profilePicture}
+              alt={user?.username}
               title="Albert Flores"
               draggable="false"
               loading="lazy"
               width="40"
               height="40"
-              className="rizzui-avatar-img inline-flex items-center justify-center flex-shrink-0 rounded-full bg-gray-900 text-gray-0 object-cover"
+              className="rizzui-avatar-img w-10 h-10 inline-flex items-center justify-center flex-shrink-0 rounded-full bg-gray-900 text-gray-0 object-cover"
             />
           </Popover.Button>
           <Popover.Panel className="absolute z-10 bg-white">
             <div className="w-64 text-left rtl:text-right rizzui-tooltip-root absolute -right-10 top-2  min-w-max text-sm rounded-xl bg-gray-0 !text-gray-900 border border-gray-300 drop-shadow-md z-50 p-0 dark:bg-gray-50 [&amp;>svg]:dark:fill-gray-50">
               <div className="flex items-center border-b border-gray-300 px-4 py-3 ">
                 <img
-                  src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars/avatar-11.webp"
-                  alt="Albert Flores"
+                  src={user?.profilePicture}
+                  alt={user?.username}
                   title="Albert Flores"
                   draggable="false"
                   loading="lazy"
                   width="40"
                   height="40"
-                  className="rizzui-avatar-img inline-flex items-center justify-center flex-shrink-0 rounded-full bg-gray-900 text-gray-0 object-cover"
+                  className="rizzui-avatar-img  w-10 h-10 inline-flex items-center justify-center flex-shrink-0 rounded-full bg-gray-900 text-gray-0 object-cover"
                 />
                 <div className="ms-3">
                   <h6 className="rizzui-title-h6 font-semibold">
-                    Albert Flores
+               {user && user.firstName +" "+user.lastName}
                   </h6>
-                  <p className="text-gray-600">flores@doe.io</p>
+                  <p className="text-gray-600">{user?.username}</p>
                 </div>
               </div>
               <div className="grid p-2 font-medium text-gray-700">
-              {navigation.map(item=>(
-                <Link key={item.name}
-                  className="group my-0.5 flex items-center rounded-md px-2.5 py-2 hover:bg-gray-100 focus:outline-none hover:dark:bg-gray-50/50"
-                  href={item.href}
-                >
-            {item.name}
-                </Link>
-              ))}
-               
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    className="group my-0.5 flex items-center rounded-md px-2.5 py-2 hover:bg-gray-100 focus:outline-none hover:dark:bg-gray-50/50"
+                    href={item.href}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
               </div>
               <div className="border-t border-gray-300 p-4">
                 <button
                   className="rizzui-button inline-flex items-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-opacity-50 transition-colors duration-200 text-sm rounded-md hover:enabled:text-gray-1000 focus-visible:ring-gray-900/30 h-auto w-full justify-start p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
                   type="button"
+                  onClick={Logout}
                 >
                   Sign Out
                 </button>
               </div>
             </div>
-          
           </Popover.Panel>
         </Popover>
       </div>

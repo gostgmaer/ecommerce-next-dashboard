@@ -14,8 +14,10 @@ const RegisterForm = () => {
 
 
   const handleSubmit = async (values) => {
+
+    console.log(values);
     try {
-      const res = await post("/user/register", values);
+      const res = await post("/user/auth/register", values);
       if (res) {
         router.push("/auth/login");
       }

@@ -1,6 +1,6 @@
 "use client";
 import PasswordField from "@/components/global/fields/PasswordField";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { loginValidationSchema } from "@/utils/validation/validation";
 import { useRouter } from "next/navigation";
@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useAuthContext } from "@/context/authContext";
 
 const LoginForm = () => {
-  const { handleLoginAuth, user, userId,authError } = useAuthContext();
+  const { handleLoginAuth, user, userId, authError } = useAuthContext();
   const route = useRouter();
 
   const formik = useFormik({
@@ -21,6 +21,13 @@ const LoginForm = () => {
       handleLoginAuth(values);
     },
   });
+
+  useEffect(() => {
+    // if (userId) {
+    //   route.push("/dashboard");
+    // }
+    console.log(user, userId,authError);
+  }, [authError]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -62,7 +69,6 @@ const LoginForm = () => {
                   className="rizzui-checkbox-input peer disabled:bg-gray-50 disabled:border-gray-200 h-5 w-5 rounded bg-transparent border border-gray-300 checked:!bg-gray-1000 focus:ring-gray-900/30 checked:!border-gray-1000 hover:enabled:border-gray-1000"
                   name="isRememberMe"
                 />
-                
               </span>
               <span className="rizzui-checkbox-label text-sm ml-1.5 rtl:mr-1.5">
                 Remember Me
@@ -83,7 +89,11 @@ const LoginForm = () => {
           Sign In
         </button>
       </div>
-     {authError && <div className="error text-red-500 font-medium text-sm py-2"><p className="text-center">{authError.message}</p></div>}
+      {authError && (
+        <div className="error text-red-500 font-medium text-sm py-2">
+          <p className="text-center">{authError.message}</p>
+        </div>
+      )}
     </form>
   );
 };
