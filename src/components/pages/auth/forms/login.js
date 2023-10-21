@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useAuthContext } from "@/context/authContext";
 
 const LoginForm = () => {
-  const { handleLoginAuth, user, userId } = useAuthContext();
+  const { handleLoginAuth, user, userId,authError } = useAuthContext();
   const route = useRouter();
 
   const formik = useFormik({
@@ -83,6 +83,7 @@ const LoginForm = () => {
           Sign In
         </button>
       </div>
+     {authError && <div className="error text-red-500 font-medium text-sm py-2"><p className="text-center">{authError.message}</p></div>}
     </form>
   );
 };

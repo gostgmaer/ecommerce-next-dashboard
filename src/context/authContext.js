@@ -12,6 +12,7 @@ export const AuthContext = React.createContext(null);
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = React.useState(undefined);
+  const [authError, setAuthError] = useState(undefined);
   const [userId, setUserId] = useState(null);
 
   const router = useRouter();
@@ -26,8 +27,10 @@ export const AuthContextProvider = ({ children }) => {
       setToken("refreshToken", res.refresh_token, decodedrefersh["exp"]);
       setUserId(decoded);
       setUser(jwt_decode(res.id_token));
+      setAuthError(undefined)
       router.push("/dashboard");
     } catch (error) {
+      setAuthError(JSON.parse(error.message))
       console.log(error);
     }
   };
@@ -47,6 +50,7 @@ export const AuthContextProvider = ({ children }) => {
         setUser(undefined);
         setUserId(undefined);
         router.push("/auth/login");
+        setAuthError(undefined)
       }
     } catch (error) {}
   };
@@ -73,9 +77,11 @@ export const AuthContextProvider = ({ children }) => {
           setUser(jwt_decode(res.id_token));
         }
       }
+      setAuthError(undefined)
     } catch (error) {
       setUser(undefined);
       setUserId(undefined);
+      setAuthError(JSON.parse(error.message))
     }
   };
 
@@ -99,6 +105,7 @@ export const AuthContextProvider = ({ children }) => {
     } catch (error) {
       setUser(undefined);
       setUserId(undefined);
+      setAuthError(JSON.parse(error.message))
     }
   };
 
@@ -113,7 +120,7 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, handleLoginAuth, Logout, userId }}>
+    <AuthContext.Provider value={{ user, handleLoginAuth, Logout, userId,authError }}>
       {children}
     </AuthContext.Provider>
   );
