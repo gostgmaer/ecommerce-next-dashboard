@@ -1,14 +1,47 @@
 "use client";
 import PasswordField from "@/components/global/fields/PasswordField";
+import { useAuthContext } from "@/context/authContext";
+import { post } from "@/lib/http";
+import { useAxios } from "@/lib/interceptors";
 import { resetPasswordValidation } from "@/utils/validation/validation";
 import { useFormik } from "formik";
-import React from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { MdArrowRight, MdKeyboardArrowRight } from "react-icons/md";
 
 const ResetForm = () => {
-  const handleSubmit = (values) => {
-    console.log(values);
+
+  const { handleLoginAuth, user, userId } = useAuthContext();
+  const router = useRouter();
+
+  const [axios, spinner] = useAxios();
+  const [error, setError] = useState(undefined);
+  const param = useSearchParams();
+
+  
+  const handleSubmit = async (values) => {
+    try {
+      const reset = await post(
+        `/user/auth/reset-password/${param.getAll("token")[0]}`,
+        { password: values.password }
+      );
+      if (reset.status == "OK") {
+        router.push("/auth/login");
+      }
+    } catch (error) {
+      const myErr = error?.["message"];
+      setError(JSON.parse(myErr));
+    }
   };
+
+  useEffect(() => {
+    if (userId) {
+      router.push("/dashboard");
+    }
+  }, [userId]);
+
+
+
 
   const formik = useFormik({
     initialValues: {
@@ -54,7 +87,7 @@ const ResetForm = () => {
         </div>
 
         <button
-          className="rizzui-button inline-flex font-medium items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-8 py-2.5 text-base  rounded-md border border-transparent focus-visible:ring-offset-2 bg-gray-900 hover:enabled::bg-gray-800 active:enabled:bg-gray-1000 focus-visible:ring-gray-900/30 text-gray-0 w-full text-white"
+          className="rizzui-button  disabled:bg-gray-400 inline-flex font-medium items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-8 py-2.5 text-base  rounded-md border border-transparent focus-visible:ring-offset-2 bg-gray-900 hover:enabled::bg-gray-800 active:enabled:bg-gray-1000 focus-visible:ring-gray-900/30 text-gray-0 w-full text-white"
           type="submit"
           disabled={!formik.isValid}
         >
@@ -62,6 +95,11 @@ const ResetForm = () => {
       <MdKeyboardArrowRight/>
         </button>
       </div>
+      {error && (
+        <div className={`error text-red-500 font-medium text-sm py-2 ${error["statusCode"]==200 && " text-green-700"} `}>
+          <p className="text-center">{error.message}</p>
+        </div>
+      )}
     </form>
   );
 };
