@@ -23,11 +23,11 @@ const LoginForm = () => {
   });
 
   useEffect(() => {
-    // if (userId) {
-    //   route.push("/dashboard");
-    // }
-    console.log(user, userId,authError);
-  }, [authError]);
+    if (userId) {
+      route.push("/dashboard");
+    }
+  
+  }, [userId]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
