@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Heading from "../heading";
 import Table from "@/components/global/element/Table";
 // import Pagination from '@/components/global/element/pagination';
@@ -7,6 +7,7 @@ import PaginatedList from "@/components/global/element/pagination";
 import TableFilter from "@/components/global/element/tableFilter";
 import Link from "next/link";
 import { FaEye, FaPen, FaTrash } from "react-icons/fa";
+import { get } from "@/lib/http";
 
 const products = [
   {
@@ -734,33 +735,38 @@ const products = [
 const items = Array.from(Array(20).keys()).map((key) => key + 1);
 
 const Categorytable = () => {
+  const [categories, setCategories] = useState([]);
+  const [response, setResponse] = useState({});
+
+  const fetchCategory = async (second) => {
+    const category = await get("/categories");
+    setCategories(category.results);
+    setResponse(category);
+  };
+
   const columns = [
     {
-      title: "Product",
+      title: "IMAGE",
+      dataIndex: "image",
+      key: "image",
+    },
+    {
+      title: "CATEGORY NAME",
       dataIndex: "name",
       key: "name",
+      sorter: (a, b) => a.name - b.name, // Enable sorting for this column
     },
     {
-      title: "SKU",
-      dataIndex: "sku",
-      key: "sku",
+      title: "DESCRIPTION",
+      dataIndex: "descriptions",
+      key: "descriptions",
+      
     },
     {
-      title: "Stock",
-      dataIndex: "stock",
-      key: "stock",
-      sorter: (a, b) => a.stock - b.stock, // Enable sorting for this column
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-      sorter: (a, b) => a.price - b.price, // Enable sorting for this column
-    },
-    {
-      title: "Rating",
-      dataIndex: "rating",
-      key: "rating",
+      title: "SLUG",
+      dataIndex: "slug",
+      key: "slug",
+      sorter: (a, b) => a.slug - b.slug, // Enable sorting for this column
     },
     {
       title: "Status",
@@ -794,12 +800,22 @@ const Categorytable = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
   return (
     <div>
-      <Heading data={undefined} label="Categories" btn={"category"} url={'/dashboard/categories/create'} />
+      <Heading
+        data={undefined}
+        label="Categories"
+        btn={"category"}
+        url={"/dashboard/categories/create"}
+      />
       <div>
         <TableFilter />
-        <Table data={products} tableColumn={columns} />
+        <Table data={categories} tableColumn={columns} />
         <PaginatedList items={items} />
       </div>
     </div>

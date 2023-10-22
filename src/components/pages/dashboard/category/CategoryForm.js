@@ -1,21 +1,30 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TopStepper from "../TopStepper";
 import Heading from "../heading";
 import { useParams } from "next/navigation";
 import { ProductImage, Summery } from "./CategoryElement";
+import { get, post } from "@/lib/http";
 
 
 const CategoryForm = ({ data }) => {
+
+
+  const fetchCategory = async (second) => { 
+    const category = await get('/categories')
+    console.log(category);
+   }
+
   const params = useParams();
   const cateID = params["cateID"];
 
   const [productFormData, setProductFormData] = useState({
     name: "",
     slug: "",
-    productType: "",
+    parent_category: "",
     display_type: "",
     images: [],
+    descriptions:""
   });
 
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -26,9 +35,12 @@ const CategoryForm = ({ data }) => {
     console.log(productFormData);
   };
 
-  const saveProduct = (status) => {
-    const body = { ...productFormData, status: status };
-    console.log(body);
+  const saveProduct = async (status) => {
+    const body = { ...productFormData, status: status,images:selectedFiles };
+  
+    const res= await post('/categories',body)
+    console.log(res);
+    fetchCategory()
   };
 
   const draftForm = (e) => {
@@ -44,6 +56,12 @@ const CategoryForm = ({ data }) => {
     saveProduct("pending");
   };
 
+
+  useEffect(() => {
+    
+  
+    fetchCategory()
+  }, []);
   return (
     <div>
       <Heading
