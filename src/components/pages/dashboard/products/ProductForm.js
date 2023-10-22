@@ -39,27 +39,6 @@ const ProductForm = ({ data }) => {
   });
 
 
-   const initialValues = {
-       title: "Product title",
-    sku: "HG98723867836",
-    productType: "physical",
-    categories: "Fruits",
-    descriptions: "Descriptions",
-    images: [],
-    price: "0.00",
-    costPrice: "0.00",
-    retailPrice: "0.00",
-    salePrice: "0.00",
-    trackInventory: "yes",
-    currentStockLevel: "0",
-    lowStockLevel: "0",
-    gtin: "678ASD",
-    manufacturerPartNumber: "1459894",
-    brandName: "Brand",
-    productUPCEAN: "14572454",
-  };
-
-
 
   const [tags, setTags] = useState([]);
   const [status, setStatus] = useState("Draft");
@@ -84,7 +63,7 @@ const ProductForm = ({ data }) => {
 
 
   const saveProduct = (status) => { 
-   const body={...productFormData,tags:tags,seo_info:seo,status:status}
+   const body={...productFormData,tags:tags,seo_info:seo,status:status,images:selectedFiles}
    console.log(body);
 
    }

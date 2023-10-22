@@ -466,7 +466,7 @@ export const ProductTags = ({ handleChange, tags, setTags }) => {
           <p className="mt-2">Add your product&apos;s tag or category here</p>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 w-[70%]">
-          <div>
+          <div className="flex items-end gap-3">
             <TextField
               label={"Tags"}
               type={"text"}
@@ -478,11 +478,12 @@ export const ProductTags = ({ handleChange, tags, setTags }) => {
               id={undefined}
               icon={undefined}
             />
-          </div>
-          <button type="button" onClick={handleAdd}>
+              <button type="button" className=" text-white inline-flex font-medium items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-4 py-2 text-sm h-10 rounded-md  border-transparent focus-visible:ring-offset-2 bg-gray-900 hover:enabled::bg-gray-800 active:enabled:bg-gray-1000 focus-visible:ring-gray-900/30 text-gray-0 w-max @xl:w-auto h-10 " onClick={handleAdd}>
             {" "}
             Add
           </button>
+          </div>
+        
 
           <div className="col-span-2">
             <p className="error text-red-500 text-xs font-medium my-1">
