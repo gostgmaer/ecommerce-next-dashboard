@@ -790,12 +790,7 @@ const LogsTable = () => {
   ];
   return (
     <div>
-      <Heading
-        data={undefined}
-        label="Logs"
-        btn={undefined}
-        url={undefined}
-      />
+      <Heading data={undefined} label="Logs" btn={undefined} url={undefined} />
       <div>
         <TableFilter />
         <Table data={products} tableColumn={columns} />
