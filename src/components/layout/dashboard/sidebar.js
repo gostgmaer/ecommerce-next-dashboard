@@ -26,47 +26,39 @@ const linkData = [
   {
     text: "Products",
     href: "/dashboard/products",
+    child: [
+
+      {
+        text: "Create Product",
+        href: "/dashboard/products/create",
+      },
+
+    ],
   },
-  {
-    text: "Product Details",
-    href: "/dashboard/products/FC6723757651DB74",
-  },
-  {
-    text: "Create Product",
-    href: "/dashboard/products/create",
-  },
-  {
-    text: "Edit Product",
-    href: "/dashboard/products/FC6723757651DB74/edit",
-  },
+
   {
     text: "Categories",
     href: "/dashboard/categories",
-  },
-  {
-    text: "Create Category",
-    href: "/dashboard/categories/create",
-  },
-  {
-    text: "Edit Category",
-    href: "/dashboard/categories/FC6723757651DB74/edit",
+    child: [
+      {
+        text: "Create Category",
+        href: "/dashboard/categories/create",
+      },
+
+    ],
   },
   {
     text: "Orders",
     href: "/dashboard/orders",
+    child: [
+      {
+        text: "Create Order",
+        href: "/dashboard/orders/create",
+      },
+
+    ],
   },
-  {
-    text: "Order Details",
-    href: "/dashboard/orders/FC6723757651DB74",
-  },
-  {
-    text: "Create Order",
-    href: "/dashboard/orders/create",
-  },
-  {
-    text: "Edit Order",
-    href: "/dashboard/orders/FC6723757651DB74/edit",
-  },
+
   {
     text: "Reviews",
     href: "/dashboard/reviews",
@@ -105,12 +97,14 @@ const Sidebar = () => {
               heading={"E-commerce"}
               data={linkData}
               url={"/dashboard"}
+              state={true}
             ></OpenHover>
             <OpenHover
               icon={<FaDollarSign />}
               heading={"Invoice"}
               data={invoiceData}
               url={"/invoice"}
+              state={false}
             ></OpenHover>
           </div>
         </div>
