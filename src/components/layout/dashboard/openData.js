@@ -84,7 +84,7 @@ const OpenChild = ({ icon, heading, data, state }) => {
           className="rizzui-collapse-root transition-all duration-200"
         >
           <div className="group relative mx-3 flex cursor-pointer items-center justify-between rounded-md px-3 py-2 font-medium lg:my-1 2xl:mx-5 2xl:my-2 text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-700/90 dark:hover:text-gray-700">
-            <span className="flex items-center" onClick={() => setOpen(!open)}>
+            <Link href={data.href} className="flex items-center" onClick={() => setOpen(!open)}>
               <span
                 className="me-2 inline-flex h-5 w-5 items-center justify-center rounded-md [&amp;>svg]:h-[19px] [&amp;>svg]:w-[19px] text-gray-800 dark:text-gray-500 dark:group-hover:text-gray-700"
                 onClick={() => setOpen(!open)}
@@ -92,7 +92,7 @@ const OpenChild = ({ icon, heading, data, state }) => {
                 {<FaDotCircle/>}
               </span>
               {heading}
-            </span>
+            </Link>
 
             <MdKeyboardArrowRight
               onClick={() => setOpen(!open)}
