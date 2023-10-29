@@ -13,6 +13,7 @@ import {
   Summery,
 } from "./ProductElement";
 import { useParams } from "next/navigation";
+import { post } from "@/lib/http";
 
 const ProductForm = ({ data }) => {
   const params = useParams();
@@ -38,8 +39,6 @@ const ProductForm = ({ data }) => {
     productUPCEAN: "14572454",
   });
 
-
-
   const [tags, setTags] = useState([]);
   const [status, setStatus] = useState("Draft");
   const [seo, setSeo] = useState({
@@ -61,25 +60,30 @@ const ProductForm = ({ data }) => {
     console.log(seo);
   };
 
-
-  const saveProduct = (status) => { 
-   const body={...productFormData,tags:tags,seo_info:seo,status:status,images:selectedFiles}
-   console.log(body);
-
-   }
+  const saveProduct = async (status) => {
+    const body = {
+      ...productFormData,
+      tags: tags,
+      seo_info: seo,
+      status: status,
+      images: selectedFiles,
+    };
+    const res = await post("/products", body);
+    console.log(res);
+  };
 
   const draftForm = (e) => {
-    e.preventDefault()
-    saveProduct("draft")
+    e.preventDefault();
+    saveProduct("draft");
     const state = {
-      status:"draft"
-    }
-    }
+      status: "draft",
+    };
+  };
 
   const SubmitForm = (e) => {
-  e.preventDefault()
-  saveProduct("pending")
-  }
+    e.preventDefault();
+    saveProduct("pending");
+  };
 
   return (
     <div>
@@ -87,10 +91,15 @@ const ProductForm = ({ data }) => {
         ishow={false}
         data={undefined}
         label={productID ? "Edit Product" : "Add Product"}
-        btn={"Product"} url={"/dashboard/products/create"}      />
+        btn={"Product"}
+        url={"/dashboard/products/create"}
+      />
       <TopStepper />
       <div>
-        <form className="[&amp;_label.block>span]:font-medium" onSubmit={SubmitForm}>
+        <form
+          className="[&amp;_label.block>span]:font-medium"
+          onSubmit={SubmitForm}
+        >
           <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
             <Summery handleChange={handleChange} data={productFormData} />
             <ProductImage
