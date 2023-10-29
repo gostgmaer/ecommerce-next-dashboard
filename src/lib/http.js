@@ -186,15 +186,15 @@ export const patch = async (endpint, data, id) => {
   return response?.data ? response?.data : error; // or set initial value
 };
 
-export const del = async (endpint, id) => {
+export const del = async (endpoint, id) => {
   const cookiesData = Cookies.get();
   const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
 
   const option = {
     method: "delete",
-    url: baseURL + endpint + `/${id}`,
+    url: baseURL + endpoint + `/${id}`,
     headers: {
-      Authorization: token,
+      Authorization: "Bearer " + token,
     },
     params: {},
     data: {},
