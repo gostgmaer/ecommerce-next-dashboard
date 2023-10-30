@@ -5,6 +5,7 @@ import { useState } from "react";
 import { FaDollarSign } from "react-icons/fa";
 
 export const Summery = ({ handleChange, data }) => {
+  
   return (
     <div className="summary">
       <div className="flex gap-4 p-6 pt-8">

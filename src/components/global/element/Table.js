@@ -12,14 +12,14 @@ const ProductTable = ({ data, tableColumn }) => {
 
   const handleSelect = (record) => {
     const selectedRowKeys = [...selectedRows];
-    if (selectedRowKeys.includes(record.id)) {
-      selectedRowKeys.splice(selectedRowKeys.indexOf(record.id), 1);
+    if (selectedRowKeys.includes(record._id)) {
+      selectedRowKeys.splice(selectedRowKeys.indexOf(record._id), 1);
     } else {
-      selectedRowKeys.push(record.id);
+      selectedRowKeys.push(record._id);
     }
     setSelectedRows(selectedRowKeys);
     setSelectAll(selectedRowKeys.length === data.length);
-    console.log(selectedRows);
+   
   };
 
   const handleSelectAll = () => {
@@ -27,7 +27,7 @@ const ProductTable = ({ data, tableColumn }) => {
       setSelectedRows([]);
       setSelectAll(false);
     } else {
-      const allRowKeys = data.map((record) => record.id);
+      const allRowKeys = data.map((record) => record._id);
       setSelectedRows(allRowKeys);
       setSelectAll(true);
     }
@@ -44,7 +44,7 @@ const ProductTable = ({ data, tableColumn }) => {
         <input
           type="checkbox"
           onChange={() => handleSelect(record)}
-          checked={selectedRows.includes(record.id)}
+          checked={selectedRows.includes(record._id)}
         />
       ),
     },
