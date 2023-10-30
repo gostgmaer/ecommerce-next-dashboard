@@ -4,30 +4,37 @@ import TopStepper from "../TopStepper";
 import Heading from "../heading";
 import { useParams } from "next/navigation";
 import { ProductImage, Summery } from "./CategoryElement";
-import { get, post } from "@/lib/http";
+import { get, getsingle, post } from "@/lib/http";
 
+const CategoryForm = ({}) => {
+  const [data, setData] = useState({});
+  const [productFormData, setProductFormData] = useState({
+    name: data["name"],
+    slug: data["slug"],
+    parent_category: data["parent_category"],
+    display_type: data["display_type"],
+    images: [],
+    descriptions: data["descriptions"],
+  });
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
-const CategoryForm = ({ data }) => {
-
-
-  const fetchCategory = async (second) => { 
-    const category = await get('/categories')
+  const fetchCategory = async (second) => {
+    const category = await get("/categories");
     console.log(category);
-   }
+  };
 
   const params = useParams();
   const cateID = params["cateID"];
 
-  const [productFormData, setProductFormData] = useState({
-    name: "",
-    slug: "",
-    parent_category: "",
-    display_type: "",
-    images: [],
-    descriptions:""
-  });
-
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const fetchSingleCategory = async () => {
+    const response = await getsingle("/categories", cateID);
+    console.log(response);
+    setData(response);
+    setSelectedFiles(response.results.images);
+    setTimeout(() => {
+      console.log(productFormData, data, response);
+    }, 2000);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,11 +43,11 @@ const CategoryForm = ({ data }) => {
   };
 
   const saveProduct = async (status) => {
-    const body = { ...productFormData, status: status,images:selectedFiles };
-  
-    const res= await post('/categories',body)
+    const body = { ...productFormData, status: status, images: selectedFiles };
+
+    const res = await post("/categories", body);
     console.log(res);
-    fetchCategory()
+    fetchCategory();
   };
 
   const draftForm = (e) => {
@@ -56,19 +63,25 @@ const CategoryForm = ({ data }) => {
     saveProduct("pending");
   };
 
+  useEffect(() => {
+    fetchCategory();
+  }, []);
 
   useEffect(() => {
-    
-  
-    fetchCategory()
-  }, []);
+    if (cateID) {
+      fetchSingleCategory();
+    }
+  }, [cateID]);
+
   return (
     <div>
       <Heading
         ishow={false}
         data={undefined}
         label={cateID ? "Edit Category" : "Create A Category"}
-        btn={"Category"} url={'/dashboard/categories/create'}     />
+        btn={"Category"}
+        url={"/dashboard/categories/create"}
+      />
       <TopStepper />
       <div>
         <form
