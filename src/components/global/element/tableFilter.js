@@ -4,13 +4,15 @@ import SearchField from "../fields/SearchFields";
 import { FiFilter } from "react-icons/fi";
 import { MdFilter, MdFilterList } from "react-icons/md";
 
-const TableFilter = () => {
+const TableFilter = ({
+  options = ["", "publish", "pending", "draft"],
+  searchValue,
+  filterkeys,
+}) => {
   const [selectedOption, setSelectedOption] = useState("");
-  const options = ["", "publish", "pending", "draft"];
 
   const handleRadioChange = (e) => {
     setSelectedOption(e.target.value);
-   
   };
   return (
     <div className="">
@@ -41,7 +43,7 @@ const TableFilter = () => {
         <div className="w-full p-2 px-4 gap-2 border-t border-gray-300  flex">
           <div>Show Only: </div>
           <div className=" flex flex-wrap">
-            {options.map((option) => (
+            {options?.map((option) => (
               <label key={option} className="flex items-center space-x-2 mr-4">
                 <input
                   type="radio"

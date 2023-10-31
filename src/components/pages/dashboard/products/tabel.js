@@ -111,7 +111,7 @@ const ProductsPageElement = () => {
         url={"/dashboard/products/create"}
       />
       <div>
-        <TableFilter />
+        <TableFilter searchValue={undefined} filterkeys={undefined} />
         <Table data={products["results"]} tableColumn={columns} />
         <PaginatedList
           length={products["total"]}

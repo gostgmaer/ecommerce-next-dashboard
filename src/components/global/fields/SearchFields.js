@@ -22,17 +22,12 @@ const SearchField = () => {
               placeholder="Search by anything..."
               className="rizzui-input-field w-full  border-0 bg-transparent p-0 focus:outline-none focus:ring-0 [&amp;:placeholder-shown~.input-clear-btn]:opacity-0 [&amp;:placeholder-shown~.input-clear-btn]:invisible [&amp;:not(:placeholder-shown)~.input-clear-btn]:opacity-100 [&amp;:not(:placeholder-shown)~.input-clear-btn]:visible pl-2.5 rtl:pr-2.5"
               type="search"
-              value={searchText }
-              onChange={(e)=>setSearchText(e.target.value)}
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
             />
-            {/* <button
-              type="button"
-              className="rizzui-input-clear-btn input-clear-btn inline-flex shrink-0 transform items-center justify-center rounded-full hover:text-white bg-gray-900/30 backdrop-blur p-[1px] text-gray-0 transition-all duration-200 ease-in-out hover:bg-gray-900 h-4 w-4"
-            >
-              <MdClose />
-            </button> */}
-          </span>
           
+          </span>
+         
         </label>
       </div>
     </div>
