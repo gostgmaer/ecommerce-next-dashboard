@@ -21,6 +21,7 @@ const Categorytable = () => {
     const query = {
       limit: itemsPerPage,
       page: currentPage,
+      filter: JSON.stringify({ status: "", name: "" }),
     };
     const category = await get("/categories", query);
     setCategories(category);
@@ -38,23 +39,18 @@ const Categorytable = () => {
 
   const columns = [
     {
-      title: "IMAGE",
+      title: "Image",
       dataIndex: "image",
       key: "image",
     },
     {
-      title: "CATEGORY NAME",
+      title: "Category Name",
       dataIndex: "name",
       key: "name",
       sorter: (a, b) => a.name - b.name, // Enable sorting for this column
     },
     {
-      title: "DESCRIPTION",
-      dataIndex: "descriptions",
-      key: "descriptions",
-    },
-    {
-      title: "SLUG",
+      title: "Slug",
       dataIndex: "slug",
       key: "slug",
       sorter: (a, b) => a.slug - b.slug, // Enable sorting for this column
@@ -104,7 +100,7 @@ const Categorytable = () => {
         url={"/dashboard/categories/create"}
       />
       <div>
-        <TableFilter />
+        <TableFilter searchValue={undefined} filterkeys={undefined} />
         <Table data={categories["results"]} tableColumn={columns} />
         <PaginatedList
           length={categories["total"]}
