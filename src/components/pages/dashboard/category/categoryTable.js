@@ -8,10 +8,12 @@ import TableFilter from "@/components/global/element/tableFilter";
 import Link from "next/link";
 import { FaEye, FaPen, FaTrash } from "react-icons/fa";
 import { del, get } from "@/lib/http";
+import { useAxios } from "@/lib/interceptors";
 
 const items = Array.from(Array(20).keys()).map((key) => key + 1);
 
 const Categorytable = () => {
+  const [axios, spinner] = useAxios();
   const options = [5, 10, 20, 50];
   const [itemsPerPage, setItemsPerPage] = useState(options[0]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -110,6 +112,7 @@ const Categorytable = () => {
           setCurrentPage={setCurrentPage}
         />
       </div>
+      {spinner}
     </div>
   );
 };
