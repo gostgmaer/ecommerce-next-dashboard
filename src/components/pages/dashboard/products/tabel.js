@@ -9,8 +9,10 @@ import { Menu, Dropdown } from "antd";
 import Link from "next/link";
 import { FaEdit, FaEye, FaPen, FaPenAlt, FaTrash } from "react-icons/fa";
 import { del, get, post } from "@/lib/http";
+import { useAxios } from "@/lib/interceptors";
 
 const ProductsPageElement = () => {
+  const [axios, spinner] = useAxios();
   const options = [5, 10, 20, 50];
   const [products, setProducts] = useState({});
   const [itemsPerPage, setItemsPerPage] = useState(options[0]);
@@ -121,6 +123,7 @@ const ProductsPageElement = () => {
           setCurrentPage={setCurrentPage}
         />
       </div>
+{spinner}
     </div>
   );
 };

@@ -3,9 +3,10 @@ import CategoryForm from "@/components/pages/dashboard/category/CategoryForm";
 import React from "react";
 
 const Page = () => {
+ 
   return (
     <Dashboardlayout>
-      <CategoryForm data={undefined} />
+      <CategoryForm />
     </Dashboardlayout>
   );
 };
