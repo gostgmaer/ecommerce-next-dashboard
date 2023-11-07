@@ -14,38 +14,40 @@ import {
 } from "./ProductElement";
 import { useParams } from "next/navigation";
 import { post } from "@/lib/http";
+import { useAxios } from "@/lib/interceptors";
 
 const ProductForm = ({ data }) => {
+  const [axios, spinner] = useAxios();
   const params = useParams();
   const productID = params["productID"];
 
   const [productFormData, setProductFormData] = useState({
-    title: "Product title",
-    sku: "HG98723867836",
-    productType: "physical",
-    categories: "Fruits",
-    descriptions: "Descriptions",
+    title: "",
+    sku: "",
+    productType: "",
+    categories: "",
+    descriptions: "",
     images: [],
-    price: "0.00",
-    costPrice: "0.00",
-    retailPrice: "0.00",
-    salePrice: "0.00",
-    trackInventory: "yes",
+    price: "0",
+    costPrice: "0",
+    retailPrice: "0",
+    salePrice: "0",
+    trackInventory: "",
     currentStockLevel: "0",
     lowStockLevel: "0",
-    gtin: "678ASD",
-    manufacturerPartNumber: "1459894",
-    brandName: "Brand",
-    productUPCEAN: "14572454",
+    gtin: "",
+    manufacturerPartNumber: "",
+    brandName: "",
+    productUPCEAN: "",
   });
 
   const [tags, setTags] = useState([]);
   const [status, setStatus] = useState("Draft");
   const [seo, setSeo] = useState({
-    pageTitle: "SEO title",
-    metaKeywords: "SEO Meta Keywords",
-    metaDescription: "SEO Meta Description",
-    productURL: "URL",
+    pageTitle: "",
+    metaKeywords: "",
+    metaDescription: "",
+    productURL: "",
   });
   const [selectedFiles, setSelectedFiles] = useState([]);
   const handleChange = (e) => {
@@ -60,7 +62,16 @@ const ProductForm = ({ data }) => {
     console.log(seo);
   };
 
+
+
+
   const saveProduct = async (status) => {
+    var imgArray =[]
+
+    selectedFiles.forEach(item=>{
+      const obj = {url:item.url}
+      imgArray.push(obj)
+    })
     const body = {
       ...productFormData,
       tags: tags,
@@ -69,6 +80,32 @@ const ProductForm = ({ data }) => {
       images: selectedFiles,
     };
     const res = await post("/products", body);
+    if (res.statusCode===201) {
+      setProductFormData({
+        title: "",
+        sku: "",
+        productType: "",
+        categories: "",
+        descriptions: "",
+        images: [],
+        price: "0",
+        costPrice: "0",
+        retailPrice: "0",
+        salePrice: "0",
+        trackInventory: "",
+        currentStockLevel: "0",
+        lowStockLevel: "0",
+        gtin: "",
+        manufacturerPartNumber: "",
+        brandName: "",
+        productUPCEAN: "",
+      })
+      setSeo({ pageTitle: "",
+      metaKeywords: "",
+      metaDescription: "",
+      productURL: "",})
+      setSelectedFiles([])
+    }
     console.log(res);
   };
 
@@ -146,6 +183,7 @@ const ProductForm = ({ data }) => {
         </form>
         {/* <FormElement productID={productID} productFormData={productFormData} setProductFormData={setProductFormData} productFormData={productFormData} setProductFormData={setProductFormData} /> */}
       </div>
+      {spinner}
     </div>
   );
 };

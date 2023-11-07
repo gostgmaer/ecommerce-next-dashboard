@@ -8,14 +8,15 @@ import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 export const config = {
-  apiKey: "AIzaSyB5K2i-ry0abSisdBPu88PrAYlfvU9fsAE",
-  authDomain: "react-resume-builder-497bb.firebaseapp.com",
+  apiKey: "AIzaSyA4YJGuYX1gH2Alg46ELUmFZoSECD8g7ik",
+  authDomain: "development-382105.firebaseapp.com",
+  projectId: "development-382105",
+  storageBucket: "development-382105.appspot.com",
+  messagingSenderId: "234636235499",
+  appId: "1:234636235499:web:8060d54ef9ee9ac0bce4ae",
   databaseURL:
-    "https://react-resume-builder-497bb-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "react-resume-builder-497bb",
-  storageBucket: "react-resume-builder-497bb.appspot.com",
-  messagingSenderId: "544706229003",
-  appId: "1:544706229003:web:6cdb8d4b6c70cf7e36a80e",
+    "https://development-382105-default-rtdb.asia-southeast1.firebasedatabase.app",
+
 };
 
 const app = initializeApp(config);

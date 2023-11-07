@@ -129,7 +129,7 @@ export const Pricing = ({ handleChange, data }) => {
           <div>
             <TextField
               label={"Price"}
-              type={"text"}
+              type={"number"}
               placeholder={"0.00"}
               additionalAttrs={undefined}
               value={data.price}
@@ -142,7 +142,7 @@ export const Pricing = ({ handleChange, data }) => {
           <div>
             <TextField
               label={"Cost Price"}
-              type={"text"}
+              type={"number"}
               placeholder={"0.00"}
               additionalAttrs={undefined}
               value={data.costPrice}
@@ -155,7 +155,7 @@ export const Pricing = ({ handleChange, data }) => {
           <div>
             <TextField
               label={"Retail Price"}
-              type={"text"}
+              type={"number"}
               placeholder={"0.00"}
               additionalAttrs={undefined}
               value={data.retailPrice}
@@ -168,7 +168,7 @@ export const Pricing = ({ handleChange, data }) => {
           <div>
             <TextField
               label={"Sale Price"}
-              type={"text"}
+              type={"number"}
               placeholder={"0.00"}
               additionalAttrs={undefined}
               value={data.salePrice}
@@ -227,7 +227,7 @@ export const Invantory = ({ handleChange, data }) => {
               value={data.currentStockLevel}
               onChange={handleChange}
               classes={undefined}
-              icon={<FaDollarSign />}
+              icon={undefined}
               id={"currentStockLevel"}
             />
           </div>
@@ -241,7 +241,7 @@ export const Invantory = ({ handleChange, data }) => {
               value={data.lowStockLevel}
               onChange={handleChange}
               classes={undefined}
-              icon={<FaDollarSign />}
+              icon={undefined}
               id={"lowStockLevel"}
             />
           </div>

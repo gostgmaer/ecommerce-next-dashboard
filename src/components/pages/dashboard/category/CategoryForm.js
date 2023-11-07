@@ -5,8 +5,11 @@ import Heading from "../heading";
 import { useParams } from "next/navigation";
 import { ProductImage, Summery } from "./CategoryElement";
 import { get, getsingle, post } from "@/lib/http";
+import { useAxios } from "@/lib/interceptors";
 
 const CategoryForm = ({}) => {
+  const [axios, spinner] = useAxios();
+
   const [data, setData] = useState({});
   const [productFormData, setProductFormData] = useState({
     name: data["name"],
@@ -47,6 +50,17 @@ const CategoryForm = ({}) => {
 
     const res = await post("/categories", body);
     console.log(res);
+    if (res) {
+      setProductFormData({
+        name: "",
+        slug: "",
+        parent_category: "",
+        display_type: "",
+        images: [],
+        descriptions: "",
+      });
+      setSelectedFiles([]);
+    }
     fetchCategory();
   };
 
@@ -122,6 +136,7 @@ const CategoryForm = ({}) => {
         </form>
         {/* <FormElement productID={productID} productFormData={productFormData} setProductFormData={setProductFormData} productFormData={productFormData} setProductFormData={setProductFormData} /> */}
       </div>
+      {spinner}
     </div>
   );
 };
