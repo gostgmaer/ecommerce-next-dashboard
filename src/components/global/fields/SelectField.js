@@ -1,12 +1,12 @@
 // components/SelectField.js
 import React from "react";
 
-const SelectField = ({ options, value, onChange, id, label, placeholder }) => {
+const SelectField = ({ options, value, onChange, id, datakey,label, placeholder,heading }) => {
   return (
     <div className="">
       {label && (
         <label htmlFor={id} className=" block text-sm mb-1.5">
-          {label}
+          {heading}
         </label>
       )}
       <select
@@ -20,11 +20,11 @@ const SelectField = ({ options, value, onChange, id, label, placeholder }) => {
         <option value="" className="text-gray-400">{placeholder ? placeholder : "Select"}</option>
         {options.map((option) => (
           <option
-            key={option.value}
-            value={option.value}
+            key={option[datakey]}
+            value={option[datakey]}
             className=" capitalize"
           >
-            {option.label}
+            {option[label]}
           </option>
         ))}
       </select>
