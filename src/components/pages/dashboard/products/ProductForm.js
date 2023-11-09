@@ -17,6 +17,7 @@ import { post } from "@/lib/http";
 import { useAxios } from "@/lib/interceptors";
 
 const ProductForm = ({ data }) => {
+  console.log(data);
   const [axios, spinner] = useAxios();
   const params = useParams();
   const productID = params["productID"];
@@ -27,6 +28,7 @@ const ProductForm = ({ data }) => {
     productType: "",
     categories: "",
     descriptions: "",
+    slug:"",
     images: [],
     price: "0",
     costPrice: "0",
@@ -85,6 +87,7 @@ const ProductForm = ({ data }) => {
         title: "",
         sku: "",
         productType: "",
+        slug:"",
         categories: "",
         descriptions: "",
         images: [],
@@ -138,7 +141,7 @@ const ProductForm = ({ data }) => {
           onSubmit={SubmitForm}
         >
           <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
-            <Summery handleChange={handleChange} data={productFormData} />
+            <Summery handleChange={handleChange} data={productFormData} category={data} />
             <ProductImage
               selectedFiles={selectedFiles}
               setSelectedFiles={setSelectedFiles}
