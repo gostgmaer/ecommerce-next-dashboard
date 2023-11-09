@@ -64,7 +64,7 @@ const OpenHover = ({ icon, heading, data, url, state }) => {
 export default OpenHover;
 
 const OpenChild = ({ icon, heading, data, state }) => {
-  console.log(data);
+
   const [open, setOpen] = useState(state);
   return (
     <div className=" pl-3">
