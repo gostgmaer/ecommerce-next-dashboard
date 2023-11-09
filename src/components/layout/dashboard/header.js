@@ -126,12 +126,12 @@ const Header = () => {
           <MdSettings />
         </button>
 
-        <Popover className="relative bg-white">
+        <Popover className="relative bg-white rounded-full">
           <Popover.Button className="hover:border-none active:border-none focus-visible:border-none focus-visible:outline-none">
             <img
               src={user?.profilePicture}
               alt={user?.username}
-              title="Albert Flores"
+              title={user?.username}
               draggable="false"
               loading="lazy"
               width="40"
