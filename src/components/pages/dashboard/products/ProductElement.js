@@ -4,7 +4,7 @@ import MultiImageUploadr from "@/components/global/fields/multiImageUploadr";
 import { useState } from "react";
 import { FaDollarSign } from "react-icons/fa";
 
-export const Summery = ({ handleChange, data }) => {
+export const Summery = ({ handleChange, data, category,slug,handleSlug }) => {
   return (
     <div className="summary">
       <div className="flex gap-4 p-6 pt-8">
@@ -15,7 +15,6 @@ export const Summery = ({ handleChange, data }) => {
           </p>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 w-[70%]">
-    
           <div>
             <TextField
               label={"Title"}
@@ -50,25 +49,36 @@ export const Summery = ({ handleChange, data }) => {
               ]}
               value={data.productType}
               onChange={handleChange}
-            
               id={"productType"}
-              label={"Product Type"}
+              label={"label"}
               placeholder={undefined}
+              heading={"Product Type"}
+              datakey={"value"}
             />
           </div>
           <div>
             <SelectField
-              options={[
-                { id: 1, label: "Fruits", value: "Fruits" },
-                { id: 2, label: "Grocery", value: "Grocery" },
-                { id: 3, label: "Meat", value: "Meat" },
-                { id: 4, label: "Cat Food", value: "Cat Food" },
-              ]}
+              options={category.results}
               value={data.categories}
               onChange={handleChange}
               id={"categories"}
-              label={"Categories"}
+              label={"name"}
               placeholder={undefined}
+              heading={"Categories"}
+              datakey={"name"}
+            />
+          </div>
+          <div>
+            <TextField
+              label={"Slug"}
+              type={"text"}
+              placeholder={"product-slug"}
+              additionalAttrs={{ required: true }}
+              value={slug}
+              onChange={handleSlug}
+              classes={undefined}
+              icon={undefined}
+              id={"slug"}
             />
           </div>
           <div className=" col-span-2">
@@ -188,7 +198,6 @@ export const Invantory = ({ handleChange, data }) => {
   const options = [
     { label: "Track inventory for this product", value: "yes" },
     { label: "Do not track inventory for this product", value: "no" },
-    { label: "Track inventory by options", value: "by-options" },
   ];
 
   return (
@@ -478,12 +487,15 @@ export const ProductTags = ({ handleChange, tags, setTags }) => {
               id={undefined}
               icon={undefined}
             />
-              <button type="button" className=" text-white inline-flex font-medium items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-4 py-2 text-sm h-10 rounded-md  border-transparent focus-visible:ring-offset-2 bg-gray-900 hover:enabled::bg-gray-800 active:enabled:bg-gray-1000 focus-visible:ring-gray-900/30 text-gray-0 w-max @xl:w-auto h-10 " onClick={handleAdd}>
-            {" "}
-            Add
-          </button>
+            <button
+              type="button"
+              className=" text-white inline-flex font-medium items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-4 py-2 text-sm h-10 rounded-md  border-transparent focus-visible:ring-offset-2 bg-gray-900 hover:enabled::bg-gray-800 active:enabled:bg-gray-1000 focus-visible:ring-gray-900/30 text-gray-0 w-max @xl:w-auto h-10 "
+              onClick={handleAdd}
+            >
+              {" "}
+              Add
+            </button>
           </div>
-        
 
           <div className="col-span-2">
             <p className="error text-red-500 text-xs font-medium my-1">
