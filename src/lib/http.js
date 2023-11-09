@@ -169,7 +169,7 @@ export const patch = async (endpint, data, id) => {
     method: "patch",
     url: baseURL + endpint + `/${id}`,
     headers: {
-      Authorization: token,
+      Authorization: "Bearer " + token,
     },
     params: {},
     data: data,
