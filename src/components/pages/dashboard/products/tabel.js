@@ -7,8 +7,15 @@ import PaginatedList from "@/components/global/element/pagination";
 import TableFilter from "@/components/global/element/tableFilter";
 import { Menu, Dropdown } from "antd";
 import Link from "next/link";
-import { FaEdit, FaEye, FaPen, FaPenAlt, FaTrash } from "react-icons/fa";
-import { del, get, post } from "@/lib/http";
+import {
+  FaCheck,
+  FaEdit,
+  FaEye,
+  FaPen,
+  FaPenAlt,
+  FaTrash,
+} from "react-icons/fa";
+import { del, get, patch, post } from "@/lib/http";
 import { useAxios } from "@/lib/interceptors";
 
 const ProductsPageElement = () => {
@@ -35,11 +42,14 @@ const ProductsPageElement = () => {
   }, [itemsPerPage, currentPage]);
 
   const DeleteProduct = async (id) => {
-    console.log(id);
     const res = await del("/products", id);
     res.statusCode == 200 && loadProducts();
   };
 
+  const updateRecord = async (id) => {
+    const res = await patch("/products", { status: "publish" }, id);
+    res.statusCode == 200 && loadProducts();
+  };
   const columns = [
     {
       title: "Product",
@@ -94,6 +104,15 @@ const ProductsPageElement = () => {
             </button>
           </Link>
           <button
+            onClick={() => updateRecord(item._id)}
+            className={`rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700 ${
+              item.status === "publish" &&
+              " text-green-400 hover:!border-green-600 border-green-400 hover:text-green-600"
+            }`}
+          >
+            <FaCheck />
+          </button>
+          <button
             onClick={() => DeleteProduct(item._id)}
             className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700"
           >
@@ -123,7 +142,9 @@ const ProductsPageElement = () => {
           setCurrentPage={setCurrentPage}
         />
       </div>
-{spinner}
+      {spinner}
+
+      
     </div>
   );
 };

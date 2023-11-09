@@ -4,9 +4,7 @@ import MultiImageUploadr from "@/components/global/fields/multiImageUploadr";
 import { useState } from "react";
 import { FaDollarSign } from "react-icons/fa";
 
-export const Summery = ({ handleChange, data, category }) => {
-  console.log(category);
-
+export const Summery = ({ handleChange, data, category,slug,handleSlug }) => {
   return (
     <div className="summary">
       <div className="flex gap-4 p-6 pt-8">
@@ -76,8 +74,8 @@ export const Summery = ({ handleChange, data, category }) => {
               type={"text"}
               placeholder={"product-slug"}
               additionalAttrs={{ required: true }}
-              value={data.slug}
-              onChange={handleChange}
+              value={slug}
+              onChange={handleSlug}
               classes={undefined}
               icon={undefined}
               id={"slug"}
@@ -200,7 +198,6 @@ export const Invantory = ({ handleChange, data }) => {
   const options = [
     { label: "Track inventory for this product", value: "yes" },
     { label: "Do not track inventory for this product", value: "no" },
-    { label: "Track inventory by options", value: "by-options" },
   ];
 
   return (
