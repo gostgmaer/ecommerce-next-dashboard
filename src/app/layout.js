@@ -20,12 +20,12 @@ export default function RootLayout({ children }) {
         <html lang="en">
           <body className={inter.className} suppressHydrationWarning={true}>
             <Suspense fallback=<Spinner></Spinner>>
-            <NextTopLoader/>
+              <NextTopLoader />
               <main className="bg-light w-full min-h-screen text-dark">
                 {children}
               </main>
             </Suspense>
-            <ToastContainer/>
+            <ToastContainer />
           </body>
         </html>
       </AuthContextProvider>
