@@ -6,20 +6,26 @@ import { MdFilter, MdFilterList } from "react-icons/md";
 
 const TableFilter = ({
   options = ["", "publish", "pending", "draft"],
-  searchValue,
-  filterkeys,
+  searchKey,
+  setSearchKey,
+  status,
+  setStatus,
+  searchEvent,
 }) => {
-  const [selectedOption, setSelectedOption] = useState("");
-
   const handleRadioChange = (e) => {
-    setSelectedOption(e.target.value);
+    setStatus(e.target.value);
+    searchEvent(e.target.value);
   };
   return (
     <div className="">
       <div className="mt-4 bg-gray-200 rounded shadow-sm border-gray-200 border  rounded-b-none">
         <div className="w-full  p-4  flex">
           <div className="flex-1">
-            <SearchField />
+            <SearchField
+              searchText={searchKey}
+              clickEvent={searchEvent}
+              setSearchText={setSearchKey}
+            />
           </div>
           <div className="ms-4 flex flex-shrink-0 items-center">
             <button
@@ -49,7 +55,7 @@ const TableFilter = ({
                   type="radio"
                   name="options"
                   value={option}
-                  checked={selectedOption === option}
+                  checked={status === option}
                   onChange={handleRadioChange}
                   className="form-radio text-gray-600 border-gray-600 capitalize"
                 />

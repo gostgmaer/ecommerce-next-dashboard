@@ -5,6 +5,7 @@ import NextTopLoader from "nextjs-toploader";
 import { AuthContextProvider } from "@/context/authContext";
 import { Suspense } from "react";
 import Spinner from "@/components/global/element/loader/Spinner";
+import { ToastContainer } from "react-toastify";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
                 {children}
               </main>
             </Suspense>
+            <ToastContainer/>
           </body>
         </html>
       </AuthContextProvider>

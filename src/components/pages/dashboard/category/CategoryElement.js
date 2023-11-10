@@ -4,7 +4,7 @@ import MultiImageUploadr from "@/components/global/fields/multiImageUploadr";
 import { useState } from "react";
 import { FaDollarSign } from "react-icons/fa";
 
-export const Summery = ({ handleChange, data }) => {
+export const Summery = ({ handleChange, data,category,slug,handleSlug }) => {
   
   return (
     <div className="summary">
@@ -35,8 +35,8 @@ export const Summery = ({ handleChange, data }) => {
               type={"text"}
               placeholder={"Category Slug"}
               additionalAttrs={undefined}
-              value={data.slug}
-              onChange={handleChange}
+              value={slug}
+              onChange={handleSlug}
               classes={undefined}
               icon={undefined}
               id={"slug"}
@@ -44,18 +44,12 @@ export const Summery = ({ handleChange, data }) => {
           </div>
           <div>
             <SelectField
-              options={[
-                { id: 1, label: "Fruits", value: "Fruits" },
-                { id: 2, label: "Grocery", value: "Grocery" },
-                { id: 3, label: "Meat", value: "Meat" },
-                { id: 4, label: "Cat Food", value: "Cat Food" },
-              ]}
-              value={data.productType}
+              options={category}
+              value={data.parent_category}
               onChange={handleChange}
-              id={"productType"}
-              label={"Parent Category"}
-              placeholder={undefined}
-            />
+              id={"parent_category"}
+              label={"name"}
+              placeholder={undefined} datakey={"name"} heading={"Parent Category"}            />
           </div>
           <div>
             <SelectField
@@ -67,9 +61,8 @@ export const Summery = ({ handleChange, data }) => {
               value={data.display_type}
               onChange={handleChange}
               id={"display_type"}
-              label={"Display Type"}
-              placeholder={undefined}
-            />
+              label={"label"}
+              placeholder={undefined} datakey={"value"} heading={"Display Type  "}            />
           </div>
           <div className=" col-span-2">
             <div className=" flex flex-col">

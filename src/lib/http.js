@@ -11,7 +11,6 @@ const baseURL = process.env.NEXT_PUBLIC_BASE_URL; // Replace with your Firebase 
 
 export const get = async (endpint, query, id) => {
   const cookiesData = Cookies.get();
-  console.log(cookiesData);
   const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
   // const session = cookies["session"];
   let reqUrl = undefined;
