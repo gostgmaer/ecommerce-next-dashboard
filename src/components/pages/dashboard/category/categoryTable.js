@@ -18,12 +18,15 @@ const Categorytable = () => {
   const [itemsPerPage, setItemsPerPage] = useState(options[0]);
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState([]);
+  const [searchKey, setSearchKey] = useState("");
+  const [status, setStatus] = useState("");
 
-  const fetchCategory = async (second) => {
+  const fetchCategory = async (statuskey) => {
     const query = {
       limit: itemsPerPage,
       page: currentPage,
-      filter: JSON.stringify({ status: "", name: "" }),
+      filter: JSON.stringify({ status: statuskey}),
+      search: JSON.stringify({ name: searchKey }),
     };
     const category = await get("/categories", query);
     setCategories(category);
@@ -119,7 +122,11 @@ const Categorytable = () => {
         url={"/dashboard/categories/create"}
       />
       <div>
-        <TableFilter searchValue={undefined} filterkeys={undefined} />
+        <TableFilter
+          searchKey={searchKey}
+          setSearchKey={setSearchKey}
+          status={status}
+          setStatus={setStatus} searchEvent={fetchCategory}        />
         <Table data={categories["results"]} tableColumn={columns} />
         <PaginatedList
           length={categories["total"]}

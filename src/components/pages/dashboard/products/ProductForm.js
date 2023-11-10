@@ -23,7 +23,7 @@ const ProductForm = ({ data }) => {
   const productID = params["productID"];
   const [currData, setCurrData] = useState({});
   const [productFormData, setProductFormData] = useState({
-    title: currData?.["results"]?.["title"],
+    title: "",
     sku: "",
     productType: "",
     categories: "",
