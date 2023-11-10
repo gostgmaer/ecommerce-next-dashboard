@@ -2,56 +2,79 @@
 import React, { useEffect, useState } from "react";
 import TopStepper from "../TopStepper";
 import Heading from "../heading";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { ProductImage, Summery } from "./CategoryElement";
-import { get, getsingle, post } from "@/lib/http";
+import { get, getsingle, patch, post } from "@/lib/http";
 import { useAxios } from "@/lib/interceptors";
+import { notifySuccess } from "@/lib/notify/notice";
 
 const CategoryForm = ({}) => {
   const [axios, spinner] = useAxios();
-
+  const params = useParams();
+  const router = useRouter();
+  const cateID = params["cateID"];
+  const [category, setCategory] = useState({});
   const [data, setData] = useState({});
-  const [productFormData, setProductFormData] = useState({
-    name: data["name"],
-    slug: data["slug"],
-    parent_category: data["parent_category"],
-    display_type: data["display_type"],
+  const [categoryForm, setCategoryForm] = useState({
+    name: "",
+    slug: "",
+    parent_category: "",
+    display_type: "",
     images: [],
-    descriptions: data["descriptions"],
+    descriptions: "",
   });
   const [selectedFiles, setSelectedFiles] = useState([]);
-
+  const [slug, setSlug] = useState("");
   const fetchCategory = async (second) => {
-    const category = await get("/categories");
-    console.log(category);
+    const response = await get("/categories");
+    setCategory(response);
   };
-
-  const params = useParams();
-  const cateID = params["cateID"];
 
   const fetchSingleCategory = async () => {
     const response = await getsingle("/categories", cateID);
-    console.log(response);
+    setCategoryForm({
+      name: response?.["results"]?.["name"],
+      slug: response?.["results"]?.["slug"],
+      parent_category: response?.["results"]?.["parent_category"],
+      display_type: response?.["results"]?.["display_type"],
+      images: response?.["results"]?.["images"],
+      descriptions: response?.["results"]?.["descriptions"],
+    });
+    setSlug(response?.["results"]?.["slug"])
     setData(response);
     setSelectedFiles(response.results.images);
-    setTimeout(() => {
-      console.log(productFormData, data, response);
-    }, 2000);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProductFormData({ ...productFormData, [name]: value });
-    console.log(productFormData);
+    setCategoryForm({ ...categoryForm, [name]: value });
+    if (name === "name") {
+      setSlug(value);
+    }
+  };
+  const haldleChangeSlug = (e) => {
+    setSlug(e.target.value);
   };
 
-  const saveProduct = async (status) => {
-    const body = { ...productFormData, status: status, images: selectedFiles };
+  const generateCategoryBody = () => {
+    const body = {
+      ...categoryForm,
+      images: selectedFiles,
+      slug: slug
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/-$/, ""),
+    };
 
-    const res = await post("/categories", body);
-    console.log(res);
-    if (res) {
-      setProductFormData({
+    return body;
+  };
+
+  const updateCategory = async (status) => {
+    const body = generateCategoryBody();
+
+    const res = await patch("/categories", { ...body, status: status }, cateID);
+    if (res.statusCode === 200) {
+      setCategoryForm({
         name: "",
         slug: "",
         parent_category: "",
@@ -60,13 +83,35 @@ const CategoryForm = ({}) => {
         descriptions: "",
       });
       setSelectedFiles([]);
+      setSlug("");
+      notifySuccess(res.message, 3000);
+      router.push("/dashboard/categories");
     }
-    fetchCategory();
   };
 
+  const saveCategory = async (status) => {
+    const body = generateCategoryBody();
+
+    const res = await post("/categories", { ...body, status: status });
+
+    if (res.statusCode === 201) {
+      setCategoryForm({
+        name: "",
+        slug: "",
+        parent_category: "",
+        display_type: "",
+        images: [],
+        descriptions: "",
+      });
+      setSelectedFiles([]);
+      setSlug("");
+      notifySuccess(res.message, 3000);
+      router.push("/dashboard/categories");
+    }
+  };
   const draftForm = (e) => {
     e.preventDefault();
-    saveProduct("draft");
+    saveCategory("draft");
     const state = {
       status: "draft",
     };
@@ -74,7 +119,11 @@ const CategoryForm = ({}) => {
 
   const SubmitForm = (e) => {
     e.preventDefault();
-    saveProduct("pending");
+    if (cateID) {
+      updateCategory(data["results"]["status"]);
+    } else {
+      saveCategory("pending");
+    }
   };
 
   useEffect(() => {
@@ -103,7 +152,13 @@ const CategoryForm = ({}) => {
           onSubmit={SubmitForm}
         >
           <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
-            <Summery handleChange={handleChange} data={productFormData} />
+            <Summery
+              handleChange={handleChange}
+              data={categoryForm}
+              category={category?.["results"]}
+              slug={slug}
+              handleSlug={haldleChangeSlug}
+            />
             <ProductImage
               selectedFiles={selectedFiles}
               setSelectedFiles={setSelectedFiles}
