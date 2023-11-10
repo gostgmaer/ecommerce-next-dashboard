@@ -18,7 +18,7 @@ const SelectField = ({ options, value, onChange, id, datakey,label, placeholder,
         className="block w-full placeholder:text-gray-600 px-2 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
       >
         <option value="" className="text-gray-400">{placeholder ? placeholder : "Select"}</option>
-        {options.map((option) => (
+        {options?.map((option) => (
           <option
             key={option[datakey]}
             value={option[datakey]}

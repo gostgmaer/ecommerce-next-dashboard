@@ -22,13 +22,17 @@ const ProductsPageElement = () => {
   const [axios, spinner] = useAxios();
   const options = [5, 10, 20, 50];
   const [products, setProducts] = useState({});
-  const [itemsPerPage, setItemsPerPage] = useState(options[0]);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchKey, setSearchKey] = useState("");
+  const [status, setStatus] = useState("");
 
-  const loadProducts = async (options) => {
+  const loadProducts = async (statuskey) => {
     const query = {
       limit: itemsPerPage,
       page: currentPage,
+      filter: JSON.stringify({ status: statuskey}),
+      search: JSON.stringify({ name: searchKey }),
     };
     const response = await get("/products", query);
     setProducts(response);
@@ -38,7 +42,7 @@ const ProductsPageElement = () => {
   //  const items = Array.from(Array(20).keys()).map((key) => key + 1);
 
   useEffect(() => {
-    loadProducts();
+    loadProducts(status);
   }, [itemsPerPage, currentPage]);
 
   const DeleteProduct = async (id) => {
@@ -132,7 +136,13 @@ const ProductsPageElement = () => {
         url={"/dashboard/products/create"}
       />
       <div>
-        <TableFilter searchValue={undefined} filterkeys={undefined} />
+        <TableFilter
+          searchKey={searchKey}
+          setSearchKey={setSearchKey}
+          status={status}
+          setStatus={setStatus}
+          searchEvent={loadProducts}
+        />
         <Table data={products["results"]} tableColumn={columns} />
         <PaginatedList
           length={products["total"]}
@@ -143,8 +153,6 @@ const ProductsPageElement = () => {
         />
       </div>
       {spinner}
-
-      
     </div>
   );
 };
