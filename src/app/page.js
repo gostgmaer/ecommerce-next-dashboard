@@ -1,8 +1,10 @@
+import RichTextEditor from "@/components/global/fields/textEditor";
 import Image from "next/image";
 import Link from "next/link";
 import { Fa500Px, FaBars, FaCheck } from "react-icons/fa";
 
 export default function Home() {
+
   return (
     <div className="bg-white text-black">
       <div className="w-full py-10 ">
@@ -257,6 +259,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+     
+
       <div className="flex items-center justify-center w-full h-screen bg-blue-600">
         <div className="relative flex flex-col px-5 mx-auto space-y-5 md:w-3/4">
           <div className="flex flex-col space-y-3 text-white">
