@@ -3,10 +3,12 @@ import LoginForm from "@/components/pages/auth/forms/login";
 import Link from "next/link";
 import PublicLayout from "@/components/layout/public/publicLayout";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
+import { useSession, signIn, signOut } from "next-auth/react"
 
 const Index = () => {
   return (
-    <PublicLayout>
+    <>
+      <PublicLayout>
       <div className="flex w-full flex-col justify-center px-5">
         <div className="mx-auto w-full max-w-md py-12 md:max-w-lg lg:max-w-xl 2xl:pb-8 2xl:pt-2">
           <div className="flex flex-col items-center">
@@ -58,8 +60,12 @@ const Index = () => {
             </Link>
           </p>
         </div>
+       
       </div>
     </PublicLayout>
+       {/* <button onClick={() => signIn()}>Sign in</button> */}
+    </>
+  
   );
 };
 

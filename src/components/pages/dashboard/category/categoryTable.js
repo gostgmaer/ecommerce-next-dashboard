@@ -9,9 +9,20 @@ import Link from "next/link";
 import { FaCheck, FaEye, FaPen, FaTrash } from "react-icons/fa";
 import { del, get, patch } from "@/lib/http";
 import { useAxios } from "@/lib/interceptors";
+import "react-data-grid/lib/styles.css";
+
+import DataGrid from "react-data-grid";
 
 const items = Array.from(Array(20).keys()).map((key) => key + 1);
+const columns = [
+  { key: "id", name: "ID" },
+  { key: "title", name: "Title" },
+];
 
+const rows = [
+  { id: 0, title: "Example" },
+  { id: 1, title: "Demo" },
+];
 const Categorytable = () => {
   const [axios, spinner] = useAxios();
   const options = [5, 10, 20, 50];
@@ -25,7 +36,7 @@ const Categorytable = () => {
     const query = {
       limit: itemsPerPage,
       page: currentPage,
-      filter: JSON.stringify({ status: statuskey}),
+      filter: JSON.stringify({ status: statuskey }),
       search: JSON.stringify({ name: searchKey }),
     };
     const category = await get("/categories", query);
@@ -70,7 +81,7 @@ const Categorytable = () => {
           <div>Status</div>
         </div>
       ),
-      dataIndex: "status",
+      dataIndex: <div>status</div>,
       key: "status",
     },
     {
@@ -126,7 +137,9 @@ const Categorytable = () => {
           searchKey={searchKey}
           setSearchKey={setSearchKey}
           status={status}
-          setStatus={setStatus} searchEvent={fetchCategory}        />
+          setStatus={setStatus}
+          searchEvent={fetchCategory}
+        />
         <Table data={categories["results"]} tableColumn={columns} />
         <PaginatedList
           length={categories["total"]}
@@ -135,6 +148,8 @@ const Categorytable = () => {
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
+
+        
       </div>
       {spinner}
     </div>
