@@ -68,8 +68,8 @@ const Categorytable = () => {
           width={50}
           height={50}
           className=" rounded-2xl"
-          src={images[0].url}
-          alt={images[0].name}
+          src={images[0]?.url}
+          alt={images[0]?.name}
           style={{ maxWidth: "100px" }}
         />
       ),
