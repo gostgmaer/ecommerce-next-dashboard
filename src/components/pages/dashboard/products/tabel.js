@@ -152,7 +152,7 @@ const ProductsPageElement = () => {
           setCurrentPage={setCurrentPage}
         />
       </div>
-      {spinner}
+    {spinner}
     </div>
   );
 };
