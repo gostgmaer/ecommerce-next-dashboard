@@ -65,7 +65,7 @@ export const Summery = ({ handleChange, data, category,slug,handleSlug }) => {
               label={"name"}
               placeholder={undefined}
               heading={"Categories"}
-              datakey={"name"}
+              datakey={"_id"}
             />
           </div>
           <div>

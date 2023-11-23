@@ -17,6 +17,7 @@ import {
 } from "react-icons/fa";
 import { del, get, patch, post } from "@/lib/http";
 import { useAxios } from "@/lib/interceptors";
+import Image from "next/image";
 
 const ProductsPageElement = () => {
   const [axios, spinner] = useAxios();
@@ -31,7 +32,7 @@ const ProductsPageElement = () => {
     const query = {
       limit: itemsPerPage,
       page: currentPage,
-      filter: JSON.stringify({ status: statuskey}),
+      filter: JSON.stringify({ status: statuskey }),
       search: JSON.stringify({ name: searchKey }),
     };
     const response = await get("/products", query);
@@ -59,6 +60,19 @@ const ProductsPageElement = () => {
       title: "Product",
       dataIndex: "title",
       key: "title",
+      render: (text, record) => (
+        <div className=" flex gap-1 items-center justify-start">
+          <Image
+            width={50}
+            height={50}
+            className=" rounded-2xl"
+            src={record.images[0].url}
+            alt={record.images[0].name}
+            style={{ maxWidth: "100px" }}
+          />
+          <p>{record.title}</p>
+        </div>
+      ),
     },
     {
       title: "SKU",
@@ -78,9 +92,19 @@ const ProductsPageElement = () => {
       sorter: (a, b) => a.price - b.price, // Enable sorting for this column
     },
     {
+      title: "Total Review",
+      dataIndex: "totalReviews",
+      key: "totalReviews",
+    },
+    {
       title: "Rating",
       dataIndex: "averageRating",
       key: "averageRating",
+      render: (text, record) => (
+        <div className=" flex gap-1 items-center justify-start">
+          <p>{record.averageRating?.toFixed(1)}</p>
+        </div>
+      ),
     },
     {
       title: "Status",

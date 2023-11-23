@@ -10,6 +10,7 @@ import { FaCheck, FaEye, FaPen, FaTrash } from "react-icons/fa";
 import { del, get, patch } from "@/lib/http";
 import { useAxios } from "@/lib/interceptors";
 import "react-data-grid/lib/styles.css";
+import Image from "next/image";
 
 import DataGrid from "react-data-grid";
 
@@ -60,8 +61,18 @@ const Categorytable = () => {
   const columns = [
     {
       title: "Image",
-      dataIndex: "image",
-      key: "image",
+      dataIndex: "images",
+      key: "images",
+      render: (images) => (
+        <Image
+          width={50}
+          height={50}
+          className=" rounded-2xl"
+          src={images[0]?.url}
+          alt={images[0]?.name}
+          style={{ maxWidth: "100px" }}
+        />
+      ),
     },
     {
       title: "Category Name",
@@ -81,8 +92,17 @@ const Categorytable = () => {
           <div>Status</div>
         </div>
       ),
-      dataIndex: <div>status</div>,
+      dataIndex: "status",
       key: "status",
+    },
+    {
+      title: (
+        <div className="flex items-center gap-1">
+          <div>Total</div>
+        </div>
+      ),
+      dataIndex: "total",
+      key: "total",
     },
     {
       title: (
@@ -148,8 +168,6 @@ const Categorytable = () => {
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
-
-        
       </div>
       {spinner}
     </div>
