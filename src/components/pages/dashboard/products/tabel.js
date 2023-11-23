@@ -102,7 +102,7 @@ const ProductsPageElement = () => {
       key: "averageRating",
       render: (text, record) => (
         <div className=" flex gap-1 items-center justify-start">
-          <p>{record.averageRating.toFixed(1)}</p>
+          <p>{record.averageRating?.toFixed(1)}</p>
         </div>
       ),
     },
