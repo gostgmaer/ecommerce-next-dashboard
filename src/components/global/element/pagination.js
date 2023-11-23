@@ -56,36 +56,29 @@ const PaginatedList = ({
           <span className="font-semibold text-gray-900 ">{totalItems}</span>
         </p>
 
-        <ul className="inline-flex items-stretch -space-x-px">
-          <li
-            className={`flex items-center justify-center cursor-pointer w-max h-10 py-3 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${
+        <div className="inline-flex items-stretch -space-x-px">
+          <button
+            className={`flex items-center justify-center cursor-pointer w-max h-10 py-2 px-3 ml-0 border rounded-2xl bg-gray-700 text-white hover:bg-gray-900 disabled:bg-gray-400 ${
               currentPage === 1 ? "pointer-events-none" : ""
             }`}
             onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
           >
             <span className="sr-only">Previous</span>
             <MdKeyboardArrowLeft /> Previous
-          </li>
+          </button>
 
-          {/* {totalPages&&Array.from(Array(totalPages).keys()).map((item, index) => (
-            <li
-              key={index}
-              className="flex w-10 h-10 items-center cursor-pointer justify-center text-sm py-3 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              <span>{item}</span>
-            </li>
-          ))} */}
-
-          <li
-            className={`flex items-center justify-center w-max h-10 cursor-pointer py-3 px-3 leading-tight text-gray-500 bg-white border rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${
+          <button
+            className={`flex items-center justify-center w-max h-10  cursor-pointer py-2 px-3 border rounded-2xl bg-gray-700 text-white hover:bg-gray-900 disabled:bg-gray-400 ${
               currentPage === totalPages ? "pointer-events-none" : ""
             }`}
             onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
           >
             <span className="sr-only">Next</span>
-           Next <MdKeyboardArrowRight />
-          </li>
-        </ul>
+            Next <MdKeyboardArrowRight />
+          </button>
+        </div>
       </div>
     </nav>
   );
