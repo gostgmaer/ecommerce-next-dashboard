@@ -59,7 +59,7 @@ const ProductForm = ({ data }) => {
       title: res?.["results"]?.["title"],
       sku: res?.["results"]?.["sku"],
       productType: res?.["results"]?.["productType"],
-      categories: res?.["results"]?.["categories"][0],
+      categories: res?.["results"]?.["categories"][0]["_id"],
       descriptions: res?.["results"]?.["descriptions"],
       images: [],
       price: res?.["results"]?.["price"],
