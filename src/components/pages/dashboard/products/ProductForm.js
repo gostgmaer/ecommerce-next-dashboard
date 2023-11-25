@@ -19,7 +19,7 @@ import { notifySuccess } from "@/lib/notify/notice";
 
 const ProductForm = ({ data }) => {
   const params = useParams();
-  const router = useRouter()
+  const router = useRouter();
   const productID = params["productID"];
   const [currData, setCurrData] = useState({});
   const [productFormData, setProductFormData] = useState({
@@ -98,8 +98,7 @@ const ProductForm = ({ data }) => {
     if (name === "title") {
       setSlug(value);
     }
-  };  
-
+  };
 
   const handleChangeSeo = (e) => {
     const { name, value } = e.target;
@@ -143,14 +142,13 @@ const ProductForm = ({ data }) => {
       setSelectedFiles([]);
       setSlug("");
       setTags([]);
-      notifySuccess(res.message,3000)
+      notifySuccess(res.message, 3000);
     }
- 
   };
 
   const UpdateProduct = async (status) => {
-    const body =  generateProductBody();
-  
+    const body = generateProductBody();
+
     const res = await patch(
       "/products",
       { ...body, status: status },
@@ -185,20 +183,22 @@ const ProductForm = ({ data }) => {
       setSelectedFiles([]);
       setSlug("");
       setTags([]);
-      notifySuccess(res.message,3000)
-      router.push('/dashboard/products')
+      notifySuccess(res.message, 3000);
+      router.push("/dashboard/products");
     }
-
   };
 
-  const generateProductBody =  () => {
+  const generateProductBody = () => {
     console.log(productFormData);
     const body = {
       ...productFormData,
       tags: tags,
       seo_info: seo,
       images: selectedFiles,
-      slug: slug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-$/, ''),
+      slug: slug
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/-$/, ""),
     };
 
     return body;
@@ -227,7 +227,18 @@ const ProductForm = ({ data }) => {
         btn={"Product"}
         url={"/dashboard/products/create"}
       />
-      <TopStepper />
+      <TopStepper
+        links={[
+          { text: "Summary", id: "summary" },
+          { text: "Images & Gallery", id: "images-gallery" },
+          { text: "Pricing & Inventory", id: "pricing-inventory" },
+          { text: "Product Identifiers & Custom Fields", id: "custom-fields" },
+          { text: "Inventory", id: "inventory" },
+          { text: "SEO", id: "seo" },
+          { text: "Variant Options", id: "variant-options" },
+          { text: "Tags", id: "product-tags" },
+        ]}
+      />
       <div>
         <form
           className="[&amp;_label.block>span]:font-medium"
@@ -247,7 +258,11 @@ const ProductForm = ({ data }) => {
             />
             <Pricing handleChange={handleChange} data={productFormData} />
             <Invantory handleChange={handleChange} data={productFormData} />
-            <Identifiers handleChange={handleChange} preData = {data} data={productFormData} />
+            <Identifiers
+              handleChange={handleChange}
+              preData={data}
+              data={productFormData}
+            />
 
             <SEOInfo handleChange={handleChangeSeo} data={seo} />
             <ProductVariyant />
