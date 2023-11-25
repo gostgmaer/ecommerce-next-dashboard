@@ -4,7 +4,7 @@ import MultiImageUploadr from "@/components/global/fields/multiImageUploadr";
 import { useState } from "react";
 import { FaDollarSign } from "react-icons/fa";
 
-export const Summery = ({ handleChange, data, category,slug,handleSlug }) => {
+export const Summery = ({ handleChange, data, category, slug, handleSlug }) => {
   return (
     <div className="summary">
       <div className="flex gap-4 p-6 pt-8">
@@ -260,7 +260,7 @@ export const Invantory = ({ handleChange, data }) => {
   );
 };
 
-export const Identifiers = ({ handleChange, data }) => {
+export const Identifiers = ({ handleChange, data,preData }) => {
   return (
     <div className="Identifiers">
       <div className="flex gap-4 p-6 pt-8">
@@ -296,16 +296,15 @@ export const Identifiers = ({ handleChange, data }) => {
             />
           </div>
           <div>
-            <TextField
-              label={"Brand Name"}
-              type={"text"}
-              placeholder={"Brand"}
-              additionalAttrs={undefined}
+            <SelectField
+              options={preData.brands.results}
               value={data.brandName}
               onChange={handleChange}
-              classes={undefined}
               id={"brandName"}
-              icon={undefined}
+              label={"name"}
+              placeholder={undefined}
+              heading={"Brand"}
+              datakey={"_id"}
             />
           </div>
           <div>

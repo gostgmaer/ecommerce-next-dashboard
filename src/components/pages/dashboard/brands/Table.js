@@ -12,8 +12,9 @@ import { useAxios } from "@/lib/interceptors";
 import "react-data-grid/lib/styles.css";
 import Image from "next/image";
 
-const Categorytable = () => {
-  const [axios, spinner] = useAxios();
+
+const BrandTable = () => {
+
   const options = [5, 10, 20, 50];
   const [itemsPerPage, setItemsPerPage] = useState(options[0]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,7 +29,7 @@ const Categorytable = () => {
       filter: JSON.stringify({ status: statuskey }),
       search: JSON.stringify({ name: searchKey }),
     };
-    const category = await get("/categories", query);
+    const category = await get("/brands", query);
     setCategories(category);
   };
 
@@ -38,12 +39,12 @@ const Categorytable = () => {
 
   const deleteCategory = async (id) => {
     console.log(id);
-    const res = await del("/categories", id);
+    const res = await del("/brands", id);
     res.statusCode == 200 && fetchCategory();
   };
 
   const updateRecord = async (id) => {
-    const res = await patch("/categories", { status: "publish" }, id);
+    const res = await patch("/brands", { status: "publish" }, id);
     res.statusCode == 200 && fetchCategory();
   };
   const columns = [
@@ -63,17 +64,12 @@ const Categorytable = () => {
       ),
     },
     {
-      title: "Category Name",
+      title: "Name",
       dataIndex: "name",
       key: "name",
       sorter: (a, b) => a.name - b.name, // Enable sorting for this column
     },
-    {
-      title: "Slug",
-      dataIndex: "slug",
-      key: "slug",
-      sorter: (a, b) => a.slug - b.slug, // Enable sorting for this column
-    },
+   
     {
       title: (
         <div className="flex items-center gap-1">
@@ -101,17 +97,17 @@ const Categorytable = () => {
       key: "actions",
       render: (record, index) => (
         <div className="flex items-center justify-end gap-3 pe-4">
-          <Link href={`/dashboard/categories/${record["_id"]}/edit`}>
+          <Link href={`/dashboard/brands/${record["_id"]}/edit`}>
             {" "}
             <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
               <FaPen />
             </button>
           </Link>
-          <Link href={`/dashboard/categories/${record["_id"]}`}>
+          {/* <Link href={`/dashboard/brands/${record["_id"]}`}>
             <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
               <FaEye />
             </button>
-          </Link>
+          </Link> */}
           <button
             onClick={() => updateRecord(record._id)}
             className={`rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700 ${
@@ -136,9 +132,9 @@ const Categorytable = () => {
     <div>
       <Heading
         data={undefined}
-        label="Categories"
-        btn={"category"}
-        url={"/dashboard/categories/create"}
+        label="Brands"
+        btn={"brands"}
+        url={"/dashboard/brands/create"}
       />
       <div>
         <TableFilter
@@ -157,9 +153,9 @@ const Categorytable = () => {
           setCurrentPage={setCurrentPage}
         />
       </div>
-      {spinner}
+      {/* {spinner} */}
     </div>
   );
 };
 
-export default Categorytable;
+export default BrandTable;
