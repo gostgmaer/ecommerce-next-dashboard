@@ -15,6 +15,7 @@ async function getBrands() {
   return data
 }
 
+
 const Page = async () => {
 
   const category = await getCategories()
