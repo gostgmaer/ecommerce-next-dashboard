@@ -17,7 +17,7 @@ const BrandForm = ({}) => {
   const [formData, setFormData] = useState({
     name: "",
     descriptions: "",
-    slug:"",
+    slug: "",
     email: "",
     phone: "",
     website: "",
@@ -34,7 +34,7 @@ const BrandForm = ({}) => {
         name: response["results"]["name"],
         email: response["results"]["contact"]["email"],
         phone: response["results"]["contact"]["phone"],
-        slug:"",
+        slug: "",
         website: response["results"]["contact"]["website"],
         tagline: response["results"]["tagline"],
         descriptions: response["results"]["descriptions"],
@@ -81,7 +81,7 @@ const BrandForm = ({}) => {
     if (res.statusCode === 200) {
       setFormData({
         name: "",
-        slug:"",
+        slug: "",
         descriptions: "",
         email: "",
         phone: "",
@@ -103,7 +103,7 @@ const BrandForm = ({}) => {
     if (res.statusCode === 201) {
       setFormData({
         name: "",
-        slug:"",
+        slug: "",
         descriptions: "",
         email: "",
         phone: "",
@@ -148,7 +148,13 @@ const BrandForm = ({}) => {
         btn={"Brand"}
         url={"/dashboard/brands/create"}
       />
-      <TopStepper />
+      <TopStepper
+        links={[
+          { text: "Summary", id: "summary" },
+          { text: "Contact info", id: "contact-info" },
+          { text: "Images & Gallery", id: "images-gallery" },
+        ]}
+      />
       <div>
         <form
           className="[&amp;_label.block>span]:font-medium"

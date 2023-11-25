@@ -90,7 +90,7 @@ export const ProductImage = ({ selectedFiles, setSelectedFiles }) => {
   // const [selectedFiles, setSelectedFiles] = useState([]);
 
   return (
-    <div className="Image">
+    <div className="Image" id="images-gallery">
       <div className="flex gap-4 p-6 pt-8">
         <div className="col-span-full @4xl:col-span-4 flex-1 w-[30%]">
           <h4 className=" font-semibold text-xl">Upload new thumbnail image</h4>

@@ -6,7 +6,7 @@ import { FaDollarSign } from "react-icons/fa";
 
 export const Summery = ({ handleChange, data, slug, handleSlug }) => {
   return (
-    <div className="summary">
+    <div className="summary" id="summary">
       <div className="flex gap-4 p-6 pt-8">
         <div className="col-span-full @4xl:col-span-4 flex-1 w-[30%]">
           <h4 className=" font-semibold text-xl">Add new Brands</h4>
@@ -69,7 +69,7 @@ export const Summery = ({ handleChange, data, slug, handleSlug }) => {
               </label>
             </div>
           </div>
-          <div className=" col-span-2">
+          <div className=" col-span-2" id="contact-info">
             <h4>Contact Informations</h4>
           </div>
           <div>
@@ -121,7 +121,7 @@ export const ProductImage = ({ selectedFiles, setSelectedFiles }) => {
   // const [selectedFiles, setSelectedFiles] = useState([]);
 
   return (
-    <div className="Image">
+    <div className="Image" id="images-gallery">
       <div className="flex gap-4 p-6 pt-8">
         <div className="col-span-full @4xl:col-span-4 flex-1 w-[30%]">
           <h4 className=" font-semibold text-xl">Upload new thumbnail image</h4>

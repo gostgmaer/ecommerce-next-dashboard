@@ -136,14 +136,20 @@ const CategoryForm = ({}) => {
         btn={"Category"}
         url={"/dashboard/categories/create"}
       />
-      <TopStepper />
+      <TopStepper
+        links={[
+          { text: "Summary", id: "summary" },
+
+          { text: "Images & Gallery", id: "images-gallery" },
+        ]}
+      />
       <div>
         <form
           className="[&amp;_label.block>span]:font-medium"
           onSubmit={formik.handleSubmit}
         >
           <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
-            <div className="summary">
+            <div className="summary" id="summary">
               <div className="flex gap-4 p-6 pt-8">
                 <div className="col-span-full @4xl:col-span-4 flex-1 w-[30%]">
                   <h4 className=" font-semibold text-xl">Add new category</h4>
