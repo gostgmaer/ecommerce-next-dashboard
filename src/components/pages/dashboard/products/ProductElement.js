@@ -6,7 +6,7 @@ import { FaDollarSign } from "react-icons/fa";
 
 export const Summery = ({ handleChange, data, category, slug, handleSlug }) => {
   return (
-    <div className="summary">
+    <div className="summary" id="summary">
       <div className="flex gap-4 p-6 pt-8">
         <div className="col-span-full @4xl:col-span-4 flex-1 w-[30%]">
           <h4 className=" font-semibold text-xl">Summary</h4>
@@ -107,7 +107,7 @@ export const ProductImage = ({ selectedFiles, setSelectedFiles }) => {
   // const [selectedFiles, setSelectedFiles] = useState([]);
 
   return (
-    <div className="Image">
+    <div className="Image" id="images-gallery">
       <div className="flex gap-4 p-6 pt-8">
         <div className="col-span-full @4xl:col-span-4 flex-1 w-[30%]">
           <h4 className=" font-semibold text-xl">Upload new product images</h4>
@@ -129,7 +129,7 @@ export const ProductImage = ({ selectedFiles, setSelectedFiles }) => {
 
 export const Pricing = ({ handleChange, data }) => {
   return (
-    <div className="Pricing">
+    <div className="Pricing" id="pricing-inventory">
       <div className="flex gap-4 p-6 pt-8">
         <div className="col-span-full @4xl:col-span-4 flex-1 w-[30%]">
           <h4 className=" font-semibold text-xl">Pricing</h4>
@@ -201,7 +201,7 @@ export const Invantory = ({ handleChange, data }) => {
   ];
 
   return (
-    <div className="Invantory">
+    <div className="Invantory" id="inventory">
       <div className="flex gap-4 p-6 pt-8">
         <div className="col-span-full @4xl:col-span-4 flex-1 w-[30%]">
           <h4 className=" font-semibold text-xl">Inventory Tracking</h4>
@@ -262,7 +262,7 @@ export const Invantory = ({ handleChange, data }) => {
 
 export const Identifiers = ({ handleChange, data,preData }) => {
   return (
-    <div className="Identifiers">
+    <div className="Identifiers" id="custom-fields">
       <div className="flex gap-4 p-6 pt-8">
         <div className="col-span-full @4xl:col-span-4 flex-1 w-[30%]">
           <h4 className=" font-semibold text-xl">Product Identifiers</h4>
@@ -328,7 +328,7 @@ export const Identifiers = ({ handleChange, data,preData }) => {
 
 export const SEOInfo = ({ handleChange, data }) => {
   return (
-    <div className="seo">
+    <div className="seo" id="seo">
       <div className="flex gap-4 p-6 pt-8">
         <div className="col-span-full @4xl:col-span-4 flex-1 w-[30%]">
           <h4 className=" font-semibold text-xl">Search Engine Optimization</h4>
@@ -395,7 +395,7 @@ export const SEOInfo = ({ handleChange, data }) => {
 
 export const ProductVariyant = (second) => {
   return (
-    <div className="Variyant">
+    <div className="variant" id="variant-options">
       <div className="flex gap-4 p-6 pt-8">
         <div className="col-span-full @4xl:col-span-4 flex-1 w-[30%]">
           <h4 className=" font-semibold text-xl">Variant Options</h4>
@@ -467,7 +467,7 @@ export const ProductTags = ({ handleChange, tags, setTags }) => {
   };
 
   return (
-    <div className="tags">
+    <div className="tags" id="product-tags">
       <div className="flex gap-4 p-6 pt-8">
         <div className="col-span-full @4xl:col-span-4 flex-1 w-[30%]">
           <h4 className=" font-semibold text-xl">Tags</h4>
