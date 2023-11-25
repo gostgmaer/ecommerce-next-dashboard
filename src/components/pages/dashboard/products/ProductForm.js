@@ -98,7 +98,7 @@ const ProductForm = ({ data }) => {
     if (name === "title") {
       setSlug(value);
     }
-  };
+  };  
 
 
   const handleChangeSeo = (e) => {
@@ -237,7 +237,7 @@ const ProductForm = ({ data }) => {
             <Summery
               handleChange={handleChange}
               data={productFormData}
-              category={data}
+              category={data.category}
               slug={slug}
               handleSlug={haldleChangeSlug}
             />
@@ -247,7 +247,7 @@ const ProductForm = ({ data }) => {
             />
             <Pricing handleChange={handleChange} data={productFormData} />
             <Invantory handleChange={handleChange} data={productFormData} />
-            <Identifiers handleChange={handleChange} data={productFormData} />
+            <Identifiers handleChange={handleChange} preData = {data} data={productFormData} />
 
             <SEOInfo handleChange={handleChangeSeo} data={seo} />
             <ProductVariyant />
@@ -285,7 +285,7 @@ const ProductForm = ({ data }) => {
         </form>
         {/* <FormElement productID={productID} productFormData={productFormData} setProductFormData={setProductFormData} productFormData={productFormData} setProductFormData={setProductFormData} /> */}
       </div>
-      {spinner}
+      {/* {spinner} */}
     </div>
   );
 };
