@@ -35,6 +35,18 @@ const linkData = [
 
     ],
   },
+  {
+    text: "Brands",
+    href: "/dashboard/brands",
+    child: [
+
+      {
+        text: "Create Product",
+        href: "/dashboard/brands/create",
+      },
+
+    ],
+  },
 
   {
     text: "Categories",

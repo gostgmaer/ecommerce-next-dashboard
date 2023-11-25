@@ -79,3 +79,13 @@ export const setClientCookie = (name, value, timestamp) => {
   const expirationDate = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
   Cookies.set(name, value, { expires: expirationDate });
 };
+
+
+
+export const generateSlug = (text) => {
+  return text
+    .toLowerCase()
+    .replace(/[^a-zA-Z0-9]/g, "-") // Replace non-alphanumeric characters with hyphens
+    .replace(/-+/g, "-") // Replace consecutive hyphens with a single hyphen
+    .substring(0, 50); // Limit length to 50 characters
+};

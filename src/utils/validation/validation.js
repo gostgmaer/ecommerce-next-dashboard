@@ -52,3 +52,12 @@ export const ProductValidation = Yup.object().shape({
   gtin: Yup.string().required(requiredMsg),
   brandName: Yup.string().required(requiredMsg),
 });
+
+export const validateCategory = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  slug: Yup.string().required('Slug is required'),
+  parent_category: Yup.string(),
+  display_type: Yup.string(),
+  descriptions: Yup.string(),
+});
+

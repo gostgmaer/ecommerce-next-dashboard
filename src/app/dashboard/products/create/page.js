@@ -9,14 +9,20 @@ async function getCategories() {
   return data
 }
 
+async function getBrands() {
+  const res = await fetch(baseurl+`/brands`)
+  const data = await res.json();
+  return data
+}
 
 const Page = async () => {
 
   const category = await getCategories()
+  const brands = await getBrands()
 
   return (
     <Dashboardlayout>
-      <ProductForm data={category} />
+      <ProductForm data={{category,brands}} />
     </Dashboardlayout>
   );
 };
