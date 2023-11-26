@@ -220,7 +220,11 @@ const ProductForm = ({ data }) => {
                       icon={undefined}
                       id={"title"}
                     />
-                    {errors.title && <div>{errors.title}</div>}
+                    {errors.title && (
+                      <div className="text-red-500 text-xs mt-1">
+                        {errors.title}
+                      </div>
+                    )}
                   </div>
                   <div>
                     <TextField
@@ -234,6 +238,11 @@ const ProductForm = ({ data }) => {
                       icon={undefined}
                       id={"sku"}
                     />
+                    {errors.sku && (
+                      <div className="text-red-500 text-xs mt-1">
+                        {errors.sku}
+                      </div>
+                    )}
                   </div>
                   <div>
                     <SelectField
@@ -250,6 +259,11 @@ const ProductForm = ({ data }) => {
                       datakey={"value"}
                       additionalAttrs={undefined}
                     />
+                    {errors.productType && (
+                      <div className="text-red-500 text-xs mt-1">
+                        {errors.productType}
+                      </div>
+                    )}
                   </div>
                   <div>
                     <SelectField
@@ -263,6 +277,29 @@ const ProductForm = ({ data }) => {
                       datakey={"_id"}
                       additionalAttrs={{ multiple: true }}
                     />
+                    {errors.categories && (
+                      <div className="text-red-500 text-xs mt-1">
+                        {errors.categories}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <TextField
+                      label={"Slug"}
+                      type={"text"}
+                      placeholder={"product-slug"}
+                      additionalAttrs={{}}
+                      onChange={handleChange}
+                      value={values.slug}
+                      classes={undefined}
+                      icon={undefined}
+                      id={"slug"}
+                    />
+                    {errors.slug && (
+                      <div className="text-red-500 text-xs mt-1">
+                        {errors.slug}
+                      </div>
+                    )}
                   </div>
                   <div>
                     <TextField
@@ -279,20 +316,13 @@ const ProductForm = ({ data }) => {
                       icon={undefined}
                       id={"overview"}
                     />
+                    {errors.overview && (
+                      <div className="text-red-500 text-xs mt-1">
+                        {errors.overview}
+                      </div>
+                    )}
                   </div>
-                  <div>
-                    <TextField
-                      label={"Slug"}
-                      type={"text"}
-                      placeholder={"product-slug"}
-                      additionalAttrs={{}}
-                      onChange={handleChange}
-                      value={values.slug}
-                      classes={undefined}
-                      icon={undefined}
-                      id={"slug"}
-                    />
-                  </div>
+                
                   <div className=" col-span-2">
                     <div className=" flex flex-col">
                       <label className="block">
@@ -310,6 +340,11 @@ const ProductForm = ({ data }) => {
                         />
                       </label>
                     </div>
+                    {errors.descriptions && (
+                      <div className="text-red-500 text-xs mt-1">
+                        {errors.descriptions}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
