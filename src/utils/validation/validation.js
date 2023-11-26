@@ -37,21 +37,30 @@ export const resetPasswordValidation = Yup.object().shape({
 });
 
 const requiredMsg = "This field is required";
+export const productSchema = Yup.object().shape({
+  title: Yup.string().required('Title is required'),
+  slug: Yup.string().required('Slug is required'),
+  sku: Yup.string().required('SKU is required'),
+  productType: Yup.string().required('Product Type is required'),
+  categories: Yup.string().required('Categories is required'),
+  descriptions: Yup.string().required('Description is required'),
+ 
+  price: Yup.number().min(0, 'Price must be a non-negative number').required('Price is required'),
+  costPrice: Yup.number().min(0, 'Cost Price must be a non-negative number').required('Cost Price is required'),
+  retailPrice: Yup.number().min(0, 'Retail Price must be a non-negative number').required('Retail Price is required'),
+  salePrice: Yup.number().min(0, 'Sale Price must be a non-negative number').required('Sale Price is required'),
+  // trackInventory: Yup.string().required('Tracking Inventory is required'),
+  currentStockLevel: Yup.number().min(0, 'Current Stock Level must be a non-negative number').required('Current Stock Level is required'),
+  lowStockLevel: Yup.number().min(0, 'Low Stock Level must be a non-negative number').required('Low Stock Level is required'),
+  gtin: Yup.string().required('GTIN is required'),
+  manufacturerPartNumber: Yup.string().required('Manufacturer Part Number is required'),
+  brandName: Yup.string().required('Brand Name is required'),
+  productUPCEAN: Yup.string().required('Product UPC/EAN is required'),
+  pageTitle: Yup.string().required('SEO Title is required'),
+  metaDescription: Yup.string(),
+  metaKeywords:Yup.string(),
 
-export const ProductValidation = Yup.object().shape({
-  title: Yup.string().required(requiredMsg),
-  sku: Yup.string().required(requiredMsg),
-  productType: Yup.string().required(requiredMsg),
-  categories: Yup.string().required(requiredMsg),
-  descriptions: Yup.string().required(requiredMsg),
-  price: Yup.string().required(requiredMsg),
-  costPrice: Yup.string().optional(),
-  trackInventory: Yup.string().required(requiredMsg),
-  currentStockLevel: Yup.string().required(requiredMsg),
-  lowStockLevel: Yup.string().required(requiredMsg),
-  gtin: Yup.string().required(requiredMsg),
-  brandName: Yup.string().required(requiredMsg),
-});
+})
 
 export const validateCategory = Yup.object().shape({
   name: Yup.string().required('Name is required'),

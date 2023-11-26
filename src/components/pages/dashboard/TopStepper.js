@@ -17,15 +17,15 @@ const TopStepper = ({ links }) => {
 
 
 
-  const pathname = usePathname()
-  const router = useRouter();
-  const params = useSearchParams().getAll("#")
+  // const pathname = usePathname()
+  // const router = useRouter();
+  // const params = useSearchParams().getAll("#")
 
   // Access the full pathname from the router object
-  const fullPathname = router;
+  // const fullPathname = router;
 
-  console.log("Full Pathname:", fullPathname,params,pathname);
-  console.log(pathname);
+  // console.log("Full Pathname:", fullPathname,params,pathname);
+  // console.log(pathname);
 
 
 
