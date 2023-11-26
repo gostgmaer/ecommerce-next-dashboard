@@ -196,8 +196,7 @@ const CategoryForm = ({}) => {
                       label={"name"}
                       placeholder={undefined}
                       datakey={"_id"}
-                      heading={"Parent Category"}
-                    />
+                      heading={"Parent Category"} additionalAttrs={undefined}                    />
                   </div>
                   {/* <div>
                     <SelectField
