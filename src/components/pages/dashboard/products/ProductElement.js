@@ -54,6 +54,7 @@ export const Summery = ({ handleChange, data, category, slug, handleSlug }) => {
               placeholder={undefined}
               heading={"Product Type"}
               datakey={"value"}
+              additionalAttrs={undefined}
             />
           </div>
           <div>
@@ -66,6 +67,7 @@ export const Summery = ({ handleChange, data, category, slug, handleSlug }) => {
               placeholder={undefined}
               heading={"Categories"}
               datakey={"_id"}
+              additionalAttrs={undefined}
             />
           </div>
           <div>
@@ -209,13 +211,15 @@ export const Invantory = ({ handleChange, data }) => {
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 w-[70%]">
           <div className="col-span-full grid gap-4">
+            
             {options.map((item) => (
               <div className=" flex flex-col" key={item.value}>
                 <label className="flex flex-row items-center">
                   <input
                     className=" disabled:bg-gray-50 disabled:border-gray-200 h-5 w-5 bg-transparent border border-gray-300 checked:!bg-gray-1000 focus:ring-gray-900/30 checked:!border-gray-1000 hover:enabled:border-gray-1000 dark:checked:!bg-gray-200 dark:checked:!border-gray-200 dark:focus:ring-gray-200 dark:focus:ring-offset-gray-0"
                     type="radio"
-                    value={data.trackInventory}
+                    value={item.value}
+                    checked={data.trackInventory === item.value}
                     onChange={handleChange}
                     id="trackInventory"
                     name="trackInventory"
@@ -260,7 +264,7 @@ export const Invantory = ({ handleChange, data }) => {
   );
 };
 
-export const Identifiers = ({ handleChange, data,preData }) => {
+export const Identifiers = ({ handleChange, data, preData }) => {
   return (
     <div className="Identifiers" id="custom-fields">
       <div className="flex gap-4 p-6 pt-8">
@@ -305,6 +309,7 @@ export const Identifiers = ({ handleChange, data,preData }) => {
               placeholder={undefined}
               heading={"Brand"}
               datakey={"_id"}
+              additionalAttrs={undefined}
             />
           </div>
           <div>
@@ -361,7 +366,7 @@ export const SEOInfo = ({ handleChange, data }) => {
               icon={undefined}
             />
           </div>
-          <div>
+          <div className=" col-span-2">
             <TextField
               label={"Meta Description"}
               type={"text"}
@@ -370,20 +375,7 @@ export const SEOInfo = ({ handleChange, data }) => {
               value={data.metaDescription}
               onChange={handleChange}
               classes={undefined}
-              id={"metaDescription"}
-              icon={undefined}
-            />
-          </div>
-          <div>
-            <TextField
-              label={"Product URL"}
-              type={"text"}
-              placeholder={"URL"}
-              additionalAttrs={undefined}
-              value={data.productURL}
-              onChange={handleChange}
-              classes={undefined}
-              id={"productURL"}
+              id={"seoDescriptions"}
               icon={undefined}
             />
           </div>
