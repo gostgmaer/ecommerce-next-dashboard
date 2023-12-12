@@ -24,7 +24,7 @@ export const get = async (endpint, query, id) => {
     method: "get",
     url: reqUrl,
     headers: {
-      Authorization: token,
+      Authorization:  "Bearer " + token,
     },
     params: query,
   };
@@ -48,7 +48,7 @@ export const getsingle = async (endpint, id, query) => {
     method: "get",
     url: baseURL + endpint + `/${id}`,
     headers: {
-      Authorization: token,
+      Authorization:  "Bearer " + token,
     },
     params: query,
   };
