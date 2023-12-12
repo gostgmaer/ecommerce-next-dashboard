@@ -60,33 +60,31 @@ const linkData = [
     ],
   },
   {
-    text: "Orders",
-    href: "/dashboard/orders",
+    text: "Users",
+    href: "/dashboard/users",
     child: [
+
       {
-        text: "Create Order",
-        href: "/dashboard/orders/create",
+        text: "Create Users",
+        href: "/dashboard/users/create",
       },
 
     ],
   },
-
+  {
+    text: "Orders",
+    href: "/dashboard/orders",
+  },
+  {
+    text: "Logs",
+    href: "/dashboard/logs",
+  },
   {
     text: "Reviews",
     href: "/dashboard/reviews",
   },
-  {
-    text: "Shop",
-    href: "/dashboard/shop",
-  },
-  {
-    text: "Cart",
-    href: "/dashboard/cart",
-  },
-  {
-    text: "Checkout & Payment",
-    href: "/dashboard/checkout",
-  },
+
+
 ];
 
 const Sidebar = () => {

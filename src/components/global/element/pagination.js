@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 const PaginatedList = ({
-  length,
+  length=5,
   options = [5, 10, 20, 50],
   itemsPerPage,
   setItemsPerPage,
