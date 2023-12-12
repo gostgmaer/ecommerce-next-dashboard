@@ -1,11 +1,12 @@
 import Dashboardlayout from "@/components/layout/dashboard/dashboard";
-import ReviewElements from "@/components/pages/dashboard/reviews/Reviewtable";
+import Datatable from "@/components/pages/dashboard/order/Table";
+
 import React from "react";
 
 const Page = () => {
   return (
     <Dashboardlayout>
-      <ReviewElements />
+      <Datatable />
     </Dashboardlayout>
   );
 };
