@@ -1,8 +1,11 @@
+"use client"
 import React from "react";
 import Header from "./header";
 import Sidebar from "./sidebar";
+import { useAxios } from "@/lib/interceptors";
 
 const Dashboardlayout = ({ children }) => {
+  const [axios, spinner] = useAxios();
 
   return (
     <div className="flex min-h-screen flex-grow bg-white">
@@ -16,6 +19,7 @@ const Dashboardlayout = ({ children }) => {
         <div className=" md:px-5 lg:px-6 2xl:py-5 3xl:px-8 4xl:px-10 text-black">
           {children}
         </div>
+        {spinner}
       </div>
       
     </div>
