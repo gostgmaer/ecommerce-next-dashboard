@@ -32,8 +32,8 @@ const UserTable = () => {
     const query = {
       limit: itemsPerPage,
       page: currentPage,
-      filter: JSON.stringify({ status: statuskey }),
-      search: JSON.stringify({ name: searchKey }),
+      filter: JSON.stringify({ isVerified: statuskey,username: searchKey }),
+      search: JSON.stringify({ username: searchKey }),
     };
     const response = await get("/users", query);
     setusers(response);
@@ -151,6 +151,7 @@ const UserTable = () => {
       <div>
         <TableFilter
           searchKey={searchKey}
+          options={["", "false", "true"]}
           setSearchKey={setSearchKey}
           status={status}
           setStatus={setStatus}
