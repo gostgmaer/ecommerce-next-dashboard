@@ -16,6 +16,7 @@ const TableFilter = ({
     setStatus(e.target.value);
     searchEvent(e.target.value);
   };
+  
   return (
     <div className="">
       <div className="mt-4 bg-gray-200 rounded shadow-sm border-gray-200 border  rounded-b-none">
