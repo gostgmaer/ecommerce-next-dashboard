@@ -12,6 +12,10 @@ const SearchField = ({searchText, setSearchText,clickEvent}) => {
       
    }
 
+   const handleSearch = async (params) => {
+    const response = await clickEvent()
+   }
+
   return (
     <div className="flex flex-wrap items-center gap-4 w-full">
       <div className="rizzui-input-root flex flex-col">
@@ -27,7 +31,7 @@ const SearchField = ({searchText, setSearchText,clickEvent}) => {
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
             />
-            <button onClick={clickEvent} className="font-semibold px-2 rounded-md bg-gray-600 text-white transition-all duration-300 ease-in-out dark-btn hover:bg-gray-900">Search</button>
+            <button onClick={handleSearch} className="font-semibold px-2 rounded-md bg-gray-600 text-white transition-all duration-300 ease-in-out dark-btn hover:bg-gray-900">Search</button>
           
           </span>
          
