@@ -12,12 +12,9 @@ import { useAxios } from "@/lib/interceptors";
 import { get } from "@/lib/http";
 import moment from "moment";
 
-
-
 const items = Array.from(Array(20).keys()).map((key) => key + 1);
 
 const LogsTable = () => {
-
   const [axios, spinner] = useAxios();
   const options = [5, 10, 20, 50];
   const [products, setProducts] = useState({});
@@ -29,15 +26,18 @@ const LogsTable = () => {
   const loadLogs = async () => {
     const query = {
       limit: itemsPerPage,
-      page: currentPage
+      page: currentPage,
     };
     const response = await get("/logs", query);
-    var data  =[]
-    response["results"].forEach(item=> {
-      const obj = {...item,createdAt:moment(item["createdAt"]).format('MMMM Do YYYY, h:mm a')}
-      data.push(obj)
-    })
-    setProducts({...response,results:data});
+    var data = [];
+    response["results"].forEach((item) => {
+      const obj = {
+        ...item,
+        createdAt: moment(item["createdAt"]).format("MMMM Do YYYY, h:mm a"),
+      };
+      data.push(obj);
+    });
+    setProducts({ ...response, results: data });
     // setItems(Array.from(Array(response.total).keys()).map((key) => key + 1));
   };
 
@@ -46,8 +46,6 @@ const LogsTable = () => {
   useEffect(() => {
     loadLogs();
   }, [itemsPerPage, currentPage]);
-
-
 
   const columns = [
     {
@@ -62,8 +60,11 @@ const LogsTable = () => {
     },
     {
       title: "Ip",
-      dataIndex: "ip",
-      key: "ip",
+      dataIndex: "location",
+      render: (record, index) =>{
+        console.log(record);
+        return  <span>{record?.ip}</span>
+      },
     },
     {
       title: "Method",
@@ -74,9 +75,9 @@ const LogsTable = () => {
     {
       title: "userAgent",
       dataIndex: "useragent",
-      key: "useragent"
+      key: "useragent",
     },
-    
+
     {
       title: "Created Time",
       dataIndex: "createdAt",
@@ -107,7 +108,13 @@ const LogsTable = () => {
     <div>
       <Heading data={undefined} label="Logs" btn={undefined} url={undefined} />
       <div>
-        <TableFilter searchKey={undefined} setSearchKey={undefined} status={undefined} setStatus={undefined} searchEvent={undefined} />
+        <TableFilter
+          searchKey={undefined}
+          setSearchKey={undefined}
+          status={undefined}
+          setStatus={undefined}
+          searchEvent={undefined}
+        />
         <Table data={products["results"]} tableColumn={columns} />
         <PaginatedList
           length={products["total"]}
@@ -116,7 +123,6 @@ const LogsTable = () => {
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
-    
       </div>
     </div>
   );
