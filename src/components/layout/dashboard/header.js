@@ -140,7 +140,7 @@ const Header = () => {
             />
           </Popover.Button>
           <Popover.Panel className="absolute z-10 bg-white">
-            <div className="w-64 text-left rtl:text-right rizzui-tooltip-root absolute -right-10 top-2  min-w-max text-sm rounded-xl bg-gray-0 !text-gray-900 border border-gray-300 drop-shadow-md z-50 p-0 dark:bg-gray-50 [&amp;>svg]:dark:fill-gray-50">
+            <div className="w-64 bg-white text-left rtl:text-right rizzui-tooltip-root absolute -right-10 top-2  min-w-max text-sm rounded-xl bg-gray-0 !text-gray-900 border border-gray-300 drop-shadow-md z-50 p-0 dark:bg-gray-50 [&amp;>svg]:dark:fill-gray-50">
               <div className="flex items-center border-b border-gray-300 px-4 py-3 ">
                 <img
                   src={user?.profilePicture}
