@@ -91,7 +91,7 @@ const Sidebar = () => {
   return (
     <div className="transition-all duration-200">
       <div className=" top-0 z-40 bg-gray-0/10 px-6 pb-5 bg-white  text-black pt-5 2xl:px-8 2xl:pt-6 text-center">
-        <Link href="/" className="text-2xl font-semibold">
+        <Link href="/dashboard" className="text-2xl font-semibold">
           Kishor Sarkar
         </Link>
       </div>
