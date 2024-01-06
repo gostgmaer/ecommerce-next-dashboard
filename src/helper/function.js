@@ -65,13 +65,13 @@ export const findIndex = (array, index) => {
 // };
 
 export const setToken = (name, value, days, type) => {
-  if (type === "ACCESS_TOKEN") {
-    const token = value.split(".");
-    setClientCookie("headerPayload", `${token[0]}.${token[1]}`, days);
-    setClientCookie("signature", `${token[2]}`, days);
-  } else {
-    setClientCookie(name, value, days);
-  }
+
+  const expirationDate = days || 30; // Default expiration in days
+  const oneMonthFromNow = new Date();
+  oneMonthFromNow.setDate(oneMonthFromNow.getDate() + expirationDate);
+
+
+  setClientCookie(name, value, oneMonthFromNow);
 };
 
 
