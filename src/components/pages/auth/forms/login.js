@@ -6,6 +6,7 @@ import { loginValidationSchema } from "@/utils/validation/validation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuthContext } from "@/context/authContext";
+import { useSession, signIn, signOut } from "next-auth/react"
 
 const LoginForm = () => {
   const { handleLoginAuth, user, userId, authError } = useAuthContext();
@@ -17,8 +18,9 @@ const LoginForm = () => {
       password: "",
     },
     validationSchema: loginValidationSchema,
-    onSubmit: (values) => {
-      handleLoginAuth(values);
+    onSubmit: async (values) => {
+      handleLoginAuth(values)
+     
     },
   });
 
@@ -26,7 +28,7 @@ const LoginForm = () => {
     if (userId) {
       route.push("/dashboard");
     }
-  
+
   }, [userId]);
 
   return (

@@ -23,7 +23,7 @@ const ProductsPageElement = () => {
   const [axios, spinner] = useAxios();
   const options = [5, 10, 20, 50];
   const [products, setProducts] = useState({});
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchKey, setSearchKey] = useState("");
   const [status, setStatus] = useState("");
@@ -133,10 +133,9 @@ const ProductsPageElement = () => {
           </Link>
           <button
             onClick={() => updateRecord(item._id)}
-            className={`rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700 ${
-              item.status === "publish" &&
+            className={`rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700 ${item.status === "publish" &&
               " text-green-400 hover:!border-green-600 border-green-400 hover:text-green-600"
-            }`}
+              }`}
           >
             <FaCheck />
           </button>
@@ -167,14 +166,8 @@ const ProductsPageElement = () => {
           setStatus={setStatus}
           searchEvent={loadProducts}
         />
-        <Table data={products["results"]} tableColumn={columns} />
-        <PaginatedList
-          length={products["total"]}
-          itemsPerPage={itemsPerPage}
-          setItemsPerPage={setItemsPerPage}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        <Table data={products["results"]} tableColumn={columns} pagination={{ total: products["total"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
+      
       </div>
     </div>
   );

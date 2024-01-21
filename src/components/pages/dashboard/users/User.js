@@ -51,7 +51,7 @@ const CategoryForm = ({ data }) => {
         data={undefined}
         label={cateID ? "Edit Category" : "Create A Category"}
         btn={"Users"} url={'/dashboard/users/create'}     />
-      <TopStepper />
+      {/* <TopStepper /> */}
       <div>
         <form
           className="[&amp;_label.block>span]:font-medium"
