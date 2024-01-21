@@ -801,7 +801,7 @@ const ReviewElements = () => {
       <Heading data={undefined} label="Reviews" btn={"Review"} url={undefined} />
       <div>
         {/* <TableFilter /> */}
-        <Table data={products} tableColumn={columns} pagination={{ total: products["length"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
+        {/* <Table data={products} tableColumn={columns} pagination={{ total: products["length"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} /> */}
       
       </div>
     </div>
