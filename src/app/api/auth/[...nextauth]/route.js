@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import NextAuth from 'next-auth'
 import { baseurl, secret } from "@/config/setting";
 import { jwtDecode } from "jwt-decode";
-const handler= NextAuth({
+export const handler = NextAuth({
   providers: [
     CredentialsProvider({
       id: 'credentials',

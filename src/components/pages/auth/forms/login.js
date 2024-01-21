@@ -32,14 +32,11 @@ const LoginForm = () => {
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
-    
-     // handleLoginAuth(values)
-
       const res = await signIn("credentials", {
         redirect: false,
         ...values,
       });
-      console.log(res);
+
       if (res.ok) {
         if (res.url) {
           const parsedUrl = new URL(res.url);
@@ -64,12 +61,6 @@ const LoginForm = () => {
     },
   });
 
-  // useEffect(() => {
-  //   if (userId) {
-  //     route.push("/dashboard");
-  //   }
-
-  // }, [userId]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
