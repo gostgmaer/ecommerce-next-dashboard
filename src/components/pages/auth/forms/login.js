@@ -9,8 +9,21 @@ import { useAuthContext } from "@/context/authContext";
 import { useSession, signIn, signOut } from "next-auth/react"
 
 const LoginForm = () => {
-  const { handleLoginAuth, user, userId, authError } = useAuthContext();
+  // const { handleLoginAuth, user, userId, authError } = useAuthContext();
+  const [authError, setAuthError] = useState(undefined);
   const route = useRouter();
+
+  // const formik = useFormik({
+  //   initialValues: {
+  //     email: "",
+  //     password: "",
+  //   },
+  //   validationSchema: loginValidationSchema,
+  //   onSubmit: async (values) => {
+  //     handleLoginAuth(values)
+     
+  //   },
+  // });
 
   const formik = useFormik({
     initialValues: {
@@ -19,17 +32,44 @@ const LoginForm = () => {
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
-      handleLoginAuth(values)
-     
+    
+     // handleLoginAuth(values)
+
+      const res = await signIn("credentials", {
+        redirect: false,
+        ...values,
+      });
+      console.log(res);
+      if (res.ok) {
+        if (res.url) {
+          const parsedUrl = new URL(res.url);
+          const callbackUrlParam = parsedUrl.searchParams.get("callbackUrl");
+
+          if (callbackUrlParam) {
+            const decodedCallbackUrl = callbackUrlParam
+            ? decodeURIComponent(callbackUrlParam)
+            : "/";
+
+          route.push(decodedCallbackUrl);
+          }else{
+            route.push("/dashboard");
+          }
+       
+        } else {
+          route.push("/home");
+        }
+      }else{
+        setAuthError(res)
+      }
     },
   });
 
-  useEffect(() => {
-    if (userId) {
-      route.push("/dashboard");
-    }
+  // useEffect(() => {
+  //   if (userId) {
+  //     route.push("/dashboard");
+  //   }
 
-  }, [userId]);
+  // }, [userId]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -93,7 +133,7 @@ const LoginForm = () => {
       </div>
       {authError && (
         <div className="error text-red-500 font-medium text-sm py-2">
-          <p className="text-center">{authError.message}</p>
+          <p className="text-center">{authError.error}</p>
         </div>
       )}
     </form>

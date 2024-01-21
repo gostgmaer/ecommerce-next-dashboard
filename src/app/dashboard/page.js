@@ -6,14 +6,14 @@ import React, { useEffect } from "react";
 
 const Page = () => {
   const route = useRouter();
-  const { userId, user } = useAuthContext();
+  // const { userId, user } = useAuthContext();
 
  
-  useEffect(() => {
-    if (!userId) {
-      route.push("/auth/login");
-    }
-  }, [userId?.user_id]);
+  // useEffect(() => {
+  //   if (!userId) {
+  //     route.push("/auth/login");
+  //   }
+  // }, [userId?.user_id]);
 
   return (
     <Dashboardlayout>
