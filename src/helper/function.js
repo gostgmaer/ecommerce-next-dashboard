@@ -65,13 +65,13 @@ export const findIndex = (array, index) => {
 // };
 
 export const setToken = (name, value, days, type) => {
-
-  const expirationDate = days || 30; // Default expiration in days
-  const oneMonthFromNow = new Date();
-  oneMonthFromNow.setDate(oneMonthFromNow.getDate() + expirationDate);
-
-
-  setClientCookie(name, value, oneMonthFromNow);
+  if (type === "ACCESS_TOKEN") {
+    const token = value.split(".");
+    setClientCookie("headerPayload", `${token[0]}.${token[1]}`, days);
+    setClientCookie("signature", `${token[2]}`, days);
+  } else {
+    setClientCookie(name, value, days);
+  }
 };
 
 
@@ -79,7 +79,6 @@ export const setClientCookie = (name, value, timestamp) => {
   const expirationDate = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
   Cookies.set(name, value, { expires: expirationDate });
 };
-
 
 
 export const generateSlug = (text) => {
@@ -141,4 +140,15 @@ export function parseUrlWithQueryParams(url) {
   });
 
   return nestedObject;
+}
+
+export function storeCookiesOfObject(data) {
+  if (data) {
+    const userKeys = Object.keys(data);
+
+    userKeys.forEach(key => {
+      const value = data[key];
+      Cookies.set(key, value);
+    });
+  }
 }
