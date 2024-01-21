@@ -1,3 +1,4 @@
+// pages/500.js
 import React from 'react';
 
 const Custom500 = () => {

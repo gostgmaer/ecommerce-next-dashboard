@@ -1,6 +1,7 @@
+// pages/404.js
 import React from 'react';
 
-const Page = () => {
+const Custom404 = () => {
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="text-center">
@@ -11,4 +12,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Custom404;
