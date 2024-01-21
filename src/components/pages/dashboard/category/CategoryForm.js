@@ -21,7 +21,7 @@ const initialValues = {
   descriptions: "",
 };
 
-const CategoryForm = ({}) => {
+const CategoryForm = (props) => {
   const [axios, spinner] = useAxios();
   const params = useParams();
   const router = useRouter();
@@ -277,7 +277,7 @@ const CategoryForm = ({}) => {
         </form>
         {/* <FormElement productID={productID} productFormData={productFormData} setProductFormData={setProductFormData} productFormData={productFormData} setProductFormData={setProductFormData} /> */}
       </div>
-      {spinner}
+
     </div>
   );
 };

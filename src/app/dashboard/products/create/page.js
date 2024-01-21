@@ -1,31 +1,43 @@
 import Dashboardlayout from "@/components/layout/dashboard/dashboard";
 import ProductForm from "@/components/pages/dashboard/products/ProductForm";
 import { baseurl } from "@/config/setting";
+import { serverMethod } from "@/helper/serverCall/datafetch";
 import React from "react";
 
-async function getCategories() {
-  const res = await fetch(baseurl+`/categories`)
-  const data = await res.json();
-  return data
-}
 
-async function getBrands() {
-  const res = await fetch(baseurl+`/brands`)
-  const data = await res.json();
-  return data
-}
 
 
 const Page = async () => {
 
-  const category = await getCategories()
-  const brands = await getBrands()
+  const results = await getRequiredData()
+
 
   return (
     <Dashboardlayout>
-      <ProductForm data={{category,brands}} />
+      <ProductForm data={{...results}} />
     </Dashboardlayout>
   );
 };
 
 export default Page;
+
+
+export const getRequiredData = async (query)=>{
+
+  const params = {
+    method: "get",
+    header: {},
+    query: {...query },
+  };
+  const category =await serverMethod(
+    `/products`,
+    params
+  );
+  const brands = await serverMethod(
+    `/categories`,
+    params
+  );
+
+return {category,brands}
+
+}
