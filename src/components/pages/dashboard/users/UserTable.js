@@ -157,14 +157,14 @@ const UserTable = () => {
           setStatus={setStatus}
           searchEvent={loadusers}
         />
-        <Table data={users["results"]} tableColumn={columns} />
-        <PaginatedList
+          <Table data={users["results"]} tableColumn={columns} pagination={{ total: users["total"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
+        {/* <PaginatedList
           length={users["total"]}
           itemsPerPage={itemsPerPage}
           setItemsPerPage={setItemsPerPage}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
-        />
+        /> */}
       </div>
     </div>
   );

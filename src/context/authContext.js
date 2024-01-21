@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import jwt_decode from "jwt-decode";
+
 import { useRouter } from "next/navigation";
 import { post } from "@/lib/http";
 import { setToken } from "@/helper/function";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = React.createContext(null);
 
@@ -23,8 +24,8 @@ export const AuthContextProvider = ({ children }) => {
       if (res.statusCode != 200) {
         setAuthError(res);
       } else {
-        const decoded = jwt_decode(res.access_token);
-        const decodedrefersh = jwt_decode(res.refresh_token);
+        const decoded = jwtDecode(res.access_token);
+        const decodedrefersh = jwtDecode(res.refresh_token);
         setToken(
           "accessToken",
           res.access_token,
@@ -33,7 +34,7 @@ export const AuthContextProvider = ({ children }) => {
         );
         setToken("refreshToken", res.refresh_token, decodedrefersh["exp"]);
         setUserId(decoded);
-        setUser(jwt_decode(res.id_token));
+        setUser(jwtDecode(res.id_token));
         setAuthError(undefined);
         router.push("/dashboard");
       }
@@ -67,14 +68,14 @@ export const AuthContextProvider = ({ children }) => {
     const cookiesData = Cookies.get();
     try {
       if (cookiesData["headerPayload"]) {
-        const decodedToken = jwt_decode(
+        const decodedToken = jwtDecode(
           cookiesData["headerPayload"] + "." + cookiesData["signature"]
         );
 
         if (decodedToken["user_id"]) {
           const res = await post("/user/auth/verify/session");
 
-          const decoded = jwt_decode(res.accessToken);
+          const decoded = jwtDecode(res.accessToken);
           setToken(
             "accessToken",
             res.accessToken,
@@ -82,7 +83,7 @@ export const AuthContextProvider = ({ children }) => {
             "ACCESS_TOKEN"
           );
           setUserId(decoded);
-          setUser(jwt_decode(res.id_token));
+          setUser(jwtDecode(res.id_token));
         }
       }
       setAuthError(undefined);
@@ -100,7 +101,7 @@ export const AuthContextProvider = ({ children }) => {
         const res = await post("/user/auth/session/refresh/token", {
           token: refreshToken,
         });
-        const decoded = jwt_decode(res.access_token);
+        const decoded = jwtDecode(res.access_token);
         setToken(
           "accessToken",
           res.access_token,

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Heading from "../heading";
 import Table from "@/components/global/element/Table";
 // import Pagination from '@/components/global/element/pagination';
@@ -736,6 +736,11 @@ const products = [
 const items = Array.from(Array(20).keys()).map((key) => key + 1);
 
 const ReviewElements = () => {
+
+  const [products, setProducts] = useState({});
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const { refs, floatingStyles } = useFloating();
   const columns = [
     {
@@ -795,9 +800,9 @@ const ReviewElements = () => {
     <div>
       <Heading data={undefined} label="Reviews" btn={"Review"} url={undefined} />
       <div>
-        <TableFilter />
-        <Table data={products} tableColumn={columns} />
-        <PaginatedList items={items} />
+        {/* <TableFilter /> */}
+        <Table data={products} tableColumn={columns} pagination={{ total: products["length"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
+      
       </div>
     </div>
   );

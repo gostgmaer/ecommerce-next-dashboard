@@ -1,3 +1,4 @@
+"use client"
 import Right from "@/components/pages/auth/right";
 import LoginForm from "@/components/pages/auth/forms/login";
 import Link from "next/link";
@@ -31,15 +32,17 @@ const Index = () => {
             <button
               className="rizzui-button inline-flex font-medium items-center text-white justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-4 py-2 text-sm rounded-md border border-transparent focus-visible:ring-offset-2 bg-gray-900 hover:enabled::bg-gray-800 active:enabled:bg-gray-1000 focus-visible:ring-gray-900/30 text-gray-0 h-11 w-full"
               type="button"
+              onClick={ async()=> await signIn("google")}
             >
-              <FaGoogle className="h-4 w-4 mr-1 text-yellow-400"/>
+              <FaGoogle  className="h-4 w-4 mr-1 text-yellow-400"/>
               <span className="truncate">Signin with Google</span>
             </button>
             <button
               className="rizzui-button inline-flex font-medium items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-4 py-2 text-sm rounded-md border border-transparent focus-visible:ring-offset-2 bg-blue-600 hover:enabled:bg-blue-dark focus-visible:ring-blue/30 text-white h-11 w-full"
               type="button"
+              onClick={ async()=> await signIn("github")}
             >
-            <FaFacebook className="h-4 w-4 mr-1"/>
+            <FaFacebook  className="h-4 w-4 mr-1"/>
               <span className="truncate">Signin with Facebook</span>
             </button>
           </div>

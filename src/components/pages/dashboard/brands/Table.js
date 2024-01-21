@@ -16,7 +16,7 @@ import Image from "next/image";
 const BrandTable = () => {
 
   const options = [5, 10, 20, 50];
-  const [itemsPerPage, setItemsPerPage] = useState(options[0]);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState([]);
   const [searchKey, setSearchKey] = useState("");
@@ -144,14 +144,14 @@ const BrandTable = () => {
           setStatus={setStatus}
           searchEvent={fetchCategory}
         />
-        <Table data={categories["results"]} tableColumn={columns} />
-        <PaginatedList
+        <Table data={categories["results"]} tableColumn={columns} pagination={{ total: categories["total"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
+        {/* <PaginatedList
           length={categories["total"]}
           itemsPerPage={itemsPerPage}
           setItemsPerPage={setItemsPerPage}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
-        />
+        /> */}
       </div>
       {/* {spinner} */}
     </div>

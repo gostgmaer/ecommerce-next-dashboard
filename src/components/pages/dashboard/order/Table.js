@@ -136,14 +136,14 @@ const Datatable = () => {
           setStatus={setStatus}
           searchEvent={fetchCategory}
         />
-        <Table data={categories["results"]} tableColumn={columns} />
-        <PaginatedList
+       <Table data={categories["results"]} tableColumn={columns} pagination={{ total: categories["total"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
+        {/* <PaginatedList
           length={categories["total"]}
           itemsPerPage={itemsPerPage}
           setItemsPerPage={setItemsPerPage}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
-        />
+        /> */}
       </div>
 
     </div>

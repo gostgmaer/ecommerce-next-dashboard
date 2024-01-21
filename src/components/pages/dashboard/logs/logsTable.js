@@ -18,7 +18,7 @@ const LogsTable = () => {
   const [axios, spinner] = useAxios();
   const options = [5, 10, 20, 50];
   const [products, setProducts] = useState({});
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchKey, setSearchKey] = useState("");
   const [status, setStatus] = useState("");
@@ -115,14 +115,15 @@ const LogsTable = () => {
           setStatus={undefined}
           searchEvent={undefined}
         />
-        <Table data={products["results"]} tableColumn={columns} />
-        <PaginatedList
+        {/* <Table data={products["results"]} tableColumn={columns} /> */}
+        <Table data={products["results"]} tableColumn={columns} pagination={{ total: products["total"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
+        {/* <PaginatedList
           length={products["total"]}
           itemsPerPage={itemsPerPage}
           setItemsPerPage={setItemsPerPage}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
-        />
+        /> */}
       </div>
     </div>
   );
