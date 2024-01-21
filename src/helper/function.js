@@ -89,3 +89,56 @@ export const generateSlug = (text) => {
     .replace(/-+/g, "-") // Replace consecutive hyphens with a single hyphen
     .substring(0, 50); // Limit length to 50 characters
 };
+
+
+export function generateUrlFromNestedObject(nestedObject) {
+  const queryParams = [];
+
+  const processNestedObject = (obj, prefix = '') => {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key];
+
+        if (typeof value === 'object' && value !== null) {
+          processNestedObject(value, prefix + key + '.');
+        } else {
+          queryParams.push(`${encodeURIComponent(prefix + key)}=${encodeURIComponent(value)}`);
+        }
+      }
+    }
+  };
+
+  processNestedObject(nestedObject);
+
+  if (queryParams.length > 0) {
+    return '?' + queryParams.join('&');
+  } else {
+    return '';
+  }
+}
+
+export function parseUrlWithQueryParams(url) {
+  const queryString = url.split('?')[1];
+  if (!queryString) {
+    return {};
+  }
+
+  const params = new URLSearchParams(queryString);
+  const nestedObject = {};
+
+  params.forEach((value, key) => {
+    const keys = key.split('.');
+    let currentLevel = nestedObject;
+
+    for (let i = 0; i < keys.length - 1; i++) {
+      currentLevel[keys[i]] = currentLevel[keys[i]] || {};
+      currentLevel = currentLevel[keys[i]];
+    }
+
+    // Check for empty or undefined values before decoding
+    const decodedValue = value === 'undefined' ? undefined : decodeURIComponent(value);
+    currentLevel[keys[keys.length - 1]] = decodedValue;
+  });
+
+  return nestedObject;
+}

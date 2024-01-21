@@ -1,6 +1,7 @@
 import Dashboardlayout from "@/components/layout/dashboard/dashboard";
 import ProductForm from "@/components/pages/dashboard/products/ProductForm";
 import { baseurl } from "@/config/setting";
+import { serverMethod } from "@/helper/serverCall/datafetch";
 import Head from "next/head";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -11,32 +12,48 @@ export const metadata = {
   metadata: {},
 };
 
-async function getCategories() {
-  const res = await fetch(baseurl+`/categories`)
-  const data = await res.json();
-  return data
-}
-
-async function getBrands() {
-  const res = await fetch(baseurl+`/brands`)
-  const data = await res.json();
-  return data
-}
 
 
-const Page = async () => {
-  const category = await getCategories()
-  const brands = await getBrands()
 
+const Page = async (props) => {
+  // const category = await getCategories()
+  // const brands = await getBrands()
+  const result = await getRecord(props.params.productID)
 
 
   return (
     <>
       <Dashboardlayout>
-      <ProductForm data={{category,brands}} />
+      <ProductForm data={{...result}} />
       </Dashboardlayout>
     </>
   );
 };
 
 export default Page;
+
+
+export const getRecord = async (id)=>{
+
+  const params = {
+    method: "get",
+    header: {},
+    query: {}
+  };
+  const result = await serverMethod(
+    `/products/${id}`,
+    params
+  );
+  const brands = await serverMethod(
+    `/brands/`,
+    params
+  );
+  const category = await serverMethod(
+    `/categories`,
+    params
+  );
+
+
+return {result,brands,category}
+
+}
