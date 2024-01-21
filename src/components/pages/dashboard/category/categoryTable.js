@@ -11,40 +11,43 @@ import { del, get, patch } from "@/lib/http";
 import { useAxios } from "@/lib/interceptors";
 import "react-data-grid/lib/styles.css";
 import Image from "next/image";
+import { generateUrlFromNestedObject } from "@/helper/function";
+import { useRouter } from "next/navigation";
 
-const Categorytable = () => {
-  const [axios, spinner] = useAxios();
-  const options = [5, 10, 20, 50];
+const Categorytable = (props) => {
+ 
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [categories, setCategories] = useState([]);
   const [searchKey, setSearchKey] = useState("");
   const [status, setStatus] = useState("");
+  const route = useRouter()
 
-  const fetchCategory = async (statuskey) => {
-    const query = {
+  const handleSearch = () => {
+    const paramsQuery = {
       limit: itemsPerPage,
-      page: currentPage,
-      filter: JSON.stringify({ status: statuskey }),
-      search: JSON.stringify({ name: searchKey }),
+       page: currentPage,
     };
-    const category = await get("/categories", query);
-    setCategories(category);
+    const checkQuerydata = generateUrlFromNestedObject({ ...paramsQuery });
+    route.push(`/dashboard/categories${checkQuerydata}`);
   };
 
+
+
   useEffect(() => {
-    fetchCategory();
+    handleSearch()
   }, [itemsPerPage, currentPage]);
+
+
 
   const deleteCategory = async (id) => {
     console.log(id);
     const res = await del("/categories", id);
-    res.statusCode == 200 && fetchCategory();
+    res.statusCode == 200 && handleSearch();
   };
 
   const updateRecord = async (id) => {
     const res = await patch("/categories", { status: "publish" }, id);
-    res.statusCode == 200 && fetchCategory();
+    res.statusCode == 200 && handleSearch();
   };
   const columns = [
     {
@@ -146,18 +149,12 @@ const Categorytable = () => {
           setSearchKey={setSearchKey}
           status={status}
           setStatus={setStatus}
-          searchEvent={fetchCategory}
+          searchEvent={handleSearch}
         />
-           <Table data={categories["results"]} tableColumn={columns} pagination={{ total: categories["total"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
-        {/* <PaginatedList
-          length={categories["total"]}
-          itemsPerPage={itemsPerPage}
-          setItemsPerPage={setItemsPerPage}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        /> */}
+           <Table data={props.data.results} tableColumn={columns} pagination={{ total: props.data.total, page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
+       
       </div>
-      {spinner}
+      
     </div>
   );
 };

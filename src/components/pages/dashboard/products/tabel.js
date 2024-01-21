@@ -18,8 +18,11 @@ import {
 import { del, get, patch, post } from "@/lib/http";
 import { useAxios } from "@/lib/interceptors";
 import Image from "next/image";
+import { generateUrlFromNestedObject } from "@/helper/function";
+import { useRouter } from "next/navigation";
 
-const ProductsPageElement = () => {
+const ProductsPageElement = (props) => {
+  const route = useRouter()
   const [axios, spinner] = useAxios();
   const options = [5, 10, 20, 50];
   const [products, setProducts] = useState({});
@@ -28,32 +31,31 @@ const ProductsPageElement = () => {
   const [searchKey, setSearchKey] = useState("");
   const [status, setStatus] = useState("");
 
-  const loadProducts = async (statuskey) => {
-    const query = {
+
+
+  const handleSearch = () => {
+    const paramsQuery = {
       limit: itemsPerPage,
-      page: currentPage,
-      filter: JSON.stringify({ status: statuskey }),
-      search: JSON.stringify({ name: searchKey }),
+       page: currentPage,
     };
-    const response = await get("/products", query);
-    setProducts(response);
-    // setItems(Array.from(Array(response.total).keys()).map((key) => key + 1));
+    const checkQuerydata = generateUrlFromNestedObject({ ...paramsQuery });
+    route.push(`/dashboard/products${checkQuerydata}`);
   };
 
-  //  const items = Array.from(Array(20).keys()).map((key) => key + 1);
+
 
   useEffect(() => {
-    loadProducts(status);
+    handleSearch()
   }, [itemsPerPage, currentPage]);
 
   const DeleteProduct = async (id) => {
     const res = await del("/products", id);
-    res.statusCode == 200 && loadProducts();
+    res.statusCode == 200 && handleSearch();
   };
 
   const updateRecord = async (id) => {
     const res = await patch("/products", { status: "publish" }, id);
-    res.statusCode == 200 && loadProducts();
+    res.statusCode == 200 && handleSearch();
   };
   const columns = [
     {
@@ -164,10 +166,10 @@ const ProductsPageElement = () => {
           setSearchKey={setSearchKey}
           status={status}
           setStatus={setStatus}
-          searchEvent={loadProducts}
+          searchEvent={handleSearch}
         />
-        <Table data={products["results"]} tableColumn={columns} pagination={{ total: products["total"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
-      
+        <Table data={props.data.results} tableColumn={columns} pagination={{ total: props.data.total, page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
+
       </div>
     </div>
   );
