@@ -12,6 +12,7 @@ import { Popover, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import Link from "next/link";
 import { useAuthContext } from "@/context/authContext";
+import { signOut, useSession } from "next-auth/react";
 
 const navigation = [
   {
@@ -35,8 +36,9 @@ const navigation = [
 ];
 
 const Header = () => {
-  const { user, userId, Logout } = useAuthContext();
-
+  // const { user, userId, Logout } = useAuthContext();
+  const { data: session } = useSession()
+  console.log(session);
   return (
     <header className="sticky top-0 z-50 flex items-center bg-gray-0/80 px-4 py-4 backdrop-blur-xl  md:px-5 lg:px-6 2xl:py-5 3xl:px-8 4xl:px-10">
       <div className="flex w-full  items-center text-gray-700">
@@ -126,12 +128,12 @@ const Header = () => {
           <MdSettings />
         </button>
 
-        <Popover className="relative bg-white rounded-full">
+       {session?.user && <Popover className="relative bg-white rounded-full">
           <Popover.Button className="hover:border-none active:border-none focus-visible:border-none focus-visible:outline-none">
             <img
-              src={user?.profilePicture}
-              alt={user?.username}
-              title={user?.username}
+              src={session.user?.image}
+              alt={session.user?.email}
+              title={session.user?.email}
               draggable="false"
               loading="lazy"
               width="40"
@@ -143,8 +145,8 @@ const Header = () => {
             <div className="w-64 bg-white text-left rtl:text-right rizzui-tooltip-root absolute -right-10 top-2  min-w-max text-sm rounded-xl bg-gray-0 !text-gray-900 border border-gray-300 drop-shadow-md z-50 p-0 dark:bg-gray-50 [&amp;>svg]:dark:fill-gray-50">
               <div className="flex items-center border-b border-gray-300 px-4 py-3 ">
                 <img
-                  src={user?.profilePicture}
-                  alt={user?.username}
+                  src={session.user?.image}
+                  alt={session.user?.email}
                   title="Albert Flores"
                   draggable="false"
                   loading="lazy"
@@ -154,9 +156,9 @@ const Header = () => {
                 />
                 <div className="ms-3">
                   <h6 className="rizzui-title-h6 font-semibold">
-               {user && user.firstName +" "+user.lastName}
+               {session && session.user.name}
                   </h6>
-                  <p className="text-gray-600">{user?.username}</p>
+                  <p className="text-gray-600">{session.user?.email}</p>
                 </div>
               </div>
               <div className="grid p-2 font-medium text-gray-700">
@@ -174,14 +176,14 @@ const Header = () => {
                 <button
                   className="rizzui-button inline-flex items-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-opacity-50 transition-colors duration-200 text-sm rounded-md hover:enabled:text-gray-1000 focus-visible:ring-gray-900/30 h-auto w-full justify-start p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
                   type="button"
-                  onClick={Logout}
+                  // onClick={signOut}
                 >
                   Sign Out
                 </button>
               </div>
             </div>
           </Popover.Panel>
-        </Popover>
+        </Popover>}
       </div>
     </header>
   );
