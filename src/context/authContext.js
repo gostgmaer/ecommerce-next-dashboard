@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { post } from "@/lib/http";
-import { setToken } from "@/helper/function";
+import { setToken, storeCookiesOfObject } from "@/helper/function";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { useSession } from "next-auth/react";
 
 export const AuthContext = React.createContext(null);
 
@@ -15,6 +16,21 @@ export const AuthContextProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
 
   const router = useRouter();
+
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (session) {
+      if (session.user["accessToken"]) {
+        const token = session.user["accessToken"].split(".");
+        setToken("headerPayload", `${token[0]}.${token[1]}`, session.user["exp"]);
+        setToken("signature", `${token[2]}`, session.user["exp"]);
+      }
+      storeCookiesOfObject(session["user"])
+    }
+  }, [session]);
+
+
 
   const handleLoginAuth = async (body) => {
     // const res = await post("/user/auth/login", body);
