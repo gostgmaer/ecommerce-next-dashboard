@@ -1,10 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import Table from "rc-table";
+import PaginatedList from "./pagination";
 
 // import 'rc-table/assets/index.css';
 
-const ProductTable = ({ data, tableColumn }) => {
+const ProductTable = ({ data, tableColumn, pagination }) => {
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
 
@@ -57,6 +58,7 @@ const ProductTable = ({ data, tableColumn }) => {
         data={data}
         rowKey={(record) => record.key}
       />
+     {pagination && <PaginatedList totalItems={pagination.total} limit={pagination.limit} currentPage={pagination.page} setPage={pagination.setPage} setLimit={pagination.setLimit} />}
     </div>
   );
 };
