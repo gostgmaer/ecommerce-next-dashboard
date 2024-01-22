@@ -17,48 +17,10 @@ const BrandForm = ({ initialValues }) => {
   const params = useParams();
   const router = useRouter();
   const id = params["id"];
-  // const [data, setData] = useState({});
-  // const [formData, setFormData] = useState({
-  //   name: "",
-  //   descriptions: "",
-  //   slug: "",
-  //   email: "",
-  //   phone: "",
-  //   website: "",
-  //   tagline: "",
-  // });
+
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [slug, setSlug] = useState("");
-
-  // const fetchSingleBrand = async () => {
-  //   const response = await getsingle("/brands", id);
-  //   if (response.results) {
-  //     setFormData({
-  //       name: response["results"]["name"],
-  //       email: response["results"]["contact"]["email"],
-  //       phone: response["results"]["contact"]["phone"],
-  //       slug: "",
-  //       website: response["results"]["contact"]["website"],
-  //       tagline: response["results"]["tagline"],
-  //       descriptions: response["results"]["descriptions"],
-  //     });
-  //     setSlug(response?.["results"]?.["slug"]);
-  //     setData(response);
-  //     setSelectedFiles(response.results.images);
-  //   }
-  // };
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({ ...formData, [name]: value });
-  //   if (name === "name") {
-  //     setSlug(value);
-  //   }
-  // };
-  // const haldleChangeSlug = (e) => {
-  //   setSlug(e.target.value);
-  // };
 
   const generateBody = () => {
     const body = {
