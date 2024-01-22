@@ -24,7 +24,7 @@ const Page = async (props) => {
   return (
     <>
       <Dashboardlayout>
-      <ProductForm data={{...result}} />
+      <ProductForm data={{ ...result }} initialValues={result.product.results} />
       </Dashboardlayout>
     </>
   );
@@ -40,12 +40,12 @@ export const getRecord = async (id)=>{
     header: {},
     query: {}
   };
-  const result = await serverMethod(
+  const product = await serverMethod(
     `/products/${id}`,
     params
   );
   const brands = await serverMethod(
-    `/brands/`,
+    `/brands`,
     params
   );
   const category = await serverMethod(
@@ -54,6 +54,6 @@ export const getRecord = async (id)=>{
   );
 
 
-return {result,brands,category}
+return {product,brands,category}
 
 }

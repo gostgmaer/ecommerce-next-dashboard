@@ -7,23 +7,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuthContext } from "@/context/authContext";
 import { useSession, signIn, signOut } from "next-auth/react"
+import Input from "@/components/global/fields/input";
+import { notifyerror } from "@/lib/notify/notice";
 
 const LoginForm = () => {
   // const { handleLoginAuth, user, userId, authError } = useAuthContext();
   const [authError, setAuthError] = useState(undefined);
   const route = useRouter();
-
-  // const formik = useFormik({
-  //   initialValues: {
-  //     email: "",
-  //     password: "",
-  //   },
-  //   validationSchema: loginValidationSchema,
-  //   onSubmit: async (values) => {
-  //     handleLoginAuth(values)
-     
-  //   },
-  // });
 
   const formik = useFormik({
     initialValues: {
@@ -44,19 +34,20 @@ const LoginForm = () => {
 
           if (callbackUrlParam) {
             const decodedCallbackUrl = callbackUrlParam
-            ? decodeURIComponent(callbackUrlParam)
-            : "/";
+              ? decodeURIComponent(callbackUrlParam)
+              : "/";
 
-          route.push(decodedCallbackUrl);
-          }else{
+            route.push(decodedCallbackUrl);
+          } else {
             route.push("/dashboard");
           }
-       
+
         } else {
           route.push("/home");
         }
-      }else{
-        setAuthError(res)
+      } else {
+   
+       notifyerror(res.error,5000)
       }
     },
   });
@@ -66,32 +57,19 @@ const LoginForm = () => {
     <form onSubmit={formik.handleSubmit}>
       <div className="space-y-5 lg:space-y-6">
         <div className="rizzui-input-root flex flex-col [&amp;>label>span]:font-medium">
-          <label className="block">
-            <span className="rizzui-input-label block text-base mb-2">
-              Email
-            </span>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="w-full px-4 py-2 bg-white placeholder:text-sm border rounded-md focus:outline-none focus:border-blue-500 pr-0"
-              name="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-            />
-          </label>
+          <Input label={"Email"} type={"email"} additionalAttrs={{
+            ...formik.getFieldProps("email"),
+            placeholder: "info@mail.com",
+          }} classes={undefined} icon={undefined} id={"email"} />
+
         </div>
         <div className="rizzui-password-root flex flex-col [&amp;>label>span]:font-medium">
-          <label className="block">
-            <span className="rizzui-password-label block text-base mb-2">
-              Password
-            </span>
-            <PasswordField
-              value={formik.values.password}
-              handleChange={formik.handleChange}
-              placeholder={"Password"}
-              name={"password"}
-            />
-          </label>
+
+          <Input label={"Password"} type={"password"} additionalAttrs={{
+            ...formik.getFieldProps("password"),
+            placeholder: "Password",
+          }} classes={undefined} icon={undefined} id={"password"} />
+
         </div>
         <div className="flex items-center justify-between pb-1">
           <div className="rizzui-checkbox-root flex flex-col [&amp;>label>span]:font-medium">
