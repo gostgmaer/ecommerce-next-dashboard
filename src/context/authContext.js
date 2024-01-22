@@ -80,35 +80,35 @@ export const AuthContextProvider = ({ children }) => {
     } catch (error) {}
   };
 
-  const unsubscribe = async () => {
-    const cookiesData = Cookies.get();
-    try {
-      if (cookiesData["headerPayload"]) {
-        const decodedToken = jwtDecode(
-          cookiesData["headerPayload"] + "." + cookiesData["signature"]
-        );
+  // const unsubscribe = async () => {
+  //   const cookiesData = Cookies.get();
+  //   try {
+  //     if (cookiesData["headerPayload"]) {
+  //       const decodedToken = jwtDecode(
+  //         cookiesData["headerPayload"] + "." + cookiesData["signature"]
+  //       );
 
-        if (decodedToken["user_id"]) {
-          const res = await post("/user/auth/verify/session");
+  //       if (decodedToken["user_id"]) {
+  //         const res = await post("/user/auth/verify/session");
 
-          const decoded = jwtDecode(res.accessToken);
-          setToken(
-            "accessToken",
-            res.accessToken,
-            decoded["exp"],
-            "ACCESS_TOKEN"
-          );
-          setUserId(decoded);
-          setUser(jwtDecode(res.id_token));
-        }
-      }
-      setAuthError(undefined);
-    } catch (error) {
-      setUser(undefined);
-      setUserId(undefined);
-      setAuthError(error.message);
-    }
-  };
+  //         const decoded = jwtDecode(res.accessToken);
+  //         setToken(
+  //           "accessToken",
+  //           res.accessToken,
+  //           decoded["exp"],
+  //           "ACCESS_TOKEN"
+  //         );
+  //         setUserId(decoded);
+  //         setUser(jwtDecode(res.id_token));
+  //       }
+  //     }
+  //     setAuthError(undefined);
+  //   } catch (error) {
+  //     setUser(undefined);
+  //     setUserId(undefined);
+  //     setAuthError(error.message);
+  //   }
+  // };
 
   const getToken = async () => {
     try {
@@ -133,9 +133,9 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
-  React.useEffect(() => {
-    unsubscribe();
-  }, []);
+  // React.useEffect(() => {
+  //   unsubscribe();
+  // }, []);
 
   useEffect(() => {
     const tokenRefreshInterval = setInterval(getToken, 10 * 60 * 1000);

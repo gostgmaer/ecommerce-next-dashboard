@@ -64,14 +64,14 @@ const ProductsPageElement = (props) => {
       key: "title",
       render: (text, record) => (
         <div className=" flex gap-1 items-center justify-start">
-          <Image
+          {/* <Image
             width={50}
             height={50}
             className=" rounded-2xl"
             src={record.images[0].url}
             alt={record.images[0].name}
             style={{ maxWidth: "100px" }}
-          />
+          /> */}
           <p>{record.title}</p>
         </div>
       ),

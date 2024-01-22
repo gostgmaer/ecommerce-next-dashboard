@@ -5,10 +5,18 @@ import CategoryForm from "@/components/pages/dashboard/category/CategoryForm";
 import React from "react";
 
 const Page = () => {
- 
+
   return (
     <Dashboardlayout>
-      <BrandForm />
+      <BrandForm initialValues={{
+        name: "",
+        descriptions: "",
+        slug: "",
+        email: "",
+        phone: "",
+        website: "",
+        tagline: "",
+      }} data={undefined} />
     </Dashboardlayout>
   );
 };
