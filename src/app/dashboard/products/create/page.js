@@ -14,7 +14,38 @@ const Page = async () => {
 
   return (
     <Dashboardlayout>
-      <ProductForm data={{...results}} />
+      <ProductForm data={{ ...results }} initialValues={{
+        title: '',
+        sku: '',
+        productType: '',
+        categories: '', // Assuming categories is an array of ObjectId
+        descriptions: '',
+        status: '',
+        images: [],
+        price: 0,
+        costPrice: 0,
+        retailPrice: 0,
+        salePrice: 0,
+        trackInventory: 'yes',
+        currentStockLevel: 0,
+        lowStockLevel: 0,
+        gtin: '',
+        manufacturerPartNumber: '',
+        brandName: '', // Assuming brandName is an ObjectId
+        overview: '',
+        slug: '',
+        productUPCEAN: '',
+        seo_info: {
+          metaTitle: '',
+          metaDescription: '',
+        },
+        tags: [],
+        reviews: [], // Assuming reviews is an array of ObjectId
+        features: [],
+        specifications: {},
+        isFeatured: false,
+        isAvailable: true,
+      }} />
     </Dashboardlayout>
   );
 };
@@ -22,22 +53,22 @@ const Page = async () => {
 export default Page;
 
 
-export const getRequiredData = async (query)=>{
+export const getRequiredData = async (query) => {
 
   const params = {
     method: "get",
     header: {},
-    query: {...query },
+    query: { ...query },
   };
-  const category =await serverMethod(
-    `/products`,
+  const brands = await serverMethod(
+    `/brands`,
     params
   );
-  const brands = await serverMethod(
+  const category = await serverMethod(
     `/categories`,
     params
   );
 
-return {category,brands}
+  return { category, brands }
 
 }
