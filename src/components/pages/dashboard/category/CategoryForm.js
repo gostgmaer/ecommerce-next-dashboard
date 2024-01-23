@@ -63,7 +63,7 @@ const CategoryForm = (props) => {
 
         formik.setSubmitting(true);
 
-        console.log(formik.isSubmitting);
+        //console.log(formik.isSubmitting);
         switch (values["clickedButton"]) {
           case "saveDraft":
             saveCategory("draft");

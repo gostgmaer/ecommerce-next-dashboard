@@ -29,7 +29,7 @@ const ProductForm = ({ data, initialValues }) => {
 
   const saveProduct = async (status) => {
     const body = generateProductBody();
-    console.log(body);
+    //console.log(body);
     const res = await post("/products", { ...body, status: status });
     if (res.statusCode === 201) {
       notifySuccess(res.message, 3000);
@@ -72,7 +72,7 @@ const ProductForm = ({ data, initialValues }) => {
         // Disable the submit button during submission
         formik.setSubmitting(true);
 
-        console.log(formik.isSubmitting);
+        //console.log(formik.isSubmitting);
         switch (values["clickedButton"]) {
           case "saveDraft":
             saveProduct("draft");
@@ -504,7 +504,7 @@ const ProductForm = ({ data, initialValues }) => {
                 {formik.errors.productUPCEAN &&
                   formik.touched.productUPCEAN && (
                     <div className="text-red-500 text-sm">
-                      {formik.errors.productUPCEAN}
+                      {formik?.errors?.["productUPCEAN"]}
                     </div>
                   )}
 
@@ -526,25 +526,15 @@ const ProductForm = ({ data, initialValues }) => {
                   placeholder: "seo meta title",
                 }} classes={undefined} icon={undefined} id={"seo_info.metaTitle"} />
 
-                {formik.errors.seo_info?.metaTitle &&
-                  formik.touched.seo_info?.metaTitle && (
+                {formik.errors.seo_info?.["metaTitle"] &&
+                  formik.touched.seo_info?.["metaTitle"] && (
                     <div className="text-red-500 text-sm">
-                      {formik.errors.seo_info?.metaTitle}
+                      {formik.errors.seo_info?.["metaTitle"]}
                     </div>
                   )}
               </div>
               <div>
-                {/* <TextField
-                  label={"Meta Keywords"}
-                  type={"text"}
-                  placeholder={"SEO Meta Keywords"}
-                  additionalAttrs={undefined}
-                  value={data.metaKeywords}
-                  onChange={handleChange}
-                  classes={undefined}
-                  id={"metaKeywords"}
-                  icon={undefined}
-                /> */}
+               
               </div>
               <div className=" col-span-2">
                 <label className="block">
@@ -563,26 +553,14 @@ const ProductForm = ({ data, initialValues }) => {
 
                   />
                 </label>
-                {formik.errors.seo_info?.metaDescription &&
-                  formik.touched.seo_info?.metaDescription && (
+                {formik.errors.seo_info?.["metaDescription"] &&
+                  formik.touched.seo_info?.["metaDescription"] && (
                     <div className="text-red-500 text-sm">
-                      {formik.errors.seo_info?.metaDescription}
+                      {formik.errors.seo_info?.["metaDescription"]}
                     </div>
                   )}
               </div>
-              {/* <div className=" col-span-2">
-                <TextField
-                  label={"Meta Description"}
-                  type={"text"}
-                  placeholder={"SEO Meta Description"}
-                  additionalAttrs={undefined}
-                  value={data.metaDescription}
-                  onChange={handleChange}
-                  classes={undefined}
-                  id={"seoDescriptions"}
-                  icon={undefined}
-                />
-              </div> */}
+         
             </div>
           </div>
           <div className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full" id="variant-options">

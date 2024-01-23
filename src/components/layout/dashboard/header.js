@@ -38,7 +38,7 @@ const navigation = [
 const Header = () => {
   // const { user, userId, Logout } = useAuthContext();
   const { data: session } = useSession()
-  console.log(session);
+  //console.log(session);
   return (
     <header className="sticky top-0 z-50 flex items-center bg-gray-0/80 px-4 py-4 backdrop-blur-xl  md:px-5 lg:px-6 2xl:py-5 3xl:px-8 4xl:px-10">
       <div className="flex w-full  items-center text-gray-700">

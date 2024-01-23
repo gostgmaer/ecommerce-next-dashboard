@@ -8,7 +8,7 @@ const Page = async (props) => {
 
   const users = await getAllRecord(props.searchParams)
 
- console.log(users);
+ //console.log(users);
 
   return (
     <Dashboardlayout>

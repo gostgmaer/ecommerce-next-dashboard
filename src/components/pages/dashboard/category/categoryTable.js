@@ -37,7 +37,7 @@ const Categorytable = (props) => {
 
 
   const deleteCategory = async (id) => {
-    console.log(id);
+    //console.log(id);
     const res = await del("/categories", id);
     res.statusCode == 200 && handleSearch();
   };
