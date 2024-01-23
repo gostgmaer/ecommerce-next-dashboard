@@ -38,7 +38,7 @@ const ResetForm = () => {
     if (userId) {
       router.push("/dashboard");
     }
-  }, [userId]);
+  }, []);
 
 
 

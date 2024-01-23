@@ -11,7 +11,7 @@ const Index = () => {
         <div className="mx-auto w-full max-w-md py-12 md:max-w-lg lg:max-w-xl 2xl:pb-8 2xl:pt-2">
           <div className="flex flex-col items-center">
             <a className="mb-7 inline-block max-w-[64px] lg:mb-9" href="/">
-              <img
+              {/* <img
                 alt="Isomorphic"
                 loading="lazy"
                 width="61"
@@ -19,7 +19,7 @@ const Index = () => {
                 decoding="async"
                 data-nimg="1"
                 src="https://isomorphic-furyroad.vercel.app/_next/static/media/logo-short.18ca02a8.svg"
-              />
+              /> */}
             </a>
             <h2 className="rizzui-title-h2 mb-7 text-center text-[28px] font-bold leading-snug md:text-3xl md:!leading-normal lg:mb-10 lg:text-4xl">
               Having trouble to sign in? <br />

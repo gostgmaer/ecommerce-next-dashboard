@@ -42,7 +42,7 @@ const ForgetForm = () => {
     if (userId) {
       router.push("/dashboard");
     }
-  }, [userId]);
+  }, []);
 
   return (
     <form onSubmit={formik.handleSubmit}>
