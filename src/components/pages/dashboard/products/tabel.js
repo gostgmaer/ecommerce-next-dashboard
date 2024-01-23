@@ -18,7 +18,7 @@ import {
 import { del, get, patch, post } from "@/lib/http";
 import { useAxios } from "@/lib/interceptors";
 import Image from "next/image";
-import { generateUrlFromNestedObject } from "@/helper/function";
+import { exportExcelFile, generateUrlFromNestedObject } from "@/helper/function";
 import { useRouter } from "next/navigation";
 
 const ProductsPageElement = (props) => {
@@ -149,14 +149,25 @@ const ProductsPageElement = (props) => {
     },
   ];
 
+
+  const exportbtnclick = () => {
+    const objectofkeys = {
+      "title": "Product Name",
+      "status": "Status",
+      "sku": "SKU",
+      "price": "Price",
+      "salePrice": "Sale Price"
+    }
+    exportExcelFile(props.data.results, objectofkeys,"products")
+  }
+
   return (
     <div>
       <Heading
         data={undefined}
         label={"Products"}
         btn={"product"}
-        url={"/dashboard/products/create"}
-      />
+        url={"/dashboard/products/create"} exportevent={exportbtnclick}      />
       <div>
         <TableFilter
           searchKey={searchKey}

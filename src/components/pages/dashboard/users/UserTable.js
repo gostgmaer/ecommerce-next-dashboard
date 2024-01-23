@@ -13,7 +13,7 @@ import {
 import { del, get, patch, post } from "@/lib/http";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { generateUrlFromNestedObject } from "@/helper/function";
+import { exportExcelFile, generateUrlFromNestedObject } from "@/helper/function";
 
 const UserTable = (props) => {
 
@@ -22,6 +22,7 @@ const UserTable = (props) => {
   const [searchKey, setSearchKey] = useState("");
   const [status, setStatus] = useState("");
   const route = useRouter()
+
 
   const loadusers = () => {
     const query = {
@@ -132,14 +133,28 @@ const UserTable = (props) => {
     },
   ];
 
+  const exportbtnclick = () => {
+    const objectofkeys = {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "username": "Username",
+      "email": "Email Address",
+      "role": "Role",
+      "contactNumber": "Contact Number",
+      "profilePicture": "Image url",
+      "phoneNumber": "Phone Number",
+      "dateOfBirth": "Date of Birth"
+    }
+    exportExcelFile(props.users["results"], objectofkeys,"userList")
+  }
+
   return (
     <div>
       <Heading
         data={undefined}
         label={"users"}
         btn={undefined}
-        url={"/dashboard/users/create"}
-      />
+        url={"/dashboard/users/create"} exportevent={exportbtnclick} />
       <div>
         <TableFilter
           searchKey={searchKey}
