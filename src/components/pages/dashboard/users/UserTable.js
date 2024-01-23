@@ -23,7 +23,7 @@ const UserTable = (props) => {
   const [status, setStatus] = useState("");
   const route = useRouter()
 
-  console.log(props);
+
   const loadusers = () => {
     const query = {
       limit: itemsPerPage,
@@ -146,9 +146,6 @@ const UserTable = (props) => {
       "dateOfBirth": "Date of Birth"
     }
     exportExcelFile(props.users["results"], objectofkeys,"userList")
-
-
-
   }
 
   return (
