@@ -23,9 +23,6 @@ import { useRouter } from "next/navigation";
 
 const ProductsPageElement = (props) => {
   const route = useRouter()
-  const [axios, spinner] = useAxios();
-  const options = [5, 10, 20, 50];
-  const [products, setProducts] = useState({});
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchKey, setSearchKey] = useState("");
