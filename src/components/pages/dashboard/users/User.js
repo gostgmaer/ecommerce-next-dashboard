@@ -23,12 +23,12 @@ const CategoryForm = ({ data }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProductFormData({ ...productFormData, [name]: value });
-    console.log(productFormData);
+    //console.log(productFormData);
   };
 
   const saveProduct = (status) => {
     const body = { ...productFormData, status: status };
-    console.log(body);
+    //console.log(body);
   };
 
   const draftForm = (e) => {

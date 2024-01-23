@@ -4,9 +4,9 @@ import React from 'react'
 
 const Page = async (props) => {
 
-  // console.log(props);
+  // //console.log(props);
   const result = await getRecord(props.params.productID)
-// console.log(result);
+// //console.log(result);
   return (
     <Dashboardlayout>
       <div></div>

@@ -38,7 +38,7 @@ const BrandTable = () => {
   }, [itemsPerPage, currentPage]);
 
   const deleteCategory = async (id) => {
-    console.log(id);
+    //console.log(id);
     const res = await del("/brands", id);
     res.statusCode == 200 && fetchCategory();
   };

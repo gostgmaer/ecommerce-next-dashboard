@@ -72,7 +72,7 @@ const BrandForm = ({ initialValues }) => {
 
         formik.setSubmitting(true);
 
-        console.log(formik.isSubmitting);
+        //console.log(formik.isSubmitting);
         switch (values["clickedButton"]) {
           case "saveDraft":
             saveData("draft");
