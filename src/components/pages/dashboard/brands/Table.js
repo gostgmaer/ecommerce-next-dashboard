@@ -2,35 +2,29 @@
 import React, { useEffect, useState } from "react";
 import Heading from "../heading";
 import Table from "@/components/global/element/Table";
-// import Pagination from '@/components/global/element/pagination';
-import PaginatedList from "@/components/global/element/pagination";
 import TableFilter from "@/components/global/element/tableFilter";
 import Link from "next/link";
 import { FaCheck, FaEye, FaPen, FaTrash } from "react-icons/fa";
 import { del, get, patch } from "@/lib/http";
-import { useAxios } from "@/lib/interceptors";
 import "react-data-grid/lib/styles.css";
 import Image from "next/image";
+import { exportExcelFile, generateUrlFromNestedObject } from "@/helper/function";
+import { useRouter } from "next/navigation";
 
-
-const BrandTable = () => {
-
-  const options = [5, 10, 20, 50];
+const BrandTable = (props) => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [categories, setCategories] = useState([]);
   const [searchKey, setSearchKey] = useState("");
   const [status, setStatus] = useState("");
+  const route = useRouter()
 
   const fetchCategory = async (statuskey) => {
     const query = {
       limit: itemsPerPage,
       page: currentPage,
-      filter: JSON.stringify({ status: statuskey }),
-      search: JSON.stringify({ name: searchKey }),
     };
-    const category = await get("/brands", query);
-    setCategories(category);
+    const checkQuerydata = generateUrlFromNestedObject({ ...query });
+    route.push(`/dashboard/brands${checkQuerydata}`);
   };
 
   useEffect(() => {
@@ -47,6 +41,8 @@ const BrandTable = () => {
     const res = await patch("/brands", { status: "publish" }, id);
     res.statusCode == 200 && fetchCategory();
   };
+
+
   const columns = [
     {
       title: "Image",
@@ -69,7 +65,7 @@ const BrandTable = () => {
       key: "name",
       sorter: (a, b) => a.name - b.name, // Enable sorting for this column
     },
-   
+
     {
       title: (
         <div className="flex items-center gap-1">
@@ -110,10 +106,9 @@ const BrandTable = () => {
           </Link> */}
           <button
             onClick={() => updateRecord(record._id)}
-            className={`rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700 ${
-              record.status === "publish" &&
+            className={`rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700 ${record.status === "publish" &&
               " text-green-400 hover:!border-green-600 border-green-400 hover:text-green-600"
-            }`}
+              }`}
           >
             <FaCheck />
           </button>
@@ -128,14 +123,24 @@ const BrandTable = () => {
     },
   ];
 
+  const exportbtnclick = () => {
+    const objectofkeys = {
+      "name": "Name",
+      "slug": "Slug",
+      "status": "Status",
+      "total": "Total",
+      "_id": "Brand Id"
+    }
+    exportExcelFile(props.data["results"], objectofkeys, "brands")
+  }
+
   return (
     <div>
       <Heading
         data={undefined}
         label="Brands"
         btn={"brands"}
-        url={"/dashboard/brands/create"}
-      />
+        url={"/dashboard/brands/create"} exportevent={exportbtnclick} />
       <div>
         <TableFilter
           searchKey={searchKey}
@@ -144,14 +149,8 @@ const BrandTable = () => {
           setStatus={setStatus}
           searchEvent={fetchCategory}
         />
-        <Table data={categories["results"]} tableColumn={columns} pagination={{ total: categories["total"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
-        {/* <PaginatedList
-          length={categories["total"]}
-          itemsPerPage={itemsPerPage}
-          setItemsPerPage={setItemsPerPage}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        /> */}
+        <Table data={props.data["results"]} tableColumn={columns} pagination={{ total: props.data["total"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
+
       </div>
       {/* {spinner} */}
     </div>
