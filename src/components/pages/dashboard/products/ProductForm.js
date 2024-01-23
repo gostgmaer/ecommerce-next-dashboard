@@ -29,7 +29,7 @@ const ProductForm = ({ data, initialValues }) => {
 
   const saveProduct = async (status) => {
     const body = generateProductBody();
-    console.log(body);
+    //console.log(body);
     const res = await post("/products", { ...body, status: status });
     if (res.statusCode === 201) {
       notifySuccess(res.message, 3000);
@@ -72,7 +72,7 @@ const ProductForm = ({ data, initialValues }) => {
         // Disable the submit button during submission
         formik.setSubmitting(true);
 
-        console.log(formik.isSubmitting);
+        //console.log(formik.isSubmitting);
         switch (values["clickedButton"]) {
           case "saveDraft":
             saveProduct("draft");
@@ -229,25 +229,7 @@ const ProductForm = ({ data, initialValues }) => {
                       {formik.errors.overview}
                     </div>
                   )}
-                {/* <TextField
-                  label={"Overview"}
-                  type={"text"}
-                  placeholder={"Overview Details"}
-                  additionalAttrs={{}}
-                  onChange={(e) => {
-                    handleChange(e);
-                    handleOverviewChange(e);
-                  }}
-                  value={values.overview}
-                  classes={undefined}
-                  icon={undefined}
-                  id={"overview"}
-                />
-                {errors.overview && (
-                  <div className="text-red-500 text-xs mt-1">
-                    {errors.overview}
-                  </div>
-                )} */}
+                
               </div>
 
               <div className=" col-span-2">
@@ -379,24 +361,7 @@ const ProductForm = ({ data, initialValues }) => {
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="col-span-full grid gap-4">
 
-                {/* {options.map((item) => (
-                  <div className=" flex flex-col" key={item.value}>
-                    <label className="flex flex-row items-center">
-                      <input
-                        className=" disabled:bg-gray-50 disabled:border-gray-200 h-5 w-5 bg-transparent border border-gray-300 checked:!bg-gray-1000 focus:ring-gray-900/30 checked:!border-gray-1000 hover:enabled:border-gray-1000 dark:checked:!bg-gray-200 dark:checked:!border-gray-200 dark:focus:ring-gray-200 dark:focus:ring-offset-gray-0"
-                        type="radio"
-                        value={item.value}
-                        checked={data.trackInventory === item.value}
-                        onChange={handleChange}
-                        id="trackInventory"
-                        name="trackInventory"
-                      />
-                      <span className=" text-sm ml-1.5 rtl:mr-1.5">
-                        {item.label}
-                      </span>
-                    </label>
-                  </div>
-                ))} */}
+    
               </div>
               <div>
 
@@ -504,7 +469,7 @@ const ProductForm = ({ data, initialValues }) => {
                 {formik.errors.productUPCEAN &&
                   formik.touched.productUPCEAN && (
                     <div className="text-red-500 text-sm">
-                      {formik.errors.productUPCEAN}
+                      {formik?.errors?.["productUPCEAN"]}
                     </div>
                   )}
 
@@ -515,7 +480,7 @@ const ProductForm = ({ data, initialValues }) => {
             <div className="col-span-1">
               <h4 className=" font-semibold text-xl">Search Engine Optimization</h4>
               <p className="mt-2">
-                Add your product's seo information here
+                Add your product&lsquo;s seo information here
               </p>
             </div>
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -526,25 +491,15 @@ const ProductForm = ({ data, initialValues }) => {
                   placeholder: "seo meta title",
                 }} classes={undefined} icon={undefined} id={"seo_info.metaTitle"} />
 
-                {formik.errors.seo_info?.metaTitle &&
-                  formik.touched.seo_info?.metaTitle && (
+                {formik.errors.seo_info?.["metaTitle"] &&
+                  formik.touched.seo_info?.["metaTitle"] && (
                     <div className="text-red-500 text-sm">
-                      {formik.errors.seo_info?.metaTitle}
+                      {formik.errors.seo_info?.["metaTitle"]}
                     </div>
                   )}
               </div>
               <div>
-                {/* <TextField
-                  label={"Meta Keywords"}
-                  type={"text"}
-                  placeholder={"SEO Meta Keywords"}
-                  additionalAttrs={undefined}
-                  value={data.metaKeywords}
-                  onChange={handleChange}
-                  classes={undefined}
-                  id={"metaKeywords"}
-                  icon={undefined}
-                /> */}
+               
               </div>
               <div className=" col-span-2">
                 <label className="block">
@@ -563,26 +518,14 @@ const ProductForm = ({ data, initialValues }) => {
 
                   />
                 </label>
-                {formik.errors.seo_info?.metaDescription &&
-                  formik.touched.seo_info?.metaDescription && (
+                {formik.errors.seo_info?.["metaDescription"] &&
+                  formik.touched.seo_info?.["metaDescription"] && (
                     <div className="text-red-500 text-sm">
-                      {formik.errors.seo_info?.metaDescription}
+                      {formik.errors.seo_info?.["metaDescription"]}
                     </div>
                   )}
               </div>
-              {/* <div className=" col-span-2">
-                <TextField
-                  label={"Meta Description"}
-                  type={"text"}
-                  placeholder={"SEO Meta Description"}
-                  additionalAttrs={undefined}
-                  value={data.metaDescription}
-                  onChange={handleChange}
-                  classes={undefined}
-                  id={"seoDescriptions"}
-                  icon={undefined}
-                />
-              </div> */}
+         
             </div>
           </div>
           <div className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full" id="variant-options">
@@ -612,7 +555,7 @@ const ProductForm = ({ data, initialValues }) => {
             <div className="col-span-1">
               <h4 className=" font-semibold text-xl">Tags</h4>
               <p className="mt-2">
-                Add your product's tag or category here
+                Add your product&lsquo;s tag or category here
               </p>
             </div>
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -711,9 +654,9 @@ const ProductForm = ({ data, initialValues }) => {
             )}
           </div>
         </form>
-        {/* <FormElement productID={productID} productFormData={productFormData} setProductFormData={setProductFormData} productFormData={productFormData} setProductFormData={setProductFormData} /> */}
+       
       </div>
-      {/* {spinner} */}
+
     </div>
   );
 };

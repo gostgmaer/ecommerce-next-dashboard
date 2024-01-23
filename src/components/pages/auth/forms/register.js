@@ -15,7 +15,7 @@ const RegisterForm = () => {
 
   const handleSubmit = async (values) => {
 
-    console.log(values);
+    //console.log(values);
     try {
       const res = await post("/user/auth/register", values);
       if (res) {
@@ -23,7 +23,7 @@ const RegisterForm = () => {
       }
     } catch (error) {
       setError(error);
-      console.log(error);
+      //console.log(error);
     }
   };
 

@@ -7,7 +7,7 @@ const TaxonomyField = ({label,selectedTaxonomy, setSelectedTaxonomy}) => {
   const [editingIndex, setEditingIndex] = useState(-1);
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
-    console.log(selectedTaxonomy);
+    //console.log(selectedTaxonomy);
   };
 
   const handleKeyDown = (e) => {
