@@ -24,8 +24,8 @@ const TopStepper = ({ links }) => {
   // Access the full pathname from the router object
   // const fullPathname = router;
 
-  // console.log("Full Pathname:", fullPathname,params,pathname);
-  // console.log(pathname);
+  // //console.log("Full Pathname:", fullPathname,params,pathname);
+  // //console.log(pathname);
 
 
 

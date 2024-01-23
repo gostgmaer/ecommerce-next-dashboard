@@ -2,46 +2,26 @@
 import React, { useEffect, useState } from "react";
 import Heading from "../heading";
 import Table from "@/components/global/element/Table";
-// import Pagination from '@/components/global/element/pagination';
-import PaginatedList from "@/components/global/element/pagination";
 import TableFilter from "@/components/global/element/tableFilter";
-import Link from "next/link";
-import { FaCheck, FaEye, FaPen, FaTrash } from "react-icons/fa";
+import { generateUrlFromNestedObject } from "@/helper/function";
+import { useRouter } from "next/navigation";
 
-import { useAxios } from "@/lib/interceptors";
-import { get } from "@/lib/http";
-import moment from "moment";
+const LogsTable = (props) => {
 
-const items = Array.from(Array(20).keys()).map((key) => key + 1);
-
-const LogsTable = () => {
-  const [axios, spinner] = useAxios();
-  const options = [5, 10, 20, 50];
-  const [products, setProducts] = useState({});
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchKey, setSearchKey] = useState("");
-  const [status, setStatus] = useState("");
+  const route = useRouter()
 
-  const loadLogs = async () => {
+
+  const loadLogs =  () => {
     const query = {
       limit: itemsPerPage,
       page: currentPage,
     };
-    const response = await get("/logs", query);
-    var data = [];
-    response["results"].forEach((item) => {
-      const obj = {
-        ...item,
-        createdAt: moment(item["createdAt"]).format("MMMM Do YYYY, h:mm a"),
-      };
-      data.push(obj);
-    });
-    setProducts({ ...response, results: data });
-    // setItems(Array.from(Array(response.total).keys()).map((key) => key + 1));
-  };
 
-  //  const items = Array.from(Array(20).keys()).map((key) => key + 1);
+    const checkQuerydata = generateUrlFromNestedObject({ ...query });
+    route.push(`/dashboard/logs${checkQuerydata}`);
+  };
 
   useEffect(() => {
     loadLogs();
@@ -62,7 +42,6 @@ const LogsTable = () => {
       title: "Ip",
       dataIndex: "location",
       render: (record, index) =>{
-        console.log(record);
         return  <span>{record?.ip}</span>
       },
     },
@@ -115,15 +94,9 @@ const LogsTable = () => {
           setStatus={undefined}
           searchEvent={undefined}
         />
-        {/* <Table data={products["results"]} tableColumn={columns} /> */}
-        <Table data={products["results"]} tableColumn={columns} pagination={{ total: products["total"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
-        {/* <PaginatedList
-          length={products["total"]}
-          itemsPerPage={itemsPerPage}
-          setItemsPerPage={setItemsPerPage}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        /> */}
+   
+        <Table data={props.data["results"]} tableColumn={columns} pagination={{ total: props.data["total"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
+       
       </div>
     </div>
   );

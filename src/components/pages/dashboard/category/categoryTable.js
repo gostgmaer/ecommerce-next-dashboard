@@ -2,13 +2,10 @@
 import React, { useEffect, useState } from "react";
 import Heading from "../heading";
 import Table from "@/components/global/element/Table";
-// import Pagination from '@/components/global/element/pagination';
-import PaginatedList from "@/components/global/element/pagination";
 import TableFilter from "@/components/global/element/tableFilter";
 import Link from "next/link";
 import { FaCheck, FaEye, FaPen, FaTrash } from "react-icons/fa";
 import { del, get, patch } from "@/lib/http";
-import { useAxios } from "@/lib/interceptors";
 import "react-data-grid/lib/styles.css";
 import Image from "next/image";
 import { generateUrlFromNestedObject } from "@/helper/function";
@@ -40,7 +37,7 @@ const Categorytable = (props) => {
 
 
   const deleteCategory = async (id) => {
-    console.log(id);
+    //console.log(id);
     const res = await del("/categories", id);
     res.statusCode == 200 && handleSearch();
   };

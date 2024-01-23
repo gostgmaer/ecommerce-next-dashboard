@@ -10,7 +10,6 @@ import {
 } from "firebase/storage";
 
 import { firebaseStorage } from "@/config/firebase";
-import { useGlobalContext } from "@/contex/contextAPi";
 
 const ImageUpload = ({ imagePreview, setImagePreview,label }) => {
   const [progrss, setProgrss] = useState(0);
@@ -32,7 +31,7 @@ const ImageUpload = ({ imagePreview, setImagePreview,label }) => {
         setProgrss(progress);
       },
       (err) => {
-        console.log(err);
+        //console.log(err);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
