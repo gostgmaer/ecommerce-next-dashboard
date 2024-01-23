@@ -4,20 +4,28 @@ import { baseurl } from "@/config/setting";
 import { serverMethod } from "@/helper/serverCall/datafetch";
 import React from "react";
 
-async function getCategories() {
-  const res = await fetch(baseurl + `/categories`)
-  const data = await res.json();
-  return data
-}
+// async function getCategories() {
+//   const res = await fetch(baseurl + `/categories`)
+//   const data = await res.json();
+//   return data
+// }
 
 
-const Page = async () => {
+const Page = async (props) => {
   const results = await getRecord()
 
 
   return (
     <Dashboardlayout>
-      <CategoryForm data={{...results}} />
+      <CategoryForm data={{ ...results }} initialValues={
+        {
+          name: "",
+          slug: "",
+          parent_category: "",
+          display_type: "",
+          descriptions: "",
+        }
+      } />
     </Dashboardlayout>
   );
 };
