@@ -31,7 +31,7 @@ export const getAllRecord = async (query)=>{
     query: {...query },
   };
   const result = await serverMethod(
-    `/products`,
+    `/movie/latest`,
     params
   );
 
