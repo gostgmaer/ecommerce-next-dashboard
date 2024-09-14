@@ -3,7 +3,6 @@
 
 import axios from "axios";
 import instance from "../lib/interceptors";
-import { parseCookies } from "nookies";
 import Cookies from "js-cookie";
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL; // Replace with your Firebase URL
 

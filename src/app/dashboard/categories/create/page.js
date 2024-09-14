@@ -21,7 +21,8 @@ const Page = async (props) => {
         {
           name: "",
           slug: "",
-          parent_category: "",
+          parent: "",
+          child: "",
           display_type: "",
           descriptions: "",
         }

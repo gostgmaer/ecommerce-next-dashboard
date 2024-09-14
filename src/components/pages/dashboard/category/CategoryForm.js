@@ -10,6 +10,8 @@ import TextField from "@/components/global/fields/TextField";
 import SelectField from "@/components/global/fields/SelectField";
 import { generateSlug } from "@/helper/function";
 import MultiImageUploadr from "@/components/global/fields/multiImageUploadr";
+import MultiSelect from "@/components/global/fields/multiSelect";
+// import {  ExamplecomboBox } from "@/components/global/fields/comboBox";
 
 
 const CategoryForm = (props) => {
@@ -143,6 +145,9 @@ const CategoryForm = (props) => {
                   id={"name"}
                 />
               </div>
+            <div>
+              <MultiSelect></MultiSelect>
+            </div>
               <div>
                 <TextField
                   label={"Slug"}

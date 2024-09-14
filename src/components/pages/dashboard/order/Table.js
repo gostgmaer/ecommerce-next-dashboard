@@ -9,7 +9,7 @@ import Link from "next/link";
 import { FaCheck, FaEye, FaPen, FaTrash } from "react-icons/fa";
 import { del, get, patch } from "@/lib/http";
 import { useAxios } from "@/lib/interceptors";
-import "react-data-grid/lib/styles.css";
+
 import Image from "next/image";
 import { MdClose } from "react-icons/md";
 

@@ -6,7 +6,7 @@ import TableFilter from "@/components/global/element/tableFilter";
 import Link from "next/link";
 import { FaCheck, FaEye, FaPen, FaTrash } from "react-icons/fa";
 import { del, get, patch } from "@/lib/http";
-import "react-data-grid/lib/styles.css";
+
 import Image from "next/image";
 import { exportExcelFile, generateUrlFromNestedObject } from "@/helper/function";
 import { useRouter } from "next/navigation";
