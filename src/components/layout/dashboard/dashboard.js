@@ -2,11 +2,12 @@ import React from "react";
 import Header from "./header";
 import Sidebar from "./sidebar";
 import { getServerSession } from "next-auth/next";
-import { handler } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions, handler } from "@/app/api/auth/[...nextauth]/route";
 import Link from "next/link";
 
 const Dashboardlayout = async ({ children }) => {
-  const session = await getServerSession(handler.GET)
+  const session = await getServerSession(authOptions);
+
   if (!session) {
     return (
       <div>
