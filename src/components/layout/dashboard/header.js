@@ -176,7 +176,7 @@ const Header = () => {
                 <button
                   className="rizzui-button inline-flex items-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-opacity-50 transition-colors duration-200 text-sm rounded-md hover:enabled:text-gray-1000 focus-visible:ring-gray-900/30 h-auto w-full justify-start p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
                   type="button"
-                  // onClick={signOut}
+                  onClick={()=>signOut()}
                 >
                   Sign Out
                 </button>

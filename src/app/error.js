@@ -1,5 +1,5 @@
-
-const Custom500 = () => {
+"use client"
+const Page = () => {
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="text-center">
@@ -10,4 +10,4 @@ const Custom500 = () => {
   );
 };
 
-export default Custom500;
+export default Page;

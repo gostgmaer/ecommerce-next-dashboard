@@ -64,3 +64,9 @@ export const Select = ({ options, id, label, additionalAttrs, placeholder, optio
     </div>
   );
 };
+
+
+export const MultiSelect = ()=>{
+
+}
+

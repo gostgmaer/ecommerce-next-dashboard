@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import Heading from "../heading";
 import Table from "@/components/global/element/Table";
 // import Pagination from '@/components/global/element/pagination';
-import PaginatedList from "@/components/global/element/pagination";
+// import PaginatedList from "@/components/global/element/pagination";
 import TableFilter from "@/components/global/element/tableFilter";
-import { Menu, Dropdown } from "antd";
+
 import Link from "next/link";
 import {
   FaCheck,
