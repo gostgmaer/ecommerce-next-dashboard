@@ -1,11 +1,12 @@
 import Dashboardlayout from '@/components/layout/dashboard/dashboard'
 import Categorytable from '@/components/pages/dashboard/category/categoryTable'
 import { serverMethod } from '@/helper/serverCall/datafetch'
+import CategoryServices from '@/helper/services/CategoryServices'
 import React from 'react'
 
 const Page = async (props) => {
 
-  const result = await getAllRecord(props.searchParams)
+  const result = await CategoryServices.getCategories(props.searchParams)
 
 
   return (

@@ -9,10 +9,7 @@ import { ToastContainer } from "react-toastify";
 import NextAuthProvider from "@/context/sessionContext";
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "Ecommerce Dashboard",
-  description: "Created by kishor sarkar",
-};
+
 
 export default function RootLayout({ children }) {
   return (

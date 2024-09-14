@@ -10,6 +10,7 @@ import "react-data-grid/lib/styles.css";
 import Image from "next/image";
 import { generateUrlFromNestedObject } from "@/helper/function";
 import { useRouter } from "next/navigation";
+import CategoryServices from "@/helper/services/CategoryServices";
 
 const Categorytable = (props) => {
  
@@ -19,7 +20,12 @@ const Categorytable = (props) => {
   const [status, setStatus] = useState("");
   const route = useRouter()
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
+
+    const result = await CategoryServices.getCategories(props.searchParams)
+
+console.log(result);
+
     const paramsQuery = {
       limit: itemsPerPage,
        page: currentPage,
@@ -27,6 +33,8 @@ const Categorytable = (props) => {
     const checkQuerydata = generateUrlFromNestedObject({ ...paramsQuery });
     route.push(`/dashboard/categories${checkQuerydata}`);
   };
+
+
 
 
 
