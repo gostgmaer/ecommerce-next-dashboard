@@ -4,12 +4,15 @@
 import axios from "axios";
 import instance from "../lib/interceptors";
 import Cookies from "js-cookie";
+
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL; // Replace with your Firebase URL
+
 
 // axios.defaults.withCredentials=true
 
-export const get = async (endpint, query, id) => {
+export const get = async (endpint, query, id, header) => {
   const cookiesData = Cookies.get();
+
   const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
   // const session = cookies["session"];
   let reqUrl = undefined;
@@ -23,7 +26,8 @@ export const get = async (endpint, query, id) => {
     method: "get",
     url: reqUrl,
     headers: {
-      Authorization:  "Bearer " + token,
+      Authorization: "Bearer " + token,
+      ...header
     },
     params: query,
   };
@@ -47,7 +51,7 @@ export const getsingle = async (endpint, id, query) => {
     method: "get",
     url: baseURL + endpint + `/${id}`,
     headers: {
-      Authorization:  "Bearer " + token,
+      Authorization: "Bearer " + token,
     },
     params: query,
   };
@@ -81,7 +85,7 @@ export const serverGetsingle = async (endpint, id, query) => {
   } catch (e) {
     error = e.response.data;
 
-  //  throw new Error(JSON.stringify(e.response.data));
+    //  throw new Error(JSON.stringify(e.response.data));
   }
   return response?.data ? response?.data : error; // or set initial value
 };
@@ -105,7 +109,7 @@ export const getServerSingle = async (endpint, query, id) => {
   } catch (e) {
     error = e.response.data;
 
-  //  throw new Error(JSON.stringify(e.response.data));
+    //  throw new Error(JSON.stringify(e.response.data));
   }
   return response?.data ? response?.data : error; // or set initial value
 };
@@ -160,14 +164,14 @@ export const post = async (endpint, data) => {
 //   return response?.data ? response?.data : error; // or set initial value
 // };
 
-export const patch = async (endpint, data, id) => {
+export const patch = async (endpint, data, id,header) => {
   const cookiesData = Cookies.get();
   const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
   const option = {
     method: "patch",
     url: baseURL + endpint + `/${id}`,
     headers: {
-      Authorization: "Bearer " + token,
+      Authorization: "Bearer " + token,...header
     },
     params: {},
     data: data,
