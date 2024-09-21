@@ -16,11 +16,9 @@ const Right = () => {
       <div className="relative mx-auto aspect-[4/3.37] w-[500px] xl:w-[620px] 2xl:w-[820px]">
         <img
           alt="Sign Up Thumbnail"
-          fetchpriority="high"
           decoding="async"
           data-nimg="fill"
           className="object-cover"
-          srcset="https://isomorphic-furyroad.vercel.app/_next/image?url=https%3A%2F%2Fisomorphic-furyroad.s3.amazonaws.com%2Fpublic%2Fauth%2Fsign-up.webp&w=1920&q=75"
           src="https://isomorphic-furyroad.vercel.app/_next/image?url=https%3A%2F%2Fisomorphic-furyroad.s3.amazonaws.com%2Fpublic%2Fauth%2Fsign-up.webp&w=1920&q=75"
         />
       </div>

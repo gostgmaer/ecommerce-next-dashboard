@@ -19,10 +19,10 @@ const Page = async (props) => {
     <Dashboardlayout>
       <CategoryForm data={{ ...results }} initialValues={
         {
-          name: "",
+          title: "",
           slug: "",
-          parent_category: "",
-          display_type: "",
+          parent: "",
+          child: "",
           descriptions: "",
         }
       } />

@@ -1,11 +1,9 @@
 "use client";
-import PasswordField from "@/components/global/fields/PasswordField";
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { loginValidationSchema } from "@/utils/validation/validation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuthContext } from "@/context/authContext";
 import { useSession, signIn, signOut } from "next-auth/react"
 import Input from "@/components/global/fields/input";
 import { notifyerror } from "@/lib/notify/notice";

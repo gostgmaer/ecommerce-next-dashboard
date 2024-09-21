@@ -3,118 +3,121 @@ import React, { useEffect, useState } from "react";
 import Heading from "../heading";
 import Table from "@/components/global/element/Table";
 // import Pagination from '@/components/global/element/pagination';
-import PaginatedList from "@/components/global/element/pagination";
+
 import TableFilter from "@/components/global/element/tableFilter";
-import Link from "next/link";
-import { FaCheck, FaEye, FaPen, FaTrash } from "react-icons/fa";
 import { del, get, patch } from "@/lib/http";
-import { useAxios } from "@/lib/interceptors";
-import "react-data-grid/lib/styles.css";
-import Image from "next/image";
-import { MdClose } from "react-icons/md";
+
+import { useSession } from "next-auth/react";
+import { Select } from "@/components/global/fields/SelectField";
+import { orderStatus } from "@/assets/static/data";
 
 
 const Datatable = () => {
-
-  const options = [5, 10, 20, 50];
+  const { data: session } = useSession()
+  const options = [10, 20, 50, 100];
   const [itemsPerPage, setItemsPerPage] = useState(options[0]);
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState([]);
   const [searchKey, setSearchKey] = useState("");
   const [status, setStatus] = useState("");
+  const [setstatusData, setSetstatusData] = useState('');
 
-  const fetchCategory = async (statuskey) => {
+  const fetch = async (statuskey) => {
+    const header = {
+      Authorization: "Bearer " + session?.["accessToken"],
+    }
     const query = {
       limit: itemsPerPage,
       page: currentPage,
       filter: JSON.stringify({ status: statuskey }),
       search: JSON.stringify({ name: searchKey }),
     };
-    const category = await get("/orders", query);
+
+
+    const category = await get("/orders", query, null, header);
     setCategories(category);
   };
 
+
+
   useEffect(() => {
-    fetchCategory();
+    fetch();
   }, [itemsPerPage, currentPage]);
+  // useEffect(() => {
+
+  // }, [setstatusData]);
 
   const cancelOrder = async (id) => {
-  
+
     const res = await patch("/orders", { status: "cancel" }, id);
-    res.statusCode == 200 && fetchCategory();
+    res.statusCode == 200 && fetch();
   };
 
-  const updateRecord = async (id) => {
-    const res = await patch("/orders", { status: "confirmed" }, id);
-    res.statusCode == 200 && fetchCategory();
+  const updateRecord = async (id, status = 'confirmed') => {
+    console.log(session);
+
+    const header = {
+      Authorization: "Bearer " + session?.["accessToken"],
+    }
+    const res = await patch("/orders", { status: status }, id, header);
+    res.statusCode == 200 && fetch();
   };
   const columns = [
     {
       title: "Order id",
-      dataIndex: "transsaction_id",
-      key: "transsaction_id",
-     
+      dataIndex: "order_id",
+      key: "order_id",
+
     },
     {
-      title: "Time",
-      dataIndex: "updatedAt",
-      key: "updatedAt",
+      title: "ORDER TIME",
+      dataIndex: "createdAt",
+      key: "createdAt",
       sorter: (a, b) => a.name - b.name, // Enable sorting for this column
     },
-   
     {
-      title: (
-        <div className="flex items-center gap-1">
-          <div>Payment Status</div>
+      title: "Customer Name",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      sorter: (a, b) => a.name - b.name,
+      render: (index, record) => (
+        <div className="flex items-center justify-start">
+          {`${record.firstName} ${record.lastName}`}
         </div>
       ),
+    },
+    {
+      title: "Payment Status",
+      dataIndex: "payment_status",
+      key: "payment_status",
+    },
+    {
+      title: "Method",
+      dataIndex: "payment_method",
+      key: "payment_method",
+    },
+    {
+      title: "Order Status",
       dataIndex: "status",
       key: "status",
     },
     {
-      title: (
-        <div className="flex items-center gap-1">
-          <div>Amount</div>
-        </div>
-      ),
-      dataIndex: "total",
-      key: "total",
+      title: "Amount",
+      dataIndex: "totalPrice",
+      key: "totalPrice",
     },
     {
-      title: (
-        <div className="flex items-center gap-1 opacity-0">
-          <div>Actions</div>
-        </div>
-      ),
+      title:"Actions",
       key: "actions",
       render: (record, index) => (
-        <div className="flex items-center justify-end gap-3 pe-4">
-          <Link href={`/dashboard/orders/${record["transsaction_id"]}/edit`}>
-            {" "}
-            <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
-              <FaPen />
-            </button>
-          </Link>
-          {/* <Link href={`/dashboard/brands/${record["_id"]}`}>
-            <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
-              <FaEye />
-            </button>
-          </Link> */}
-          <button
-            onClick={() => updateRecord(record._id)}
-            className={`rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700 ${
-              record.status === "confirmed" &&
-              " text-green-400 hover:!border-green-600 border-green-400 hover:text-green-600"
-            }`}
-          >
-            <FaCheck />
-          </button>
-          <button
-            onClick={() => cancelOrder(record["_id"])}
-            className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700"
-          >
-            <MdClose />
-          </button>
+        <div className="flex items-center justify-start gap-3">
+       
+
+          <Select className="flex items-center justify-start gap-2" options={orderStatus} id={"order-status-data"} additionalAttrs={{ onChange: (e) => updateRecord(record._id, e.target.value), value: record.status }} placeholder={"Select"} optionkeys={{ key: "key", value: "label" }} label={undefined}>
+
+          </Select>
+
+
         </div>
       ),
     },
@@ -126,17 +129,16 @@ const Datatable = () => {
         data={undefined}
         label="Orders"
         btn={undefined}
-        url={undefined}
-      />
+        url={undefined} exportevent={undefined} />
       <div>
         <TableFilter
           searchKey={searchKey}
           setSearchKey={setSearchKey}
           status={status}
           setStatus={setStatus}
-          searchEvent={fetchCategory}
+          searchEvent={fetch}
         />
-       <Table data={categories["results"]} tableColumn={columns} pagination={{ total: categories["total"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
+        <Table data={categories["results"]} tableColumn={columns} pagination={{ total: categories["total"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
         {/* <PaginatedList
           length={categories["total"]}
           itemsPerPage={itemsPerPage}

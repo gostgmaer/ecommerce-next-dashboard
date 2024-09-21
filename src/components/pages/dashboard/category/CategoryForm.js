@@ -10,6 +10,8 @@ import TextField from "@/components/global/fields/TextField";
 import SelectField from "@/components/global/fields/SelectField";
 import { generateSlug } from "@/helper/function";
 import MultiImageUploadr from "@/components/global/fields/multiImageUploadr";
+import MultiSelect from "@/components/global/fields/multiSelect";
+// import {  ExamplecomboBox } from "@/components/global/fields/comboBox";
 
 
 const CategoryForm = (props) => {
@@ -105,8 +107,7 @@ const CategoryForm = (props) => {
         data={undefined}
         label={cateID ? "Edit Category" : "Create A Category"}
         btn={"Category"}
-        url={"/dashboard/categories/create"}
-      />
+        url={"/dashboard/categories/create"} exportevent={undefined}      />
       <TopStepper
         links={[
           { text: "Summary", id: "summary" },
@@ -137,12 +138,15 @@ const CategoryForm = (props) => {
                     formik.handleChange(e);
                     handleNameChange(e);
                   }}
-                  value={formik.values.name}
+                  value={formik.values.title}
                   classes={undefined}
                   icon={undefined}
-                  id={"name"}
+                  id={"title"}
                 />
               </div>
+            <div>
+              <MultiSelect></MultiSelect>
+            </div>
               <div>
                 <TextField
                   label={"Slug"}
@@ -160,9 +164,9 @@ const CategoryForm = (props) => {
                 <SelectField
                   options={props.data.categories.results}
                   onChange={formik.handleChange}
-                  value={formik.values.parent_category}
-                  id={"parent_category"}
-                  label={"name"}
+                  value={formik.values.parent}
+                  id={"parent"}
+                  label={"title"}
                   placeholder={undefined}
                   datakey={"_id"}
                   heading={"Parent Category"} additionalAttrs={undefined} />
