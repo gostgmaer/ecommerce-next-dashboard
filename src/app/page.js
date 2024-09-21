@@ -3,6 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Fa500Px, FaBars, FaCheck } from "react-icons/fa";
 
+export const metadata = {
+  title: "Ecommerce Dashboard",
+  description: "Created by kishor sarkar",
+};
+
 export default function Home() {
 
   return (

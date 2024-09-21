@@ -6,10 +6,11 @@ import TableFilter from "@/components/global/element/tableFilter";
 import Link from "next/link";
 import { FaCheck, FaEye, FaPen, FaTrash } from "react-icons/fa";
 import { del, get, patch } from "@/lib/http";
-import "react-data-grid/lib/styles.css";
+
 import Image from "next/image";
 import { generateUrlFromNestedObject } from "@/helper/function";
 import { useRouter } from "next/navigation";
+import CategoryServices from "@/helper/services/CategoryServices";
 
 const Categorytable = (props) => {
  
@@ -19,7 +20,12 @@ const Categorytable = (props) => {
   const [status, setStatus] = useState("");
   const route = useRouter()
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
+
+    const result = await CategoryServices.getCategories(props.searchParams)
+
+console.log(result);
+
     const paramsQuery = {
       limit: itemsPerPage,
        page: currentPage,
@@ -27,6 +33,8 @@ const Categorytable = (props) => {
     const checkQuerydata = generateUrlFromNestedObject({ ...paramsQuery });
     route.push(`/dashboard/categories${checkQuerydata}`);
   };
+
+
 
 
 
@@ -57,16 +65,16 @@ const Categorytable = (props) => {
           height={50}
           className=" rounded-2xl"
           src={images[0]?.url}
-          alt={images[0]?.name}
+          alt={images[0]?.title}
           style={{ maxWidth: "100px" }}
         />
       ),
     },
     {
       title: "Category Name",
-      dataIndex: "name",
-      key: "name",
-      sorter: (a, b) => a.name - b.name, // Enable sorting for this column
+      dataIndex: "title",
+      key: "title",
+      sorter: (a, b) => a.title - b.title, // Enable sorting for this column
     },
     {
       title: "Slug",
@@ -138,8 +146,7 @@ const Categorytable = (props) => {
         data={undefined}
         label="Categories"
         btn={"category"}
-        url={"/dashboard/categories/create"}
-      />
+        url={"/dashboard/categories/create"} exportevent={undefined}      />
       <div>
         <TableFilter
           searchKey={searchKey}
