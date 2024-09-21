@@ -65,16 +65,16 @@ console.log(result);
           height={50}
           className=" rounded-2xl"
           src={images[0]?.url}
-          alt={images[0]?.name}
+          alt={images[0]?.title}
           style={{ maxWidth: "100px" }}
         />
       ),
     },
     {
       title: "Category Name",
-      dataIndex: "name",
-      key: "name",
-      sorter: (a, b) => a.name - b.name, // Enable sorting for this column
+      dataIndex: "title",
+      key: "title",
+      sorter: (a, b) => a.title - b.title, // Enable sorting for this column
     },
     {
       title: "Slug",

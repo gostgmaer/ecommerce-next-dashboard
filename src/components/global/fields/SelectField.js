@@ -36,9 +36,9 @@ const SelectField = ({ options, value, onChange, id, datakey, label, placeholder
 export default SelectField;
 
 
-export const Select = ({ options, id, label, additionalAttrs, placeholder, optionkeys = { key: "", value: "" } }) => {
+export const Select = ({ options, id, label,className="block", additionalAttrs, placeholder, optionkeys = { key: "", value: "" } }) => {
   return (
-    <div className="">
+    <div className={className}>
       {label && (
         <label htmlFor={id} className=" block text-sm mb-1.5">
           {label}

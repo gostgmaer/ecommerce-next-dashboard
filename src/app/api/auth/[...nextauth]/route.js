@@ -73,9 +73,17 @@ export const authOptions = {
   secret: secret,
   pages: {
     signIn: "/auth/login",
+    signOut: "/",
   },
   session: {
     strategy: "jwt",
+    maxAge: 7 * 24 * 60 * 60
+  },
+  events: {
+    signOut: async (message) => {
+      console.log("User has been signed out:", message);
+      // You can add additional logic here if needed
+    },
   },
 
   callbacks: {
@@ -169,6 +177,11 @@ export const authOptions = {
       session["id_token"] = token.id_token;
       session["token_type"] = token.token_type;
       session["accessToken"] = token.accessToken;
+
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (token.exp && token.exp < currentTime) {
+        return null; // Invalidate session if token has expired
+      }
       return session;
     },
     async jwt({ token, user, account, profile, isNewUser, session, trigger = "signIn" }) {

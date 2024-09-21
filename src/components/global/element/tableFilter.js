@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import SearchField from "../fields/SearchFields";
 import { FiFilter } from "react-icons/fi";
 import { MdFilter, MdFilterList } from "react-icons/md";
+import { orderStatus } from "@/assets/static/data";
+import { Select } from "../fields/SelectField";
 
 const TableFilter = ({
   options = ["", "publish", "pending", "draft"],
@@ -13,6 +15,7 @@ const TableFilter = ({
   searchEvent,
 }) => {
   const handleRadioChange = (e) => {
+  
     setStatus(e.target.value);
     searchEvent(e.target.value);
   };
@@ -27,6 +30,11 @@ const TableFilter = ({
               clickEvent={searchEvent}
               setSearchText={setSearchKey}
             />
+          </div>
+          <div>
+            <Select className="flex items-center justify-start gap-2" options={orderStatus} id={"order-status"} label={"Status"} additionalAttrs={{onChange:(e)=>handleRadioChange(e)}} placeholder={"Select"} optionkeys = { {key: "key", value: "label" }}>
+              
+            </Select>
           </div>
           <div className="ms-4 flex flex-shrink-0 items-center">
             <button
@@ -47,26 +55,7 @@ const TableFilter = ({
             </div>
           </div>
         </div>
-        <div className="w-full p-2 px-4 gap-2 border-t border-gray-300  flex">
-          <div>Show Only: </div>
-          <div className=" flex flex-wrap">
-            {options?.map((option) => (
-              <label key={option} className="flex items-center space-x-2 mr-4">
-                <input
-                  type="radio"
-                  name="options"
-                  value={option}
-                  checked={status === option}
-                  onChange={handleRadioChange}
-                  className="form-radio text-gray-600 border-gray-600 capitalize"
-                />
-                <span className="text-gray-700 capitalize font-medium ml-2">
-                  {option != "" ? option : "all"}
-                </span>
-              </label>
-            ))}
-          </div>
-        </div>
+      
       </div>
     </div>
   );
