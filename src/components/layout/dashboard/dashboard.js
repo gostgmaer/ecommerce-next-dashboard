@@ -5,6 +5,7 @@ import Sidebar from "./sidebar";
 // import { authOptions, handler } from "@/app/api/auth/[...nextauth]/route";
 // import Link from "next/link";
 import NextUiProvider from "@/context/nextUiProvider";
+import StoreProvider from "@/store/storeProvider";
 
 const Dashboardlayout = async ({ children }) => {
   // const session = await getServerSession(authOptions);
@@ -22,6 +23,7 @@ const Dashboardlayout = async ({ children }) => {
   // }
   return (
     <NextUiProvider>
+      <StoreProvider>
       <div className="flex min-h-screen flex-grow bg-white">
         <aside className="bottom-0 start-0 z-50 h-full w-[270px] border-e-2 border-gray-100 bg-white 2xl:w-72 fixed dark:bg-gray-50 xl:block">
           <Sidebar />
@@ -34,7 +36,8 @@ const Dashboardlayout = async ({ children }) => {
             {children}
           </div>
         </div>
-      </div>{" "}
+      </div>
+      </StoreProvider>
     </NextUiProvider>
   );
 };

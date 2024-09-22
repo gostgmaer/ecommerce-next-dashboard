@@ -2,6 +2,8 @@ import Dashboardlayout from "@/components/layout/dashboard/dashboard";
 import ProductForm from "@/components/pages/dashboard/products/ProductForm";
 import { baseurl } from "@/config/setting";
 import { serverMethod } from "@/helper/serverCall/datafetch";
+import masterServices from "@/helper/services/masterDataServices";
+import ProductServices from "@/helper/services/ProductServices";
 import Head from "next/head";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -24,7 +26,7 @@ const Page = async (props) => {
   return (
     <>
       <Dashboardlayout>
-      <ProductForm data={{ ...result }} initialValues={result.product.results} />
+        <ProductForm data={{ ...result }} initialValues={result.product.results} />
       </Dashboardlayout>
     </>
   );
@@ -33,27 +35,11 @@ const Page = async (props) => {
 export default Page;
 
 
-export const getRecord = async (id)=>{
-
-  const params = {
-    method: "get",
-    header: {},
-    query: {}
-  };
-  const product = await serverMethod(
-    `/products/${id}`,
-    params
-  );
-  const brands = await serverMethod(
-    `/brands`,
-    params
-  );
-  const category = await serverMethod(
-    `/categories`,
-    params
-  );
-
-
-return {product,brands,category}
+export const getRecord = async (params) => {
+  const product = await ProductServices.getSingleProducts(params.productID, params.token)
+  const brands = await masterServices.getAllBrands({},params.token)
+  const category = await masterServices.getAllcategories({},params.token)
+  
+  return { product, brands, category }
 
 }

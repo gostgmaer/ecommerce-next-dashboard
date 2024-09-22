@@ -25,7 +25,7 @@ const SearchField = ({searchText, setSearchText,clickEvent}) => {
               <FaSearch />
             </span>
             <input
-              placeholder="Search by anything..."
+              placeholder="Search by name..."
               className="rizzui-input-field w-full  border-0 bg-transparent p-0 focus:outline-none focus:ring-0 [&amp;:placeholder-shown~.input-clear-btn]:opacity-0 [&amp;:placeholder-shown~.input-clear-btn]:invisible [&amp;:not(:placeholder-shown)~.input-clear-btn]:opacity-100 [&amp;:not(:placeholder-shown)~.input-clear-btn]:visible pl-2.5 rtl:pr-2.5"
               type="search"
               value={searchText}
