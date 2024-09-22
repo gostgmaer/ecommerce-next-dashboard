@@ -36,17 +36,18 @@
 // export let persistor = persistStore(store);
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { cartReducer } from './reducers/cartSlice';
-import { wishlistReducer } from './reducers/wishListSlice';
-import { shoppingCardReducer } from './reducers/shoppingCardSlice';
+// import { cartReducer } from './reducers/cartSlice';
+// import { wishlistReducer } from './reducers/wishListSlice';
+// import { shoppingCardReducer } from './reducers/shoppingCardSlice';
 import { sidebarReducer } from './reducers/sidebarSlice';
-import { isOpenReducer } from './reducers/isOpenSlice';
+// import { isOpenReducer } from './reducers/isOpenSlice';
 import { thunk } from 'redux-thunk';
 import { persistReducer, persistStore } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session';
-import  { productReducer } from './reducers/productSlice';
-import { paginationReducer } from './reducers/paginationSlice';
-import { queryReducer } from './reducers/querySlice';
+import { masterReducer } from './reducers/masterSlice';
+// import  { productReducer } from './reducers/productSlice';
+// import { paginationReducer } from './reducers/paginationSlice';
+// import { queryReducer } from './reducers/querySlice';
 // import { isOpenReducer } from './reducers/isOpenSlice';
 // import { searchReducer } from './reducers/searchSlice';
 // import { shoppingCardReducer } from './reducers/shoppingCardSlice';
@@ -87,14 +88,15 @@ import { queryReducer } from './reducers/querySlice';
 // });
 
 const rootReducer = combineReducers({
-	cart: cartReducer,
-	wishlist: wishlistReducer,
-	shoppingCard: shoppingCardReducer,
+	// cart: cartReducer,
+	// wishlist: wishlistReducer,
+	// shoppingCard: shoppingCardReducer,
 	sidebar: sidebarReducer,
-	isOpen: isOpenReducer,
-	products: productReducer,
-	pagination:paginationReducer,
-	queryParam:queryReducer,
+	master:masterReducer,
+	// isOpen: isOpenReducer,
+	// products: productReducer,
+	// pagination:paginationReducer,
+	// queryParam:queryReducer,
 	// user: authReducer,
 	// search: searchReducer,
   });
@@ -103,7 +105,7 @@ const rootReducer = combineReducers({
   const persistConfig = {
 	key: 'root',
 	storage: storageSession, // Session-based storage
-	data: ['cart', 'wishlist','sidebar','user','isOpen','shoppingCard','products','pagination','queryParam'], // Only persist these reducers
+	data: ['cart', 'wishlist','sidebar','user','isOpen','shoppingCard','products','pagination','master'], // Only persist these reducers
   };
   
   // Persist reducer with the session storage
