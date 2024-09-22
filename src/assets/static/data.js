@@ -13,7 +13,7 @@ export const statestext = {
 export const orderStatus = [
     { key: "", label: "All" },
     { key: "pending", label: "Pending" },
-  
+
     { key: "shipped", label: "Shipped" },
     { key: "canceled", label: "Canceled" },
     { key: "processing", label: "Processing" },
@@ -25,11 +25,11 @@ export const orderStatus = [
     { key: "awaitingPayment", label: "Awaiting Payment" },
     { key: "paymentReceived", label: "Payment Received" },
     { key: "paymentFailed", label: "Payment Failed" },
-  
-  
+
+
     { key: "outForDelivery", label: "Out for Delivery" },
-   
+
     { key: "orderAccepted", label: "Order Accepted" },
     { key: "orderDeclined", label: "Order Declined" }
-  
-  ];
+
+];

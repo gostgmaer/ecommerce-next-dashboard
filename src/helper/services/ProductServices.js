@@ -2,7 +2,7 @@ import requests from "./httpServices";
 
 const ProductServices = {
   // Create a new product (admin only)
-  createProduct: async (body, headers) => {
+  createProducts: async (body, headers) => {
     return requests.post("/products", body, headers);
   },
 
@@ -12,44 +12,16 @@ const ProductServices = {
   },
 
   // Get all products
-  getProducts: async (query, headers) => {
+  getAllProducts: async (query, headers) => {
     return requests.get("/products", query, null, headers, 1);
   },
 
-  // Get current products
-  getCurrentProducts: async (query, headers) => {
-    return requests.get("/products/show", query, null, headers, 1);
-  },
-
-  // Get related products
-  getRelatedProducts: async (query, headers) => {
-    return requests.get("/products/related", query, null, headers, 1);
-  },
-
-  // Get discounted products
-  getDiscountedProducts: async (query, headers) => {
-    return requests.get("/products/discount", query, null, headers, 1);
-  },
-
-  // Get popular products
-  getPopularProducts: async (query, headers) => {
-    return requests.get("/products/popular", query, null, headers, 1);
-  },
 
   // Get a single product by ID
-  getSingleProductById: async (id, headers) => {
-    return requests.get(`/products/${id}`, null, null, headers, 1);
+  getSingleProducts: async (id, headers,token) => {
+    return requests.get(`/products/${id}`, null, null, headers, 1,token);
   },
 
-  // Get a single product by slug
-  getSingleProductBySlug: async (slug, headers) => {
-    return requests.get(`/products/view/${slug}`, null, null, headers, 1);
-  },
-
-  // Get current single product details
-  getCurrentSingleProductDetails: async (query, headers) => {
-    return requests.get("/products/details", query, null, headers, 1);
-  },
 
   // Update a product by ID (partial update)
   updateProductPatch: async (id, body, headers) => {

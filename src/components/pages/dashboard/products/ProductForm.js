@@ -14,18 +14,46 @@ import { generateSlug } from "@/helper/function";
 import MultiImageUploadr from "@/components/global/fields/multiImageUploadr";
 import { FaDollarSign } from "react-icons/fa";
 import Input from "@/components/global/fields/input";
+import { orderStatus } from "@/assets/static/data";
+import { SelectItem } from "@nextui-org/react";
+// import MultiSelect from "@/components/global/fields/multiSelect";
+import MultiSelect from "react-multi-select-component";
+import ProductServices from "@/helper/services/ProductServices";
+import masterServices from "@/helper/services/masterDataServices";
+import { useSession } from "next-auth/react";
+
 const options = [
   { label: "Track inventory for this product", value: "yes" },
   { label: "Do not track inventory for this product", value: "no" },
 ];
+
 const ProductForm = ({ data, initialValues }) => {
+  const { data: session } = useSession()
   const params = useParams();
+
   const router = useRouter();
   const productID = params["productID"];
-  const [currData, setCurrData] = useState({});
+  const [currData, setCurrData] = useState(data);
   const [tags, setTags] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selected, setSelected] = useState([]);
 
+
+  const getRecord = async () => {
+    const product = await ProductServices.getSingleProducts(params.productID, session["accessToken"])
+    const brands = await masterServices.getAllBrands({}, session["accessToken"])
+    const category = await masterServices.getAllcategories({}, session["accessToken"])
+
+
+    
+
+    return { product, brands, category }
+
+  }
+
+  useEffect(() => {
+    const data = getRecord()
+  }, [params.productID]);
 
   const saveProduct = async (status) => {
     const body = generateProductBody();
@@ -58,16 +86,15 @@ const ProductForm = ({ data, initialValues }) => {
     return body;
   };
 
-
-
   const handleClick = (button) => {
     formik.setFieldValue("clickedButton", button);
   };
 
-
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: async (values, { resetForm }) => {
+      console.log(selected);
+
       try {
         // Disable the submit button during submission
         formik.setSubmitting(true);
@@ -78,7 +105,9 @@ const ProductForm = ({ data, initialValues }) => {
             saveProduct("draft");
             break;
           case "update":
-            UpdateProduct(currData["results"]["status"]);
+            console.log(currData["product"]["results"]["status"]);
+
+            UpdateProduct(currData["product"]["results"]["status"]);
             break;
           case "create":
             saveProduct("pending");
@@ -87,7 +116,7 @@ const ProductForm = ({ data, initialValues }) => {
             break;
         }
       } catch (error) {
-        console.error('Form submission error:', error);
+        console.error("Form submission error:", error);
       } finally {
         // Enable the submit button after submission (success or error)
         formik.setSubmitting(false);
@@ -95,13 +124,10 @@ const ProductForm = ({ data, initialValues }) => {
     },
   });
 
-
-
-
-
-
-
-
+  const optionsdata = data.category.results.map((item) => ({
+    label: item.title,
+    value: item._id,
+  }));
 
   return (
     <div>
@@ -129,7 +155,10 @@ const ProductForm = ({ data, initialValues }) => {
           className="mx-auto  grid rounded-lg"
           onSubmit={formik.handleSubmit}
         >
-          <div className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full " id="summary">
+          <div
+            className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full "
+            id="summary"
+          >
             <div className="col-span-1">
               <h4 className=" font-semibold text-xl">Summary</h4>
               <p className="mt-2">
@@ -138,33 +167,43 @@ const ProductForm = ({ data, initialValues }) => {
               </p>
             </div>
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
-
               <div>
-                <Input label={"Title"} type={"text"} additionalAttrs={{
-                  ...formik.getFieldProps("title"),
-                  placeholder: "Pant...",
-                }} classes={undefined} icon={undefined} id={"title"} />
+                <Input
+                  label={"Title"}
+                  type={"text"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("title"),
+                    placeholder: "Pant...",
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"title"}
+                />
 
-                {formik.errors.title &&
-                  formik.touched.title && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.title}
-                    </div>
-                  )}
+                {formik.errors.title && formik.touched.title && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.title}
+                  </div>
+                )}
               </div>
               <div>
+                <Input
+                  label={"SKU (Stock keeping unit)"}
+                  type={"text"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("sku"),
+                    placeholder: "Pant...",
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"sku"}
+                />
 
-                <Input label={"SKU"} type={"text"} additionalAttrs={{
-                  ...formik.getFieldProps("sku"),
-                  placeholder: "Pant...",
-                }} classes={undefined} icon={undefined} id={"sku"} />
-
-                {formik.errors.sku &&
-                  formik.touched.sku && (
-                    <div className="text-red-500 text-sm">
-                      {formik["errors"]["sku"]}
-                    </div>
-                  )}
+                {formik.errors.sku && formik.touched.sku && (
+                  <div className="text-red-500 text-sm">
+                    {formik["errors"]["sku"]}
+                  </div>
+                )}
               </div>
               <div>
                 <Select
@@ -178,95 +217,125 @@ const ProductForm = ({ data, initialValues }) => {
                   placeholder={undefined}
                   additionalAttrs={{ ...formik.getFieldProps("productType") }}
                 />
-                {formik.errors.productType &&
-                  formik.touched.productType && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.productType}
-                    </div>
-                  )}
+                {formik.errors.productType && formik.touched.productType && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.productType}
+                  </div>
+                )}
               </div>
               <div>
                 <Select
-                  label={"Categories"}
-                  id={"categories"}
+                  label={"category"}
+                  id={"category"}
                   options={data.category.results}
+                  optionkeys={{ key: "_id", value: "title" }}
+                  placeholder={undefined}
+                  additionalAttrs={{ ...formik.getFieldProps("category") }}
+                />
+                {formik.errors.category && formik.touched.category && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.category}
+                  </div>
+                )}
+              </div>
+              <div>
+                <div className=" flex flex-col">
+                  <label className="block">
+                    <div className=" block text-sm mb-1.5">{"Categories"}</div>
+                    <div className=" ">
+                      <MultiSelect
+                        options={optionsdata}
+                        value={selected}
+                        onChange={setSelected}
+                        labelledBy={"Select"}
+                      />
+                    </div>
+                  </label>
+                </div>
+              </div>
+              <div>
+                <Select
+                  label={"Brand"}
+                  id={"brandName"}
+                  options={data.brands.results}
                   optionkeys={{ key: "_id", value: "name" }}
                   placeholder={undefined}
-                  additionalAttrs={{ ...formik.getFieldProps("categories") }}
+                  additionalAttrs={{ ...formik.getFieldProps("brandName") }}
                 />
-                {formik.errors.categories &&
-                  formik.touched.categories && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.categories}
-                    </div>
-                  )}
-
+                {formik.errors.brandName && formik.touched.brandName && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.brandName}
+                  </div>
+                )}
               </div>
               <div>
+                <Input
+                  label={"slug"}
+                  type={"text"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("slug"),
+                    placeholder: "product-slug",
+                    readOnly: true,
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"slug"}
+                />
 
-                <Input label={"Slug"} type={"text"} additionalAttrs={{
-                  ...formik.getFieldProps("sku"),
-                  placeholder: "product-slug",
-                }} classes={undefined} icon={undefined} id={"slug"} />
-
-                {formik.errors.slug &&
-                  formik.touched.slug && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.slug}
-                    </div>
-                  )}
-
+                {formik.errors.slug && formik.touched.slug && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.slug}
+                  </div>
+                )}
               </div>
               <div>
-                <Input label={"Overview"} type={"text"} additionalAttrs={{
-                  ...formik.getFieldProps("overview"),
-                  placeholder: "Overview...",
-                }} classes={undefined} icon={undefined} id={"overview"} />
+                <Input
+                  label={"Overview"}
+                  type={"text"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("overview"),
+                    placeholder: "Overview...",
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"overview"}
+                />
 
-                {formik.errors.overview &&
-                  formik.touched.overview && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.overview}
-                    </div>
-                  )}
-                
+                {formik.errors.overview && formik.touched.overview && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.overview}
+                  </div>
+                )}
               </div>
 
               <div className=" col-span-2">
                 <label className="block">
-                  <span className=" block text-sm mb-1.5">
-                    Descriptions
-                  </span>
+                  <span className=" block text-sm mb-1.5">Descriptions</span>
                   <textarea
                     rows={10}
                     className={` flex items-center peer w-full transition duration-200 px-3.5 py-1 text-sm  rounded-md bg-transparent [&amp;.is-focus]:ring-[0.6px] border border-gray-300 [&amp;_input::placeholder]:text-gray-500 hover:border-gray-1000 [&amp;.is-focus]:border-gray-1000 [&amp;.is-focus]:ring-gray-1000   text-gray-700 focus:outline-none `}
                     placeholder={"Descriptions"}
-                    {
-                    ...formik.getFieldProps("descriptions")
-
-                    }
+                    {...formik.getFieldProps("descriptions")}
                     id="descriptions"
                     name="descriptions"
-
                   />
                 </label>
-                {formik.errors.descriptions &&
-                  formik.touched.descriptions && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.descriptions}
-                    </div>
-                  )}
+                {formik.errors.descriptions && formik.touched.descriptions && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.descriptions}
+                  </div>
+                )}
               </div>
-
             </div>
           </div>
 
-          <div className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full" id="images-gallery">
+          <div
+            className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full"
+            id="images-gallery"
+          >
             <div className="col-span-1">
               <h4 className=" font-semibold text-xl">Product images</h4>
-              <p className="mt-2">
-                Upload your product image gallery here
-              </p>
+              <p className="mt-2">Upload your product image gallery here</p>
             </div>
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className=" col-span-1 sm:col-span-2">
@@ -278,115 +347,135 @@ const ProductForm = ({ data, initialValues }) => {
               </div>
             </div>
           </div>
-          <div className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full" id="pricing-inventory">
+          <div
+            className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full"
+            id="pricing-inventory"
+          >
             <div className="col-span-1">
               <h4 className=" font-semibold text-xl">Pricing</h4>
-              <p className="mt-2">
-                Add your product pricing here
-              </p>
+              <p className="mt-2">Add your product pricing here</p>
             </div>
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
+                <Input
+                  label={"Price"}
+                  type={"number"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("price"),
+                    placeholder: "0.00",
+                  }}
+                  classes={undefined}
+                  icon={<FaDollarSign />}
+                  id={"price"}
+                />
 
-                <Input label={"Price"} type={"number"} additionalAttrs={{
-                  ...formik.getFieldProps("price"),
-                  placeholder: "0.00",
-                }} classes={undefined} icon={<FaDollarSign />} id={"price"} />
-
-                {formik.errors.price &&
-                  formik.touched.price && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.price}
-                    </div>
-                  )}
-
+                {formik.errors.price && formik.touched.price && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.price}
+                  </div>
+                )}
               </div>
               <div>
+                <Input
+                  label={"Cost Price"}
+                  type={"number"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("costPrice"),
+                    placeholder: "0.00",
+                  }}
+                  classes={undefined}
+                  icon={<FaDollarSign />}
+                  id={"costPrice"}
+                />
 
-                <Input label={"Cost Price"} type={"number"} additionalAttrs={{
-                  ...formik.getFieldProps("costPrice"),
-                  placeholder: "0.00",
-                }} classes={undefined} icon={<FaDollarSign />} id={"costPrice"} />
-
-                {formik.errors.costPrice &&
-                  formik.touched.costPrice && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.costPrice}
-                    </div>
-                  )}
-
-
-
+                {formik.errors.costPrice && formik.touched.costPrice && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.costPrice}
+                  </div>
+                )}
               </div>
               <div>
+                <Input
+                  label={"Retail Price"}
+                  type={"number"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("retailPrice"),
+                    placeholder: "0.00",
+                  }}
+                  classes={undefined}
+                  icon={<FaDollarSign />}
+                  id={"retailPrice"}
+                />
 
-                <Input label={"Retail Price"} type={"number"} additionalAttrs={{
-                  ...formik.getFieldProps("retailPrice"),
-                  placeholder: "0.00",
-                }} classes={undefined} icon={<FaDollarSign />} id={"retailPrice"} />
-
-                {formik.errors.retailPrice &&
-                  formik.touched.retailPrice && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.retailPrice}
-                    </div>
-                  )}
-
+                {formik.errors.retailPrice && formik.touched.retailPrice && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.retailPrice}
+                  </div>
+                )}
               </div>
               <div>
+                <Input
+                  label={"Sale Price"}
+                  type={"number"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("salePrice"),
+                    placeholder: "0.00",
+                  }}
+                  classes={undefined}
+                  icon={<FaDollarSign />}
+                  id={"salePrice"}
+                />
 
-
-                <Input label={"Sale Price"} type={"number"} additionalAttrs={{
-                  ...formik.getFieldProps("salePrice"),
-                  placeholder: "0.00",
-                }} classes={undefined} icon={<FaDollarSign />} id={"salePrice"} />
-
-                {formik.errors.salePrice &&
-                  formik.touched.salePrice && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.salePrice}
-                    </div>
-                  )}
-
+                {formik.errors.salePrice && formik.touched.salePrice && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.salePrice}
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          <div className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full" id="inventory">
+          <div
+            className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full"
+            id="inventory"
+          >
             <div className="col-span-1">
               <h4 className=" font-semibold text-xl">Inventory Tracking</h4>
-              <p className="mt-2">
-                Add your product inventory info here
-              </p>
+              <p className="mt-2">Add your product inventory info here</p>
             </div>
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div className="col-span-full grid gap-4">
-
-    
-              </div>
+              <div className="col-span-full grid gap-4"></div>
               <div>
+                <Input
+                  label={"Current Stock Level"}
+                  type={"number"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("stock"),
+                    placeholder: "0.00",
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"stock"}
+                />
 
-                <Input label={"Current Stock Level"} type={"number"} additionalAttrs={{
-                  ...formik.getFieldProps("currentStockLevel"),
-                  placeholder: "0.00",
-                }} classes={undefined} icon={undefined} id={"currentStockLevel"} />
-
-                {formik.errors.currentStockLevel &&
-                  formik.touched.currentStockLevel && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.currentStockLevel}
-                    </div>
-                  )}
-
-
-
+                {formik.errors.stock && formik.touched.stock && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.stock}
+                  </div>
+                )}
               </div>
 
               <div>
-
-                <Input label={"Low Stock Level"} type={"number"} additionalAttrs={{
-                  ...formik.getFieldProps("lowStockLevel"),
-                  placeholder: "0.00",
-                }} classes={undefined} icon={undefined} id={"lowStockLevel"} />
+                <Input
+                  label={"Low Stock Level"}
+                  type={"number"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("lowStockLevel"),
+                    placeholder: "0.00",
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"lowStockLevel"}
+                />
 
                 {formik.errors.lowStockLevel &&
                   formik.touched.lowStockLevel && (
@@ -394,40 +483,49 @@ const ProductForm = ({ data, initialValues }) => {
                       {formik.errors.lowStockLevel}
                     </div>
                   )}
-
-
               </div>
             </div>
           </div>
-          <div className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full" id="custom-fields">
+          {/* <div
+            className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full"
+            id="custom-fields"
+          >
             <div className="col-span-1">
               <h4 className=" font-semibold text-xl">Product Identifiers</h4>
-              <p className="mt-2">
-                Edit your product identifiers here
-              </p>
+              <p className="mt-2">Edit your product identifiers here</p>
             </div>
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <Input label={"Global Trade Item Number"} type={"text"} additionalAttrs={{
-                  ...formik.getFieldProps("gtin"),
-                  placeholder: "678ASD.......",
-                }} classes={undefined} icon={undefined} id={"gtin"} />
+                <Input
+                  label={"Global Trade Item Number"}
+                  type={"text"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("gtin"),
+                    placeholder: "678ASD.......",
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"gtin"}
+                />
 
-                {formik.errors.gtin &&
-                  formik.touched.gtin && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.gtin}
-                    </div>
-                  )}
-
+                {formik.errors.gtin && formik.touched.gtin && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.gtin}
+                  </div>
+                )}
               </div>
               <div>
-
-
-                <Input label={"Manufacturer Part Number"} type={"text"} additionalAttrs={{
-                  ...formik.getFieldProps("manufacturerPartNumber"),
-                  placeholder: "1459894.......",
-                }} classes={undefined} icon={undefined} id={"manufacturerPartNumber"} />
+                <Input
+                  label={"Manufacturer Part Number"}
+                  type={"text"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("manufacturerPartNumber"),
+                    placeholder: "1459894.......",
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"manufacturerPartNumber"}
+                />
 
                 {formik.errors.manufacturerPartNumber &&
                   formik.touched.manufacturerPartNumber && (
@@ -435,36 +533,20 @@ const ProductForm = ({ data, initialValues }) => {
                       {formik.errors.manufacturerPartNumber}
                     </div>
                   )}
-
-
               </div>
+
               <div>
-
-
-                <Select
-                  label={"Brand"}
-                  id={"brandName"}
-                  options={data.brands.results}
-                  optionkeys={{ key: "_id", value: "name" }}
-                  placeholder={undefined}
-                  additionalAttrs={{ ...formik.getFieldProps("brandName") }}
+                <Input
+                  label={"Product UPC/EAN"}
+                  type={"text"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("productUPCEAN"),
+                    placeholder: "487894.......",
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"productUPCEAN"}
                 />
-                {formik.errors.brandName &&
-                  formik.touched.brandName && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.brandName}
-                    </div>
-                  )}
-
-              </div>
-              <div>
-
-
-
-                <Input label={"Product UPC/EAN"} type={"text"} additionalAttrs={{
-                  ...formik.getFieldProps("productUPCEAN"),
-                  placeholder: "487894.......",
-                }} classes={undefined} icon={undefined} id={"productUPCEAN"} />
 
                 {formik.errors.productUPCEAN &&
                   formik.touched.productUPCEAN && (
@@ -472,11 +554,10 @@ const ProductForm = ({ data, initialValues }) => {
                       {formik?.errors?.["productUPCEAN"]}
                     </div>
                   )}
-
               </div>
             </div>
-          </div>
-          <div className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full" id="seo-info">
+          </div> */}
+          {/* <div className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full" id="seo-info">
             <div className="col-span-1">
               <h4 className=" font-semibold text-xl">Search Engine Optimization</h4>
               <p className="mt-2">
@@ -499,7 +580,7 @@ const ProductForm = ({ data, initialValues }) => {
                   )}
               </div>
               <div>
-               
+
               </div>
               <div className=" col-span-2">
                 <label className="block">
@@ -525,15 +606,16 @@ const ProductForm = ({ data, initialValues }) => {
                     </div>
                   )}
               </div>
-         
+
             </div>
-          </div>
-          <div className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full" id="variant-options">
+          </div> */}
+          {/* <div
+            className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full"
+            id="variant-options"
+          >
             <div className="col-span-1">
               <h4 className=" font-semibold text-xl">Variant Options</h4>
-              <p className="mt-2">
-                Add your product variants here
-              </p>
+              <p className="mt-2">Add your product variants here</p>
             </div>
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
@@ -550,12 +632,15 @@ const ProductForm = ({ data, initialValues }) => {
                 />
               </div>
             </div>
-          </div>
-          <div className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full" id="product-tags">
+          </div> */}
+          <div
+            className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full"
+            id="product-tags"
+          >
             <div className="col-span-1">
               <h4 className=" font-semibold text-xl">Tags</h4>
               <p className="mt-2">
-                Add your product&lsquo;s tag or category here
+                Add your product&lsquo;s tag here
               </p>
             </div>
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -572,7 +657,6 @@ const ProductForm = ({ data, initialValues }) => {
               icon={undefined}
             /> */}
 
-
                 {/* <Input label={"Tags"} type={"text"} additionalAttrs={{
                   ...formik.getFieldProps("tags"),
                   placeholder: "678ASD.......",value:formik.values.tags
@@ -584,7 +668,6 @@ const ProductForm = ({ data, initialValues }) => {
                       {formik.errors?.tags}
                     </div>
                   )} */}
-
 
                 {/* <button
               type="button"
@@ -621,8 +704,6 @@ const ProductForm = ({ data, initialValues }) => {
             </div>
           </div>
 
-
-
           <div className="sticky bottom-0 left-0 right-0 py-4 p-6 bg-white  flex items-center justify-end gap-4 border-t ">
             <button
               className="rizzui-button inline-flex font-medium items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 px-4 py-2 text-sm h-10 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 min-w-max @xl:w-auto"
@@ -648,21 +729,14 @@ const ProductForm = ({ data, initialValues }) => {
                 onClick={() => handleClick("create")}
                 disabled={formik.isSubmitting}
               >
-                {formik.isSubmitting ? 'Submitting...' : 'Create Product'}
-
+                {formik.isSubmitting ? "Submitting..." : "Create Product"}
               </button>
             )}
           </div>
         </form>
-       
       </div>
-
     </div>
   );
 };
 
 export default ProductForm;
-
-
-
-
