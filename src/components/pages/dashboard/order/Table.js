@@ -33,7 +33,7 @@ const Datatable = () => {
       search: JSON.stringify({ name: searchKey }),
     };
 
-
+    
     const category = await get("/orders", query, null, header);
     setCategories(category);
   };

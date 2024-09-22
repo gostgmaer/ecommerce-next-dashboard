@@ -7,7 +7,7 @@ export async function fetchData(endpoint, options = {}) {
   try {
     const {
       method = "GET",
-      body,
+      body,token,
       params = {},
       query = {}, headers = {},
       cacheTime = 60,
@@ -58,6 +58,7 @@ export async function fetchData(endpoint, options = {}) {
     }
     const defaultHeaders = {
       'Content-Type': 'application/json',
+      Authorization: "Bearer " + token,
 
     };
     const mergedHeaders = { ...defaultHeaders, ...headers };
@@ -88,11 +89,11 @@ export async function fetchData(endpoint, options = {}) {
 
 
 const requests = {
-  get: async (endpoint, query, params, headers, cacheTime = 3600) =>
+  get: async (endpoint, query, params, headers, cacheTime = 3600,token) =>
     await fetchData(endpoint, {
       method: 'GET',
       cacheTime: cacheTime,
-      query, params, headers // Cache for 5 minutes
+      query, params, headers,token // Cache for 5 minutes
     }),
   post: async (endpoint, body, headers) =>
     await fetchData(endpoint, {
