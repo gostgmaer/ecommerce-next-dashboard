@@ -20,39 +20,50 @@ import { useAxios } from "@/lib/interceptors";
 import Image from "next/image";
 import { exportExcelFile, generateUrlFromNestedObject } from "@/helper/function";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { Switch } from "@nextui-org/react";
 
 const ProductsPageElement = (props) => {
+  const { data: session } = useSession()
   const route = useRouter()
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchKey, setSearchKey] = useState("");
   const [status, setStatus] = useState("");
+  const [data, setData] = useState(null);
 
 
 
-  const handleSearch = () => {
-    const paramsQuery = {
+  const fetch = async (statuskey) => {
+
+    const header = {
+      Authorization: "Bearer " + session?.["accessToken"],
+    }
+    const query = {
       limit: itemsPerPage,
-       page: currentPage,
+      page: currentPage,
+      filter: JSON.stringify({ status: statuskey }),
+      search: JSON.stringify({ name: searchKey }),
     };
-    const checkQuerydata = generateUrlFromNestedObject({ ...paramsQuery });
-    route.push(`/dashboard/products${checkQuerydata}`);
+
+
+    const category = await get("/products", query, null, header);
+    setData(category);
   };
 
 
-
   useEffect(() => {
-    handleSearch()
+    fetch()
   }, [itemsPerPage, currentPage]);
 
   const DeleteProduct = async (id) => {
     const res = await del("/products", id);
-    res.statusCode == 200 && handleSearch();
+    // res.statusCode == 200 && handleSearch();
   };
 
   const updateRecord = async (id) => {
     const res = await patch("/products", { status: "publish" }, id);
-    res.statusCode == 200 && handleSearch();
+    // res.statusCode == 200 && handleSearch();
   };
   const columns = [
     {
@@ -61,14 +72,14 @@ const ProductsPageElement = (props) => {
       key: "title",
       render: (text, record) => (
         <div className=" flex gap-1 items-center justify-start">
-          {/* <Image
+          <Image
             width={50}
             height={50}
-            className=" rounded-2xl"
-            src={record.images[0].url}
-            alt={record.images[0].name}
+            className=" rounded-full h-10 w-10 object-cover"
+            src={record?.image[0]}
+            alt={record?.image[0]}
             style={{ maxWidth: "100px" }}
-          /> */}
+          />
           <p>{record.title}</p>
         </div>
       ),
@@ -79,40 +90,63 @@ const ProductsPageElement = (props) => {
       key: "sku",
     },
     {
-      title: "Stock",
-      dataIndex: "currentStockLevel",
-      key: "currentStockLevel",
-      sorter: (a, b) => a.stock - b.stock, // Enable sorting for this column
+      title: "CATEGORY",
+      dataIndex: ["category", "title"],
+      key: "category.title",
     },
     {
       title: "Price",
+      dataIndex: "retailPrice",
+      key: "retailPrice",
+      sorter: (a, b) => a.price - b.price, // Enable sorting for this column
+    },
+    {
+      title: "Sale Price",
       dataIndex: "price",
       key: "price",
       sorter: (a, b) => a.price - b.price, // Enable sorting for this column
     },
     {
-      title: "Total Review",
-      dataIndex: "totalReviews",
-      key: "totalReviews",
+      title: "Stock",
+      dataIndex: "stock",
+      key: "stock",
+      sorter: (a, b) => a.stock - b.stock, // Enable sorting for this column
     },
-    {
-      title: "Rating",
-      dataIndex: "averageRating",
-      key: "averageRating",
-      render: (text, record) => (
-        <div className=" flex gap-1 items-center justify-start">
-          <p>{record.averageRating?.toFixed(1)}</p>
-        </div>
-      ),
-    },
+
+    // {
+    //   title: "Total Review",
+    //   dataIndex: "totalReviews",
+    //   key: "totalReviews",
+    // },
+    // {
+    //   title: "Rating",
+    //   dataIndex: "averageRating",
+    //   key: "averageRating",
+    //   render: (text, record) => (
+    //     <div className=" flex gap-1 items-center justify-start">
+    //       <p>{record.averageRating?.toFixed(1)}</p>
+    //     </div>
+    //   ),
+    // },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
     },
+    // {
+    //   title: "is Show",
+    //   key: "published",
+    //   render: (item, index) => (
+    //     <div className="flex items-center">
+    //       <Switch defaultSelected>
+    //         Automatic updates
+    //       </Switch>
+    //     </div>
+    //   ),
+    // },
     {
       title: (
-        <div className="flex items-center gap-1 opacity-0">
+        <div className="flex items-center justify-center gap-1 opacity-95">
           <div>Actions</div>
         </div>
       ),
@@ -130,14 +164,14 @@ const ProductsPageElement = (props) => {
               <FaEye />
             </button>
           </Link>
-          <button
+          {/* <button
             onClick={() => updateRecord(item._id)}
             className={`rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700 ${item.status === "publish" &&
               " text-green-400 hover:!border-green-600 border-green-400 hover:text-green-600"
               }`}
           >
             <FaCheck />
-          </button>
+          </button> */}
           <button
             onClick={() => DeleteProduct(item._id)}
             className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700"
@@ -158,7 +192,7 @@ const ProductsPageElement = (props) => {
       "price": "Price",
       "salePrice": "Sale Price"
     }
-    exportExcelFile(props.data.results, objectofkeys,"products")
+    exportExcelFile(data.results, objectofkeys, "products")
   }
 
   return (
@@ -167,16 +201,15 @@ const ProductsPageElement = (props) => {
         data={undefined}
         label={"Products"}
         btn={"product"}
-        url={"/dashboard/products/create"} exportevent={exportbtnclick}      />
-      <div>
-        <TableFilter
+        url={"/dashboard/products/create"} exportevent={exportbtnclick} />
+      <div className=" relative">
+        <div className=" sticky"> <TableFilter
           searchKey={searchKey}
           setSearchKey={setSearchKey}
           status={status}
-          setStatus={setStatus}
-          searchEvent={handleSearch}
-        />
-        <Table data={props.data.results} tableColumn={columns} pagination={{ total: props.data.total, page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
+          setStatus={setStatus} searchEvent={fetch}        // searchEvent={handleSearch}
+        /></div>
+        {data ? <Table data={data.results} tableColumn={columns} pagination={{ total: data.total, page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} /> : <div></div>}
 
       </div>
     </div>

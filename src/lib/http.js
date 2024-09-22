@@ -13,7 +13,7 @@ const baseURL = process.env.NEXT_PUBLIC_BASE_URL; // Replace with your Firebase 
 export const get = async (endpint, query, id, header) => {
   const cookiesData = Cookies.get();
 
-  const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
+  // const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
   // const session = cookies["session"];
   let reqUrl = undefined;
   if (id) {
@@ -26,7 +26,7 @@ export const get = async (endpint, query, id, header) => {
     method: "get",
     url: reqUrl,
     headers: {
-      Authorization: "Bearer " + token,
+      // Authorization: "Bearer " + token,
       ...header
     },
     params: query,
@@ -36,7 +36,7 @@ export const get = async (endpint, query, id, header) => {
   try {
     response = await instance.request(option);
   } catch (e) {
-    error = e.response.data;
+    error = e?.response?.data;
 
     //throw new Error(JSON.stringify(e.response.data));
   }

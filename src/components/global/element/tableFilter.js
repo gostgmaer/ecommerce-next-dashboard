@@ -7,7 +7,12 @@ import { orderStatus } from "@/assets/static/data";
 import { Select } from "../fields/SelectField";
 
 const TableFilter = ({
-  options = ["", "publish", "pending", "draft"],
+  options = [{ key: "", label: "All" },
+    { key: "pending", label: "Pending" },
+
+    { key: "shipped", label: "Shipped" },
+    { key: "canceled", label: "Canceled" },
+    { key: "processing", label: "Processing" }],
   searchKey,
   setSearchKey,
   status,
@@ -32,7 +37,7 @@ const TableFilter = ({
             />
           </div>
           <div>
-            <Select className="flex items-center justify-start gap-2" options={orderStatus} id={"order-status"} label={"Status"} additionalAttrs={{onChange:(e)=>handleRadioChange(e)}} placeholder={"Select"} optionkeys = { {key: "key", value: "label" }}>
+            <Select className="flex items-center justify-start gap-2" options={options} id={"order-status"} label={"Status"} additionalAttrs={{onChange:(e)=>handleRadioChange(e)}} placeholder={"Select"} optionkeys = { {key: "key", value: "label" }}>
               
             </Select>
           </div>
