@@ -2,8 +2,8 @@ import requests from "./httpServices";
 
 const ProductServices = {
   // Create a new product (admin only)
-  createProducts: async (body, headers) => {
-    return requests.post("/products", body, headers);
+  createProducts: async (body, headers,token) => {
+    return requests.post("/products", body, headers,token);
   },
 
   // Create products in bulk (admin only)
@@ -18,14 +18,14 @@ const ProductServices = {
 
 
   // Get a single product by ID
-  getSingleProducts: async (id, headers,token) => {
-    return requests.get(`/products/${id}`, null, null, headers, 1,token);
+  getSingleProducts: async (id,token) => {
+    return requests.get(`/products/${id}`, null, null, {}, 1,token);
   },
 
 
   // Update a product by ID (partial update)
-  updateProductPatch: async (id, body, headers) => {
-    return requests.patch(`/products/${id}`, body,null, headers);
+  updateProductPatch: async (id, body, headers,token) => {
+    return requests.patch(`/products/${id}`, body,null, headers,token);
   },
 
   // Update a product by ID (complete update)

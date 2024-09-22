@@ -7,7 +7,7 @@ export async function fetchData(endpoint, options = {}) {
   try {
     const {
       method = "GET",
-      body,token,
+      body, token,
       params = {},
       query = {}, headers = {},
       cacheTime = 60,
@@ -70,8 +70,8 @@ export async function fetchData(endpoint, options = {}) {
       headers: mergedHeaders,
       body:
         method === "GET"
-          ?undefined: JSON.stringify(body)
-           ,
+          ? undefined : JSON.stringify(body)
+      ,
       next: { revalidate: cacheTime },
     });
 
@@ -89,24 +89,24 @@ export async function fetchData(endpoint, options = {}) {
 
 
 const requests = {
-  get: async (endpoint, query, params, headers, cacheTime = 3600,token) =>
+  get: async (endpoint, query, params, headers, cacheTime = 3600, token) =>
     await fetchData(endpoint, {
       method: 'GET',
       cacheTime: cacheTime,
-      query, params, headers,token // Cache for 5 minutes
+      query, params, headers, token // Cache for 5 minutes
     }),
-  post: async (endpoint, body, headers) =>
+  post: async (endpoint, body, headers,token) =>
     await fetchData(endpoint, {
       method: 'POST',
-      body, headers // Cache for 5 minutes
+      body, headers,token // Cache for 5 minutes
     }),
   put: async (endpoint, body, params, headers) =>
     await fetchData(endpoint, {
       method: 'PUT', body, params, headers // Cache for 5 minutes
     }),
-  patch: async (endpoint, body, params, headers) =>
+  patch: async (endpoint, body, params, headers,token) =>
     await fetchData(endpoint, {
-      method: 'PATCH', body, params, headers 
+      method: 'PATCH', body, params, headers,token
     }),
   delete: async (endpoint, params, headers) =>
     await fetchData(endpoint, {
