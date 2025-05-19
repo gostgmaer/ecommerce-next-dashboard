@@ -21,16 +21,24 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (session) {
-      if (session.user["accessToken"]) {
-        const token = session.user["accessToken"].split(".");
-        setToken("headerPayload", `${token[0]}.${token[1]}`, session.user["exp"]);
-        setToken("signature", `${token[2]}`, session.user["exp"]);
+      const decoded = jwtDecode(session["accessToken"]);
+      const id_token = jwtDecode(session["id_token"]);
+      const decodedrefersh = jwtDecode(session["refreshToken"]);
+      // console.log(id_token);
+      setToken(
+        "accessToken",
+        session["accessToken"],
+        decoded["exp"]
+      );
+      setToken("refreshToken", session["refreshToken"], decodedrefersh["exp"]);
+      if (session["accessToken"]) {
+        const token = session["accessToken"].split(".");
+        setToken("headerPayload", `${token[0]}.${token[1]}`, decoded["exp"]);
+        setToken("signature", `${token[2]}`, decoded["exp"]);
       }
-      storeCookiesOfObject(session["user"])
+      storeCookiesOfObject(id_token,id_token.exp);
     }
   }, [session]);
-
-
 
   const handleLoginAuth = async (body) => {
     // const res = await post("/user/auth/login", body);
@@ -74,7 +82,7 @@ export const AuthContextProvider = ({ children }) => {
         setUserId(undefined);
 
         setAuthError(undefined);
-      }else{
+      } else {
         setAuthError(res);
       }
     } catch (error) {}
@@ -129,7 +137,6 @@ export const AuthContextProvider = ({ children }) => {
     } catch (error) {
       setUser(undefined);
       setUserId(undefined);
-     
     }
   };
 

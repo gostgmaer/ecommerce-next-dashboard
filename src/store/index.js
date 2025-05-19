@@ -36,15 +36,15 @@
 // export let persistor = persistStore(store);
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { cartReducer } from './reducers/cartSlice';
-import { wishlistReducer } from './reducers/wishListSlice';
-import { shoppingCardReducer } from './reducers/shoppingCardSlice';
+// import { cartReducer } from './reducers/cartSlice';
+// import { wishlistReducer } from './reducers/wishListSlice';
+// import { shoppingCardReducer } from './reducers/shoppingCardSlice';
 import { sidebarReducer } from './reducers/sidebarSlice';
 import { isOpenReducer } from './reducers/isOpenSlice';
 import { thunk } from 'redux-thunk';
 import { persistReducer, persistStore } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session';
-import  { productReducer } from './reducers/productSlice';
+// import  { productReducer } from './reducers/productSlice';
 import { paginationReducer } from './reducers/paginationSlice';
 import { queryReducer } from './reducers/querySlice';
 // import { isOpenReducer } from './reducers/isOpenSlice';
@@ -87,12 +87,12 @@ import { queryReducer } from './reducers/querySlice';
 // });
 
 const rootReducer = combineReducers({
-	cart: cartReducer,
-	wishlist: wishlistReducer,
-	shoppingCard: shoppingCardReducer,
+	// cart: cartReducer,
+	// wishlist: wishlistReducer,
+	// shoppingCard: shoppingCardReducer,
 	sidebar: sidebarReducer,
 	isOpen: isOpenReducer,
-	products: productReducer,
+	// products: productReducer,
 	pagination:paginationReducer,
 	queryParam:queryReducer,
 	// user: authReducer,
