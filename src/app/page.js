@@ -1,5 +1,8 @@
 import Link from 'next/link';
-
+export const metadata = {
+  title: "Ecommerce Dashboard",
+  description: "Created by kishor sarkar",
+};
 export default function Home() {
   return (
     <main className="min-h-screen bg-white text-gray-800">
