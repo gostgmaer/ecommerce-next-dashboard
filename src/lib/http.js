@@ -11,7 +11,7 @@ const baseURL = process.env.NEXT_PUBLIC_BASE_URL; // Replace with your Firebase 
 // axios.defaults.withCredentials=true
 
 export const get = async (endpint, query, id, header) => {
-  const cookiesData = Cookies.get();
+  // const cookiesData = Cookies.get();
 
   // const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
   // const session = cookies["session"];

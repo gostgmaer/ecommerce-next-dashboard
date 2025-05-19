@@ -28,7 +28,10 @@ const options = [
 ];
 
 const ProductForm = ({ data, initialValues }) => {
+  console.log(initialValues);
+  
   const { data: session } = useSession()
+  //  console.log(session);
   const params = useParams();
 
   const router = useRouter();
@@ -40,6 +43,8 @@ const ProductForm = ({ data, initialValues }) => {
 
 
   const getRecord = async () => {
+   
+    
     const product = await ProductServices.getSingleProducts(params.productID, session["accessToken"])
     const brands = await masterServices.getAllBrands({}, session["accessToken"])
     const category = await masterServices.getAllcategories({}, session["accessToken"])
@@ -52,8 +57,8 @@ const ProductForm = ({ data, initialValues }) => {
   }
 
   useEffect(() => {
-    const data = getRecord()
-  }, [params.productID]);
+     getRecord()
+  }, [productID]);
 
   const saveProduct = async (status) => {
     const body = generateProductBody();
@@ -136,8 +141,7 @@ const ProductForm = ({ data, initialValues }) => {
         data={undefined}
         label={productID ? "Edit Product" : "Add Product"}
         btn={"Product"}
-        url={"/dashboard/products/create"}
-      />
+        url={"/dashboard/products/create"} exportevent={undefined}      />
       <TopStepper
         links={[
           { text: "Summary", id: "summary" },

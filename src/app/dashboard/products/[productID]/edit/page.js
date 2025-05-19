@@ -17,11 +17,15 @@ export const metadata = {
 
 
 
-const Page = async (props) => {
+const Page = async ({params}) => {
   // const category = await getCategories()
   // const brands = await getBrands()
-  const result = await getRecord(props.params.productID)
+  // console.log(params);
+  
+  const result = await getRecord(params)
 
+  // console.log(result);
+  
 
   return (
     <>
@@ -36,6 +40,8 @@ export default Page;
 
 
 export const getRecord = async (params) => {
+  console.log(params);
+  
   const product = await ProductServices.getSingleProducts(params.productID, params.token)
   const brands = await masterServices.getAllBrands({},params.token)
   const category = await masterServices.getAllcategories({},params.token)

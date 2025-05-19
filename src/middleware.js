@@ -1,30 +1,38 @@
-
-// import { getServerSession } from 'next-auth';
-// import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { NextResponse } from 'next/server'
 import { secret } from './config/setting';
-// import { authOptions } from './app/api/auth/[...nextauth]/route';
 
-// This function can be marked `async` if using `await` inside
-export async function middleware(req, res) {
-
-  const authorised = await getToken({ req, secret:secret });
-
+export async function middleware(req) {
+  const token = await getToken({ req, secret });
   const { pathname } = req.nextUrl;
 
-  // If the request is for /dashboard or any child page under /dashboard
-  if (pathname.startsWith('/dashboard') || pathname === '/checkout' || pathname.startsWith('/order')) {
-    // If the user is not authenticated, redirect to the login page
-    if (!authorised) {
-      return NextResponse.redirect(new URL(`/auth/login`, req.url));
-    }
+  const isProtectedRoute =
+    pathname.startsWith('/dashboard') ||
+    pathname === '/checkout' ||
+    pathname.startsWith('/order');
+
+  const isAuthRoute = pathname.startsWith('/auth');
+
+  // Redirect unauthenticated users from protected pages
+  if (isProtectedRoute && !token) {
+    return NextResponse.redirect(new URL('/auth/login', req.url));
   }
 
-  // If the user is authenticated and trying to access the login page, redirect them to the dashboard
-  if (pathname.startsWith('/auth') && authorised) {
+  // Redirect authenticated users away from auth pages
+  if (isAuthRoute && token) {
     return NextResponse.redirect(new URL('/dashboard', req.url));
   }
 
+  return NextResponse.next();
 }
 
+
+
+export const config = {
+  matcher: [
+    '/dashboard/:path*',
+    '/checkout',
+    '/order/:path*',
+    '/auth/:path*',
+  ],
+};
