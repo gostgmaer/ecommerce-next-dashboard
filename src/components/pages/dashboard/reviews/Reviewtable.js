@@ -8,7 +8,7 @@ import TableFilter from "@/components/global/element/tableFilter";
 
 import { CiMenuKebab } from "react-icons/ci";
 import { Menu, Transition } from "@headlessui/react";
-import { useFloating } from "@floating-ui/react";
+// import { useFloating } from "@floating-ui/react";
 
 const products = [
   {
@@ -741,7 +741,7 @@ const ReviewElements = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { refs, floatingStyles } = useFloating();
+  // const { refs, floatingStyles } = useFloating();
   const columns = [
     {
       title: "ID",
@@ -798,7 +798,7 @@ const ReviewElements = () => {
   ];
   return (
     <div>
-      <Heading data={undefined} label="Reviews" btn={"Review"} url={undefined} />
+      <Heading data={undefined} label="Reviews" btn={"Review"} url={undefined} exportevent={undefined} />
       <div>
         {/* <TableFilter /> */}
         {/* <Table data={products} tableColumn={columns} pagination={{ total: products["length"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} /> */}
