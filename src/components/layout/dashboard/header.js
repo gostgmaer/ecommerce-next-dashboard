@@ -36,9 +36,13 @@ const navigation = [
 ];
 
 const Header = () => {
+
+
+  // const {data:session}= useSession()
+
   // const { user, userId, Logout } = useAuthContext();
   const { data: session } = useSession()
-  //console.log(session);
+  // console.log(session);
   return (
     <header className="sticky top-0 z-50 flex items-center bg-gray-0/80 px-4 py-4 backdrop-blur-xl  md:px-5 lg:px-6 2xl:py-5 3xl:px-8 4xl:px-10">
       <div className="flex w-full  items-center text-gray-700">
@@ -131,9 +135,9 @@ const Header = () => {
        {session?.user && <Popover className="relative bg-white rounded-full">
           <Popover.Button className="hover:border-none active:border-none focus-visible:border-none focus-visible:outline-none">
             <Image
-              src={session.user?.image}
-              alt={session.user?.email}
-              title={session.user?.email}
+              src={session?.user?.image||""}
+              alt={session?.user?.email}
+              title={session?.user?.email}
               draggable="false"
               loading="lazy"
               width="40"
@@ -145,7 +149,7 @@ const Header = () => {
             <div className="w-64 bg-white text-left rtl:text-right rizzui-tooltip-root absolute -right-10 top-2  min-w-max text-sm rounded-xl bg-gray-0 !text-gray-900 border border-gray-300 drop-shadow-md z-50 p-0 dark:bg-gray-50 [&amp;>svg]:dark:fill-gray-50">
               <div className="flex items-center border-b border-gray-300 px-4 py-3 ">
                 <Image
-                  src={session.user?.image}
+                  src={session?.user?.image||""}
                   alt={session.user?.email}
                   title="Albert Flores"
                   draggable="false"

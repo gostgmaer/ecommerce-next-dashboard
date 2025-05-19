@@ -142,13 +142,13 @@ export function parseUrlWithQueryParams(url) {
   return nestedObject;
 }
 
-export function storeCookiesOfObject(data) {
+export function storeCookiesOfObject(data,exp) {
   if (data) {
     const userKeys = Object.keys(data);
 
     userKeys.forEach(key => {
       const value = data[key];
-      Cookies.set(key, value);
+      Cookies.set(key, value,exp);
     });
   }
 }
