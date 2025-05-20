@@ -1,5 +1,5 @@
-
 import Dashboardlayout from "@/components/layout/dashboard/dashboard";
+import DashboardStats from "@/components/pages/dashboard/details/DashboardStats";
 import { cookies } from "next/headers";
 // import { useSession } from "next-auth/react";
 
@@ -9,12 +9,9 @@ export const metadata = {
 };
 
 const Page = async (props) => {
-
-
-
   return (
     <Dashboardlayout>
-      <div>asdad</div>
+      <DashboardStats />
     </Dashboardlayout>
   );
 };

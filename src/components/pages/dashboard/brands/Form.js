@@ -109,9 +109,8 @@ const BrandForm = ({ initialValues }) => {
         ishow={false}
         data={undefined}
         label={id ? "Edit Brand" : "Create A Brand"}
-        btn={"Brand"}
-        url={"/dashboard/brands/create"}
-      />
+        btn={id && "Brand"}
+        url={"/dashboard/brands/create"} exportevent={undefined}      />
       <TopStepper
         links={[
           { text: "Summary", id: "summary" },
