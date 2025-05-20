@@ -29,8 +29,8 @@ const options = [
 
 const ProductForm = ({ data, initialValues }) => {
   console.log(initialValues);
-  
-  const { data: session } = useSession()
+
+  const { data: session } = useSession();
   //  console.log(session);
   const params = useParams();
 
@@ -41,24 +41,19 @@ const ProductForm = ({ data, initialValues }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selected, setSelected] = useState([]);
 
+  // const getRecord = async () => {
 
-  const getRecord = async () => {
-   
-    
-    const product = await ProductServices.getSingleProducts(params.productID, session["accessToken"])
-    const brands = await masterServices.getAllBrands({}, session["accessToken"])
-    const category = await masterServices.getAllcategories({}, session["accessToken"])
+  //   const product = await ProductServices.getSingleProducts(params.productID, session["accessToken"])
+  //   const brands = await masterServices.getAllBrands({}, session["accessToken"])
+  //   const category = await masterServices.getAllcategories({}, session["accessToken"])
 
+  //   return { product, brands, category }
 
-    
+  // }
 
-    return { product, brands, category }
-
-  }
-
-  useEffect(() => {
-     getRecord()
-  }, [productID]);
+  // useEffect(() => {
+  //    getRecord()
+  // }, [productID]);
 
   const saveProduct = async (status) => {
     const body = generateProductBody();
@@ -140,8 +135,10 @@ const ProductForm = ({ data, initialValues }) => {
         ishow={false}
         data={undefined}
         label={productID ? "Edit Product" : "Add Product"}
-        btn={"Product"}
-        url={"/dashboard/products/create"} exportevent={undefined}      />
+        btn={productID && "Product"}
+        url={"/dashboard/products/create"}
+        exportevent={undefined}
+      />
       <TopStepper
         links={[
           { text: "Summary", id: "summary" },
@@ -186,7 +183,9 @@ const ProductForm = ({ data, initialValues }) => {
 
                 {formik.errors.title && formik.touched.title && (
                   <div className="text-red-500 text-sm">
-                    {formik.errors.title}
+                    {typeof formik.errors.title === "string"
+                      ? formik.errors.title
+                      : ""}
                   </div>
                 )}
               </div>
@@ -643,9 +642,7 @@ const ProductForm = ({ data, initialValues }) => {
           >
             <div className="col-span-1">
               <h4 className=" font-semibold text-xl">Tags</h4>
-              <p className="mt-2">
-                Add your product&lsquo;s tag here
-              </p>
+              <p className="mt-2">Add your product&lsquo;s tag here</p>
             </div>
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="flex items-end gap-3">

@@ -18,7 +18,7 @@ const Page = async () => {
         title: '',
         sku: '',
         productType: '',
-        categories: '', // Assuming categories is an array of ObjectId
+        categories: '',
         descriptions: '',
         status: '',
         images: [],
@@ -31,7 +31,7 @@ const Page = async () => {
         lowStockLevel: 0,
         gtin: '',
         manufacturerPartNumber: '',
-        brandName: '', // Assuming brandName is an ObjectId
+        brandName: '', 
         overview: '',
         slug: '',
         productUPCEAN: '',
@@ -40,7 +40,7 @@ const Page = async () => {
           metaDescription: '',
         },
         tags: [],
-        reviews: [], // Assuming reviews is an array of ObjectId
+        reviews: [], 
         features: [],
         specifications: {},
         isFeatured: false,

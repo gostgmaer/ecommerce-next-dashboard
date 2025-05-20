@@ -106,7 +106,7 @@ const CategoryForm = (props) => {
         ishow={false}
         data={undefined}
         label={cateID ? "Edit Category" : "Create A Category"}
-        btn={"Category"}
+        btn={cateID && "Category"}
         url={"/dashboard/categories/create"} exportevent={undefined}      />
       <TopStepper
         links={[

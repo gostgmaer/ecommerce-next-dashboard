@@ -10,6 +10,7 @@ import { del, get, patch } from "@/lib/http";
 import { useSession } from "next-auth/react";
 import { Select } from "@/components/global/fields/SelectField";
 import { orderStatus } from "@/assets/static/data";
+import Link from "next/link";
 
 
 const Datatable = () => {
@@ -67,8 +68,14 @@ const Datatable = () => {
       title: "Order id",
       dataIndex: "order_id",
       key: "order_id",
+       render: (index, record) => (
+        <Link href={`/dashboard/orders/${record["order_id"]}`} className="flex items-center justify-start">
+          {`${record.order_id}`}
+        </Link>
+      ),
 
     },
+    
     {
       title: "ORDER TIME",
       dataIndex: "createdAt",
