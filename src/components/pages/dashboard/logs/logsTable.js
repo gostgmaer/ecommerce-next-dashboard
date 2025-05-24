@@ -5,6 +5,7 @@ import Table from "@/components/global/element/Table";
 import TableFilter from "@/components/global/element/tableFilter";
 import { generateUrlFromNestedObject } from "@/helper/function";
 import { useRouter } from "next/navigation";
+import moment from "moment";
 
 const LogsTable = (props) => {
 
@@ -61,6 +62,15 @@ const LogsTable = (props) => {
       title: "Created Time",
       dataIndex: "createdAt",
       key: "createdAt",
+        render: (index, record) => (
+              <div className="flex items-center justify-start">
+                {`${
+                  record.createdAt
+                    ? moment(record.createdAt).format("DD MMM YYYY, h:mm a")
+                    : ""
+                }`}
+              </div>
+            ),
     },
     // {
     //   title: (
