@@ -4,6 +4,7 @@
 import axios from "axios";
 import instance from "../lib/interceptors";
 import Cookies from "js-cookie";
+import { notifyerror, notifySuccess } from "./notify/notice";
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL; // Replace with your Firebase URL
 
@@ -130,9 +131,10 @@ export const post = async (endpint, data) => {
   let error;
   try {
     response = await instance.request(option);
+      notifySuccess(response.data?.message || "Created successfully");
   } catch (e) {
     error = e.response.data;
-
+ notifyerror(response.data?.message || "Something went wrong");
     // throw new Error(JSON.stringify(e.response));
   }
 
@@ -140,29 +142,6 @@ export const post = async (endpint, data) => {
   return response?.data ? response.data : error; // or set initial value
 };
 
-// export const put = async (endpint, id, data) => {
-//   const option = {
-//     method: "put",
-//     url: baseURL + endpint + `/${id}`,
-//     headers: {
-//       Authorization: token,
-//       session_id: session,
-//     },
-//     params: {},
-//     data: data,
-//   };
-//   let response;
-//   let error;
-//   try {
-//     response = await axios.request(option);
-//     notifySuccess(response.data.message, 2000);
-//   } catch (e) {
-//     error = e.response.data;
-//     notifyerror(e.response.data.message, 2000);
-//     throw new Error(JSON.stringify(e.response.data));
-//   }
-//   return response?.data ? response?.data : error; // or set initial value
-// };
 
 export const patch = async (endpint, data, id,header) => {
   const cookiesData = Cookies.get();
@@ -188,6 +167,32 @@ export const patch = async (endpint, data, id,header) => {
   return response?.data ? response?.data : error; // or set initial value
 };
 
+export const put = async (endpint, data, id,header) => {
+  const cookiesData = Cookies.get();
+  const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
+  const option = {
+    method: "put",
+    url: baseURL + endpint + `/${id}`,
+    headers: {
+      Authorization: "Bearer " + token,...header
+    },
+    params: {},
+    data: data,
+  };
+  let response;
+  let error;
+  try {
+    response = await instance.request(option);
+   notifySuccess(response.data?.message || "Updated successfully");
+    
+  } catch (e) {
+    error = e.response.data;
+ notifyerror(response.data?.message || "Something went wrong");
+    // throw new Error(JSON.stringify(e.response.data));
+  }
+  return response?.data ? response?.data : error; // or set initial value
+};
+
 export const del = async (endpoint, id) => {
   const cookiesData = Cookies.get();
   const token = cookiesData["headerPayload"] + "." + cookiesData["signature"];
@@ -205,9 +210,10 @@ export const del = async (endpoint, id) => {
   let error;
   try {
     response = await instance.request(option);
+        notifySuccess(response.data?.message || "Deleted successfully");
   } catch (e) {
     error = e.response.data;
-
+ notifyerror(response.data?.message || "Delete failed");
     // throw new Error(JSON.stringify(e.response.data));
   }
   return response?.data ? response?.data : error; // or set initial value

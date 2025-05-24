@@ -16,6 +16,7 @@
     "axios": "^1.5.1",
     "cookies-next": "^4.2.1",
     "country-state-city": "^3.2.1",
+    "encoding": "^0.1.13",
     "eslint": "8.51.0",
     "eslint-config-next": "13.5.5",
     "firebase": "^10.5.0",
