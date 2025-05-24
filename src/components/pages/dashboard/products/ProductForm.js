@@ -60,7 +60,7 @@ const ProductForm = ({ data, initialValues }) => {
     //console.log(body);
     const res = await post("/products", { ...body, status: status });
     if (res.statusCode === 201) {
-      notifySuccess(res.message, 3000);
+      // notifySuccess(res.message, 3000);
     }
   };
 
@@ -73,7 +73,7 @@ const ProductForm = ({ data, initialValues }) => {
       productID
     );
     if (res.statusCode === 200) {
-      notifySuccess(res.message, 3000);
+      // notifySuccess(res.message, 3000);
     }
   };
 

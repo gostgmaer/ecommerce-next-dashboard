@@ -51,7 +51,7 @@ const CategoryForm = (props) => {
 
     if (res.statusCode === 201) {
       setSelectedFiles([]);
-      notifySuccess(res.message, 3000);
+      // notifySuccess(res.message, 3000);
       router.push("/dashboard/categories");
     }
   };

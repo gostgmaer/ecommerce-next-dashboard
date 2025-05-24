@@ -18,7 +18,6 @@ const BrandForm = ({ initialValues }) => {
   const router = useRouter();
   const id = params["id"];
 
-
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [slug, setSlug] = useState("");
 
@@ -31,10 +30,12 @@ const BrandForm = ({ initialValues }) => {
         website: formik.values.website,
       },
       images: selectedFiles,
-      slug: slug
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/-$/, ""),
+      slug: formik.values.slug
+        ? formik.values.slug
+        : formik.values.name
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/-$/, ""),
     };
 
     return body;
@@ -47,7 +48,7 @@ const BrandForm = ({ initialValues }) => {
     if (res.statusCode === 200) {
       setSelectedFiles([]);
       setSlug("");
-      notifyinfo(res.message, 3000);
+      // notifyinfo(res.message, 3000);
       router.push("/dashboard/brands");
     }
   };
@@ -58,18 +59,15 @@ const BrandForm = ({ initialValues }) => {
     if (res.statusCode === 201) {
       setSelectedFiles([]);
       setSlug("");
-      notifySuccess(res.message, 3000);
-
+      formik.resetForm();
+      // notifySuccess(res.message, 3000);
     }
   };
-
-
 
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: async (values, { resetForm }) => {
       try {
-
         formik.setSubmitting(true);
 
         //console.log(formik.isSubmitting);
@@ -87,7 +85,7 @@ const BrandForm = ({ initialValues }) => {
             break;
         }
       } catch (error) {
-        console.error('Form submission error:', error);
+        console.error("Form submission error:", error);
       } finally {
         // Enable the submit button after submission (success or error)
         formik.setSubmitting(false);
@@ -95,13 +93,9 @@ const BrandForm = ({ initialValues }) => {
     },
   });
 
-
   const handleClick = (button) => {
     formik.setFieldValue("clickedButton", button);
   };
-
-
-
 
   return (
     <div>
@@ -110,7 +104,9 @@ const BrandForm = ({ initialValues }) => {
         data={undefined}
         label={id ? "Edit Brand" : "Create A Brand"}
         btn={id && "Brand"}
-        url={"/dashboard/brands/create"} exportevent={undefined}      />
+        url={"/dashboard/brands/create"}
+        exportevent={undefined}
+      />
       <TopStepper
         links={[
           { text: "Summary", id: "summary" },
@@ -128,49 +124,66 @@ const BrandForm = ({ initialValues }) => {
               <h4 className=" font-semibold text-xl">Add new Brands</h4>
               <p className="mt-2">Edit your Brands information from here</p>
             </div>
-            <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2" id="summary">
+            <div
+              className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2"
+              id="summary"
+            >
               <div>
+                <Input
+                  label={"Brand"}
+                  type={"text"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("name"),
+                    placeholder: "Nike",
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"name"}
+                />
 
-                <Input label={"Brand"} type={"text"} additionalAttrs={{
-                  ...formik.getFieldProps("name"),
-                  placeholder: "Nike",
-                }} classes={undefined} icon={undefined} id={"name"} />
-
-                {formik.errors.name &&
-                  formik.touched.name && (
-                    <div className="text-red-500 text-sm">
-                      {formik["errors"]["name"]}
-                    </div>
-                  )}
-
+                {formik.errors.name && formik.touched.name && (
+                  <div className="text-red-500 text-sm">
+                    {formik["errors"]["name"]}
+                  </div>
+                )}
               </div>
               <div>
-                <Input label={"Slug"} type={"text"} additionalAttrs={{
-                  ...formik.getFieldProps("slug"),
-                  placeholder: "Slug",
-                }} classes={undefined} icon={undefined} id={"slug"} />
+                <Input
+                  label={"Slug"}
+                  type={"text"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("slug"),
+                    placeholder: "Slug",
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"slug"}
+                />
 
-                {formik.errors.slug &&
-                  formik.touched.slug && (
-                    <div className="text-red-500 text-sm">
-                      {formik["errors"]["slug"]}
-                    </div>
-                  )}
-
+                {formik.errors.slug && formik.touched.slug && (
+                  <div className="text-red-500 text-sm">
+                    {formik["errors"]["slug"]}
+                  </div>
+                )}
               </div>
               <div className="col-span-full">
+                <Input
+                  label={"Tagline"}
+                  type={"text"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("tagline"),
+                    placeholder: "tagline...",
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"tagline"}
+                />
 
-                <Input label={"Tagline"} type={"text"} additionalAttrs={{
-                  ...formik.getFieldProps("tagline"),
-                  placeholder: "tagline...",
-                }} classes={undefined} icon={undefined} id={"tagline"} />
-
-                {formik.errors.tagline &&
-                  formik.touched.tagline && (
-                    <div className="text-red-500 text-sm">
-                      {formik["errors"]["tagline"]}
-                    </div>
-                  )}
+                {formik.errors.tagline && formik.touched.tagline && (
+                  <div className="text-red-500 text-sm">
+                    {formik["errors"]["tagline"]}
+                  </div>
+                )}
               </div>
               <div className=" col-span-full">
                 <label className="block">
@@ -181,70 +194,85 @@ const BrandForm = ({ initialValues }) => {
                     placeholder={"Descriptions"}
                     id="descriptions"
                     name="descriptions"
-                    {
-                    ...formik.getFieldProps("descriptions")
-                    }
+                    {...formik.getFieldProps("descriptions")}
                   />
                 </label>
-                {formik.errors.descriptions &&
-                  formik.touched.descriptions && (
-                    <div className="text-red-500 text-sm">
-                      {formik["errors"]["descriptions"]}
-                    </div>
-                  )}
+                {formik.errors.descriptions && formik.touched.descriptions && (
+                  <div className="text-red-500 text-sm">
+                    {formik["errors"]["descriptions"]}
+                  </div>
+                )}
               </div>
               <div className=" col-span-full " id="contact-info">
                 <h4 className="my-5">Contact Informations</h4>
               </div>
               <div>
+                <Input
+                  label={"Email"}
+                  type={"email"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("email"),
+                    placeholder: "info@mail.com..",
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"email"}
+                />
 
-                <Input label={"Email"} type={"email"} additionalAttrs={{
-                  ...formik.getFieldProps("email"),
-                  placeholder: "info@mail.com..",
-                }} classes={undefined} icon={undefined} id={"email"} />
-
-                {formik.errors.email &&
-                  formik.touched.email && (
-                    <div className="text-red-500 text-sm">
-                      {formik["errors"]["email"]}
-                    </div>
-                  )}
+                {formik.errors.email && formik.touched.email && (
+                  <div className="text-red-500 text-sm">
+                    {formik["errors"]["email"]}
+                  </div>
+                )}
               </div>
               <div>
+                <Input
+                  label={"Phone Number"}
+                  type={"text"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("phone"),
+                    placeholder: "+918000000000",
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"phone"}
+                />
 
-                <Input label={"Phone Number"} type={"text"} additionalAttrs={{
-                  ...formik.getFieldProps("phone"),
-                  placeholder: "+918000000000",
-                }} classes={undefined} icon={undefined} id={"phone"} />
-
-                {formik.errors.phone &&
-                  formik.touched.phone && (
-                    <div className="text-red-500 text-sm">
-                      {formik["errors"]["phone"]}
-                    </div>
-                  )}
-
+                {formik.errors.phone && formik.touched.phone && (
+                  <div className="text-red-500 text-sm">
+                    {formik["errors"]["phone"]}
+                  </div>
+                )}
               </div>
               <div>
+                <Input
+                  label={"Website"}
+                  type={"text"}
+                  additionalAttrs={{
+                    ...formik.getFieldProps("website"),
+                    placeholder: "https://website.com",
+                  }}
+                  classes={undefined}
+                  icon={undefined}
+                  id={"website"}
+                />
 
-                <Input label={"Website"} type={"text"} additionalAttrs={{
-                  ...formik.getFieldProps("website"),
-                  placeholder: "https://website.com",
-                }} classes={undefined} icon={undefined} id={"website"} />
-
-                {formik.errors.website &&
-                  formik.touched.website && (
-                    <div className="text-red-500 text-sm">
-                      {formik["errors"]["website"]}
-                    </div>
-                  )}
-
+                {formik.errors.website && formik.touched.website && (
+                  <div className="text-red-500 text-sm">
+                    {formik["errors"]["website"]}
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          <div className="mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full " id="images-gallery">
+          <div
+            className="mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full "
+            id="images-gallery"
+          >
             <div className="col-span-1">
-              <h4 className=" font-semibold text-xl">Upload new thumbnail image</h4>
+              <h4 className=" font-semibold text-xl">
+                Upload new thumbnail image
+              </h4>
               <p className="mt-2">Upload your product image gallery here</p>
             </div>
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -256,7 +284,6 @@ const BrandForm = ({ initialValues }) => {
                 />
               </div>
             </div>
-
           </div>
           <div className="sticky bottom-0 left-0 right-0 py-4 p-6 bg-white  flex items-center justify-end gap-4 border-t ">
             <button
@@ -283,8 +310,7 @@ const BrandForm = ({ initialValues }) => {
                 onClick={() => handleClick("create")}
                 disabled={formik.isSubmitting}
               >
-                {formik.isSubmitting ? 'Submitting...' : 'Save'}
-
+                {formik.isSubmitting ? "Submitting..." : "Save"}
               </button>
             )}
           </div>
