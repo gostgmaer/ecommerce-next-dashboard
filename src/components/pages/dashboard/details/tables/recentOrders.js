@@ -34,7 +34,7 @@ const Recentordrs = () => {
 
   useEffect(() => {
     fetch();
-  }, [itemsPerPage, currentPage]);
+  }, []);
 
 
   const columns = [
@@ -83,7 +83,7 @@ const Recentordrs = () => {
       dataIndex: "payment_status",
       key: "payment_status",
        render: (index, record) => (
-        <div className={`status-${record.payment_status}`}>{record.payment_status}</div>
+        <div className={`status-${record.payment_status} capitalize`}>{record.payment_status}</div>
       ),
     },
    
@@ -97,7 +97,7 @@ const Recentordrs = () => {
       dataIndex: "status",
       key: "status",
        render: (index, record) => (
-        <div className={`status-${record.status}`}>{record.status}</div>
+        <div className={`status-${record.status} capitalize`}>{record.status}</div>
       ),
     },
      

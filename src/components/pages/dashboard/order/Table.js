@@ -5,7 +5,7 @@ import Table from "@/components/global/element/Table";
 // import Pagination from '@/components/global/element/pagination';
 
 import TableFilter from "@/components/global/element/tableFilter";
-import { del, get, patch } from "@/lib/http";
+import { del, get, patch, put } from "@/lib/http";
 
 import { useSession } from "next-auth/react";
 import { Select } from "@/components/global/fields/SelectField";
@@ -61,7 +61,7 @@ const Datatable = () => {
     const header = {
       Authorization: "Bearer " + session?.["accessToken"],
     }
-    const res = await patch("/orders", { status: status }, id, header);
+    const res = await put("/orders", { status: status }, id, header);
     res.statusCode == 200 && fetch();
   };
   const columns = [
@@ -110,7 +110,7 @@ const Datatable = () => {
       dataIndex: "payment_status",
       key: "payment_status",
        render: (index, record) => (
-        <div className={`status-${record.payment_status}`}>{record.payment_status}</div>
+        <div className={`status-${record.payment_status} capitalize`}>{record.payment_status}</div>
       ),
     },
    
@@ -124,7 +124,7 @@ const Datatable = () => {
       dataIndex: "status",
       key: "status",
        render: (index, record) => (
-        <div className={`status-${record.status}`}>{record.status}</div>
+        <div className={`status-${record.status} capitalize`}>{record.status}</div>
       ),
     },
      

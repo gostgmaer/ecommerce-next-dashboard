@@ -2,37 +2,48 @@ import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { secret } from './config/setting';
 
+/**
+ * @param {import('next/server').NextRequest} req
+ */
 export async function middleware(req) {
-  const token = await getToken({ req, secret });
   const { pathname } = req.nextUrl;
 
-  const isProtectedRoute =
-    pathname.startsWith('/dashboard') ||
-    pathname === '/checkout' ||
-    pathname.startsWith('/order');
-
-  const isAuthRoute = pathname.startsWith('/auth');
-
-  // Redirect unauthenticated users from protected pages
-  if (isProtectedRoute && !token) {
-    return NextResponse.redirect(new URL('/auth/login', req.url));
+  // Skip static files and API routes
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/favicon.ico') ||
+    pathname.startsWith('/images') ||
+    pathname.startsWith('/static')
+  ) {
+    return NextResponse.next();
   }
 
-  // Redirect authenticated users away from auth pages
-  if (isAuthRoute && token) {
-    return NextResponse.redirect(new URL('/dashboard', req.url));
+  const isProtectedRoute =
+    pathname.startsWith('/dashboard');
+
+  const isAuthRoute = pathname.startsWith('/auth') || pathname === '/';
+
+  if (isProtectedRoute || isAuthRoute) {
+    const token = await getToken({ req, secret });
+
+    if (isProtectedRoute && !token) {
+      return NextResponse.redirect(new URL('/auth/login', req.url));
+    }
+
+    if (isAuthRoute && token) {
+      return NextResponse.redirect(new URL('/dashboard', req.url));
+    }
   }
 
   return NextResponse.next();
 }
 
 
-
 export const config = {
   matcher: [
     '/dashboard/:path*',
-    '/checkout',
-    '/order/:path*',
     '/auth/:path*',
+    '/', // homepage
   ],
 };
