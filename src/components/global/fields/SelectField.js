@@ -48,7 +48,7 @@ export const Select = ({ options, id, label,className="block", additionalAttrs, 
         {...additionalAttrs}
         name={id}
         id={id}
-        className="block w-full placeholder:text-gray-600 px-2 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        className="block w-full disabled:text-gray-300 placeholder:text-gray-600 px-2 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
       >
         <option value="" className="text-gray-400">{placeholder ? placeholder : "Select"}</option>
         {options.map((option) => (
