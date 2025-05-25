@@ -18,43 +18,55 @@ import {
 import { del, get, patch, post } from "@/lib/http";
 import { useAxios } from "@/lib/interceptors";
 import Image from "next/image";
-import { exportExcelFile, generateUrlFromNestedObject } from "@/helper/function";
+import {
+  exportExcelFile,
+  generateUrlFromNestedObject,
+} from "@/helper/function";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Switch } from "@nextui-org/react";
 
 const ProductsPageElement = (props) => {
-  const { data: session } = useSession()
-  const route = useRouter()
+  const { data: session } = useSession();
+  const route = useRouter();
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchKey, setSearchKey] = useState("");
   const [status, setStatus] = useState("");
   const [data, setData] = useState(null);
 
-
-
-  const fetch = async (statuskey) => {
-
-    const header = {
-      Authorization: "Bearer " + session?.["accessToken"],
-    }
+  const loadProduct = React.useCallback(() => {
     const query = {
       limit: itemsPerPage,
       page: currentPage,
-      filter: JSON.stringify({ status: statuskey }),
-      search: JSON.stringify({ name: searchKey }),
     };
-
-
-    const category = await get("/products", query, null, header);
-    setData(category);
-  };
-
+    const checkQuerydata = generateUrlFromNestedObject({ ...query });
+    route.push(`/dashboard/products${checkQuerydata}`);
+  }, [itemsPerPage, currentPage, route]);
 
   useEffect(() => {
-    fetch()
-  }, [itemsPerPage, currentPage]);
+    loadProduct();
+  }, [loadProduct]);
+
+  // const fetch = async (statuskey) => {
+
+  //   const header = {
+  //     Authorization: "Bearer " + session?.["accessToken"],
+  //   }
+  //   const query = {
+  //     limit: itemsPerPage,
+  //     page: currentPage,
+  //     filter: JSON.stringify({ status: statuskey }),
+  //     search: JSON.stringify({ name: searchKey }),
+  //   };
+
+  //   const category = await get("/products", query, null, header);
+  //   setData(category);
+  // };
+
+  // useEffect(() => {
+  //   fetch()
+  // }, [itemsPerPage, currentPage]);
 
   const DeleteProduct = async (id) => {
     const res = await del("/products", id);
@@ -183,17 +195,16 @@ const ProductsPageElement = (props) => {
     },
   ];
 
-
   const exportbtnclick = () => {
     const objectofkeys = {
-      "title": "Product Name",
-      "status": "Status",
-      "sku": "SKU",
-      "price": "Price",
-      "salePrice": "Sale Price"
-    }
-    exportExcelFile(data.results, objectofkeys, "products")
-  }
+      title: "Product Name",
+      status: "Status",
+      sku: "SKU",
+      price: "Price",
+      salePrice: "Sale Price",
+    };
+    exportExcelFile(data.results, objectofkeys, "products");
+  };
 
   return (
     <div>
@@ -201,16 +212,35 @@ const ProductsPageElement = (props) => {
         data={undefined}
         label={"Products"}
         btn={"product"}
-        url={"/dashboard/products/create"} exportevent={exportbtnclick} />
+        url={"/dashboard/products/create"}
+        exportevent={exportbtnclick}
+      />
       <div className=" relative">
-        <div className=" sticky"> <TableFilter
-          searchKey={searchKey}
-          setSearchKey={setSearchKey}
-          status={status}
-          setStatus={setStatus} searchEvent={fetch}        // searchEvent={handleSearch}
-        /></div>
-        {data ? <Table data={data.results} tableColumn={columns} pagination={{ total: data.total, page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} /> : <div></div>}
-
+        <div className=" sticky">
+          {" "}
+          <TableFilter
+            searchKey={searchKey}
+            setSearchKey={setSearchKey}
+            status={status}
+            setStatus={setStatus}
+            searchEvent={fetch} // searchEvent={handleSearch}
+          />
+        </div>
+        {props.product.results ? (
+          <Table
+            data={props.product.results}
+            tableColumn={columns}
+            pagination={{
+              total: props.product.total,
+              page: currentPage,
+              limit: itemsPerPage,
+              setPage: setCurrentPage,
+              setLimit: setItemsPerPage,
+            }}
+          />
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );

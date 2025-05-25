@@ -25,7 +25,7 @@ export default Page
 
 export const getAllRecord = async (query) => {
 
-  const cookieStore = cookies()
+  const cookieStore  = await cookies()
   const tokendata = "Bearer " + cookieStore.get("headerPayload").value + "." + cookieStore.get("signature").value;
 
 

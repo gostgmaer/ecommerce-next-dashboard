@@ -12,57 +12,68 @@ import { Select } from "@/components/global/fields/SelectField";
 import { orderStatus } from "@/assets/static/data";
 import Link from "next/link";
 import moment from "moment";
+import { generateUrlFromNestedObject } from "@/helper/function";
+import { useRouter } from "next/navigation";
 
-
-const Datatable = () => {
-  const { data: session } = useSession()
+const Datatable = (props) => {
+  const { data: session } = useSession();
   const options = [10, 20, 50, 100];
   const [itemsPerPage, setItemsPerPage] = useState(options[0]);
   const [currentPage, setCurrentPage] = useState(1);
   const [order, setOrder] = useState([]);
   const [searchKey, setSearchKey] = useState("");
   const [status, setStatus] = useState("");
-  const [setstatusData, setSetstatusData] = useState('');
+  const [setstatusData, setSetstatusData] = useState("");
+  const route = useRouter();
 
-  const fetch = async (statuskey) => {
-    const header = {
-      Authorization: "Bearer " + session?.["accessToken"],
-    }
+  const loadorder = React.useCallback(() => {
     const query = {
       limit: itemsPerPage,
       page: currentPage,
-      filter: JSON.stringify({ status: statuskey }),
-      search: JSON.stringify({ name: searchKey }),
     };
-
-    
-    const orders = await get("/orders", query, null, header);
-    setOrder(orders);
-  };
-
-
+    const checkQuerydata = generateUrlFromNestedObject({ ...query });
+    route.push(`/dashboard/orders${checkQuerydata}`);
+  }, [itemsPerPage, currentPage, route]);
 
   useEffect(() => {
-    fetch();
-  }, [itemsPerPage, currentPage]);
+    loadorder();
+  }, [loadorder]);
+
+  // const fetch = async (statuskey) => {
+  //   const header = {
+  //     Authorization: "Bearer " + session?.["accessToken"],
+  //   }
+  //   const query = {
+  //     limit: itemsPerPage,
+  //     page: currentPage,
+  //     filter: JSON.stringify({ status: statuskey }),
+  //     search: JSON.stringify({ name: searchKey }),
+  //   };
+
+  //   const orders = await get("/orders", query, null, header);
+  //   setOrder(orders);
+  // };
+
+  // useEffect(() => {
+  //   fetch();
+  // }, [itemsPerPage, currentPage]);
   // useEffect(() => {
 
   // }, [setstatusData]);
 
   const cancelOrder = async (id) => {
-
     const res = await patch("/orders", { status: "cancel" }, id);
-    res.statusCode == 200 && fetch();
+    // res.statusCode == 200 && fetch();
   };
 
-  const updateRecord = async (id, status = 'confirmed') => {
+  const updateRecord = async (id, status = "confirmed") => {
     console.log(session);
 
     const header = {
       Authorization: "Bearer " + session?.["accessToken"],
-    }
+    };
     const res = await put("/orders", { status: status }, id, header);
-    res.statusCode == 200 && fetch();
+    // res.statusCode == 200 && fetch();
   };
   const columns = [
     {
@@ -109,11 +120,13 @@ const Datatable = () => {
       title: "Payment Status",
       dataIndex: "payment_status",
       key: "payment_status",
-       render: (index, record) => (
-        <div className={`status-${record.payment_status} capitalize`}>{record.payment_status}</div>
+      render: (index, record) => (
+        <div className={`status-${record.payment_status} capitalize`}>
+          {record.payment_status}
+        </div>
       ),
     },
-   
+
     {
       title: "Method",
       dataIndex: "payment_method",
@@ -123,11 +136,13 @@ const Datatable = () => {
       title: "Order Status",
       dataIndex: "status",
       key: "status",
-       render: (index, record) => (
-        <div className={`status-${record.status} capitalize`}>{record.status}</div>
+      render: (index, record) => (
+        <div className={`status-${record.status} capitalize`}>
+          {record.status}
+        </div>
       ),
     },
-     
+
     {
       title: "Amount",
       dataIndex: "totalPrice",
@@ -139,17 +154,22 @@ const Datatable = () => {
       ),
     },
     {
-      title:"Actions",
+      title: "Actions",
       key: "actions",
       render: (record, index) => (
         <div className="flex items-center justify-start gap-3">
-       
-
-          <Select className="flex items-center justify-start gap-2" options={orderStatus} id={"order-status-data"} additionalAttrs={{ onChange: (e) => updateRecord(record._id, e.target.value), value: record.status }} placeholder={"Select"} optionkeys={{ key: "key", value: "label" }} label={undefined}>
-
-          </Select>
-
-
+          <Select
+            className="flex items-center justify-start gap-2"
+            options={orderStatus}
+            id={"order-status-data"}
+            additionalAttrs={{
+              onChange: (e) => updateRecord(record._id, e.target.value),
+              value: record.status,
+            }}
+            placeholder={"Select"}
+            optionkeys={{ key: "key", value: "label" }}
+            label={undefined}
+          ></Select>
         </div>
       ),
     },
@@ -161,7 +181,9 @@ const Datatable = () => {
         data={undefined}
         label="Orders"
         btn={undefined}
-        url={undefined} exportevent={undefined} />
+        url={undefined}
+        exportevent={undefined}
+      />
       <div>
         <TableFilter
           searchKey={searchKey}
@@ -170,7 +192,17 @@ const Datatable = () => {
           setStatus={setStatus}
           searchEvent={fetch}
         />
-        <Table data={order?.["results"]} tableColumn={columns} pagination={{ total: order?.["total"], page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
+        <Table
+          data={props.orders?.["results"]}
+          tableColumn={columns}
+          pagination={{
+            total: props.orders?.["total"],
+            page: currentPage,
+            limit: itemsPerPage,
+            setPage: setCurrentPage,
+            setLimit: setItemsPerPage,
+          }}
+        />
         {/* <PaginatedList
           length={categories["total"]}
           itemsPerPage={itemsPerPage}
@@ -179,7 +211,6 @@ const Datatable = () => {
           setCurrentPage={setCurrentPage}
         /> */}
       </div>
-
     </div>
   );
 };
