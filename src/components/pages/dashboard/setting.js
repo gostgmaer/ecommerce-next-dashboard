@@ -246,7 +246,7 @@ const Blocksetting = () => {
               }}
               id={"timezone"}
               options={timezones}
-              searchable={true}
+              searchable={false}
               optionkeys={{ key: "tzCode", value: "label" }}
               placeholder={"Select"}
             />
