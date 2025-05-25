@@ -8,7 +8,7 @@ const Page = async (props) => {
 
 
   const orders = await getAllRecord(props.searchParams)
-  console.log(orders);
+  // console.log(orders);
   
 
 
