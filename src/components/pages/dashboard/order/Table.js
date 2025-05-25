@@ -156,22 +156,27 @@ const Datatable = (props) => {
     {
       title: "Actions",
       key: "actions",
-      render: (record, index) => (
-        <div className="flex items-center justify-start gap-3">
-          <Select
-            className="flex items-center justify-start gap-2"
-            options={orderStatus}
-            id={"order-status-data"}
-            additionalAttrs={{
-              onChange: (e) => updateRecord(record._id, e.target.value),
-              value: record.status,
-            }}
-            placeholder={"Select"}
-            optionkeys={{ key: "key", value: "label" }}
-            label={undefined}
-          ></Select>
-        </div>
-      ),
+      render: (text, record) => {
+        console.log(record.status != "completed", record);
+        
+        return (
+          <div className="flex items-center justify-start gap-3">
+           <Select
+                className="flex items-center justify-start gap-2"
+                options={orderStatus}
+                id={"order-status-data"}
+                // disabled={record.status !== "completed"}
+                additionalAttrs={{
+                  onChange: (e) => updateRecord(record._id, e.target.value),
+                  value: record.status, disabled: record.status === "completed"
+                }}
+                placeholder={"Select"}
+                optionkeys={{ key: "key", value: "label" }}
+                label={undefined}
+              ></Select>
+          </div>
+        );
+      },
     },
   ];
 
