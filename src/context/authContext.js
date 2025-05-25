@@ -144,11 +144,11 @@ export const AuthContextProvider = ({ children }) => {
   //   unsubscribe();
   // }, []);
 
-  useEffect(() => {
-    const tokenRefreshInterval = setInterval(getToken, 10 * 60 * 1000);
+  // useEffect(() => {
+  //   const tokenRefreshInterval = setInterval(getToken, 10 * 60 * 1000);
 
-    return () => clearInterval(tokenRefreshInterval);
-  }, []);
+  //   return () => clearInterval(tokenRefreshInterval);
+  // }, []);
 
   return (
     <AuthContext.Provider
