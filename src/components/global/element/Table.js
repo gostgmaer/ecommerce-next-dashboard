@@ -49,7 +49,7 @@ const ProductTable = ({ data, tableColumn, pagination }) => {
   ];
 
   var currentColumn = [...isChecked, ...tableColumn];
-  console.log(data);
+  // console.log(data);
   
 
   return (
