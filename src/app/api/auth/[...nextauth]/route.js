@@ -11,6 +11,38 @@ import {
   googleSecret,
   secret,
 } from "@/config/setting";
+async function refreshAccessToken(token) {
+  // console.log(token);
+
+  try {
+    const response = await fetch(`${baseurl}/user/auth/session/refresh/token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        refreshToken: token.refreshToken,
+      }),
+    });
+    //  console.log("Refreshed Tokens:", response);
+    const refreshedTokens = await response.json();
+
+    if (!response.ok) throw new Error("Failed to refresh token");
+
+    return {
+      ...token,
+      accessToken: refreshedTokens.accessToken,
+      accessTokenExpires: Date.now() + refreshedTokens.expiresIn * 1000, // expiresIn in seconds
+      refreshToken: refreshedTokens.refreshToken ?? token.refreshToken,
+    };
+  } catch (error) {
+    // console.error("Error refreshing access token:", error);
+    return {
+      ...token,
+      error: "RefreshAccessTokenError",
+    };
+  }
+}
 
 export const authOptions = {
   providers: [
@@ -125,13 +157,29 @@ export const authOptions = {
     },
 
     async jwt({ token, user }) {
-      if (user) {
-        token.accessToken = user.accessToken;
-        token.refreshToken = user.refreshToken;
-        token.id_token = user.id_token;
-        token.token_type = user.token_type;
+      if (user)
+        return {
+          ...token,
+          accessToken: user.accessToken,
+          refreshToken: user.refreshToken,
+          expires: Date.now() + 5 * 60 * 1000, // 5 minutes
+          accessTokenExpires: Date.now() + 5 * 60 * 1000, // 5 minutes
+          id_token: user.id_token,
+          token_type: user.token_type,
+        };
+      // return token;
+
+      // console.log(token.exp * 1000, Date.now(), token.accessTokenExpires);
+      // console.log(Date.now() < token.exp * 1000);
+
+      if (Date.now() < token.exp) {
+        return token;
+      } else {
+        return await refreshAccessToken(token);
       }
-      return token;
+
+      // Access token has expired, try to refresh it
+     
     },
 
     async session({ session, token }) {
@@ -143,7 +191,11 @@ export const authOptions = {
     },
 
     async redirect({ url, baseUrl }) {
-      return url.startsWith("/") ? baseUrl : new URL(url).origin === baseUrl ? baseUrl : baseUrl;
+      return url.startsWith("/")
+        ? baseUrl
+        : new URL(url).origin === baseUrl
+        ? baseUrl
+        : baseUrl;
     },
   },
 
