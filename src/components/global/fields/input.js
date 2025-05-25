@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-const Input = ({ label, type, additionalAttrs, classes, icon, id }) => {
+const Input = ({ label, type, additionalAttrs, classes=undefined, icon=false, id }) => {
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
