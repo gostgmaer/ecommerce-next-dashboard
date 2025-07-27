@@ -17,7 +17,7 @@ const RegisterForm = () => {
 
     //console.log(values);
     try {
-      const res = await post("/user/auth/register", values);
+      const res = await post("/user/auth/register", {...values,username:values.email});
       if (res) {
         router.push("/auth/login");
       }
