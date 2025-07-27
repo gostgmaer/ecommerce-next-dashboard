@@ -32,7 +32,7 @@ const Dashboardlayout = async ({ children }) => {
           <div className="flex w-full flex-col xl:ms-[270px] xl:w-[calc(100%-270px)] 2xl:ms-72 2xl:w-[calc(100%-288px)]">
             <Header />
 
-            <div className=" md:px-5 lg:px-6 2xl:py-5 3xl:px-8 4xl:px-10 text-black">
+            <div className=" md:px-5 lg:px-6 2xl:py-5 3xl:px-8 4xl:px-10 text-black bg-gray-100">
               {children}
             </div>
           </div>
