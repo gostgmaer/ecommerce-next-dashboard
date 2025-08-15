@@ -21,13 +21,23 @@ const options = [
   { label: "Do not track inventory for this product", value: "no" },
 ];
 
+<<<<<<< HEAD
 const ProductForm = ({ data }) => {
+=======
+const ProductForm = ({ data, initialValues }) => {
+  console.log(initialValues);
+
+  const { data: session } = useSession();
+  //  console.log(session);
+  const params = useParams();
+>>>>>>> 3a7d988e8aa85ecaa4655aece356db23b07d16eb
 
   // const [data, setData] = useState(null);
   const [tags, setTags] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selected, setSelected] = useState([]);
 
+<<<<<<< HEAD
   const { categories, brands, status, error } = useSelector((state) => state["master"]);
 
   const { data: session } = useSession()
@@ -49,12 +59,27 @@ const ProductForm = ({ data }) => {
 
   // }, [params.productID, session]);
 
+=======
+  // const getRecord = async () => {
+
+  //   const product = await ProductServices.getSingleProducts(params.productID, session["accessToken"])
+  //   const brands = await masterServices.getAllBrands({}, session["accessToken"])
+  //   const category = await masterServices.getAllcategories({}, session["accessToken"])
+
+  //   return { product, brands, category }
+
+  // }
+
+  // useEffect(() => {
+  //    getRecord()
+  // }, [productID]);
+>>>>>>> 3a7d988e8aa85ecaa4655aece356db23b07d16eb
 
   const saveProduct = async (status) => {
     const body = generateProductBody();
     const res = await ProductServices.createProducts({ ...body, status: status }, null, session["accessToken"])
     if (res.statusCode === 201) {
-      notifySuccess(res.message, 3000);
+      // notifySuccess(res.message, 3000);
     }
   };
 
@@ -62,7 +87,7 @@ const ProductForm = ({ data }) => {
     const body = generateProductBody();
     const res = await ProductServices.updateProductPatch(productID, body, null, session["accessToken"])
     if (res.statusCode === 200) {
-      notifySuccess(res.message, 3000);
+      // notifySuccess(res.message, 3000);
     }
   };
 
@@ -155,8 +180,15 @@ const ProductForm = ({ data }) => {
         ishow={false}
         data={undefined}
         label={productID ? "Edit Product" : "Add Product"}
+<<<<<<< HEAD
         btn={"Product"}
         url={"/dashboard/products/create"} exportevent={null} />
+=======
+        btn={productID && "Product"}
+        url={"/dashboard/products/create"}
+        exportevent={undefined}
+      />
+>>>>>>> 3a7d988e8aa85ecaa4655aece356db23b07d16eb
       <TopStepper
         links={[
           { text: "Summary", id: "summary" },
@@ -201,7 +233,9 @@ const ProductForm = ({ data }) => {
 
                 {formik.errors.title && formik.touched.title && (
                   <div className="text-red-500 text-sm">
-                    {formik.errors.title}
+                    {typeof formik.errors.title === "string"
+                      ? formik.errors.title
+                      : ""}
                   </div>
                 )}
               </div>
@@ -658,9 +692,7 @@ const ProductForm = ({ data }) => {
           >
             <div className="col-span-1">
               <h4 className=" font-semibold text-xl">Tags</h4>
-              <p className="mt-2">
-                Add your product&lsquo;s tag here
-              </p>
+              <p className="mt-2">Add your product&lsquo;s tag here</p>
             </div>
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="flex items-end gap-3">

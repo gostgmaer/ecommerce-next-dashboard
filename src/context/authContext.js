@@ -21,43 +21,51 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (session) {
-      if (session.user["accessToken"]) {
-        const token = session.user["accessToken"].split(".");
-        setToken("headerPayload", `${token[0]}.${token[1]}`, session.user["exp"]);
-        setToken("signature", `${token[2]}`, session.user["exp"]);
+      const decoded = jwtDecode(session["accessToken"]);
+      const id_token = jwtDecode(session["id_token"]);
+      const decodedrefersh = jwtDecode(session["refreshToken"]);
+      // console.log(id_token);
+      setToken(
+        "accessToken",
+        session["accessToken"],
+        decoded["exp"]
+      );
+      setToken("refreshToken", session["refreshToken"], decodedrefersh["exp"]);
+      if (session["accessToken"]) {
+        const token = session["accessToken"].split(".");
+        setToken("headerPayload", `${token[0]}.${token[1]}`, decoded["exp"]);
+        setToken("signature", `${token[2]}`, decoded["exp"]);
       }
-      storeCookiesOfObject(session["user"])
+      storeCookiesOfObject(id_token,id_token.exp);
     }
   }, [session]);
 
-
-
-  const handleLoginAuth = async (body) => {
-    // const res = await post("/user/auth/login", body);
-    // //console.log(res);
-    try {
-      const res = await post("/user/auth/login", body);
-      if (res.statusCode != 200) {
-        setAuthError(res);
-      } else {
-        const decoded = jwtDecode(res.access_token);
-        const decodedrefersh = jwtDecode(res.refresh_token);
-        setToken(
-          "accessToken",
-          res.access_token,
-          decoded["exp"],
-          "ACCESS_TOKEN"
-        );
-        setToken("refreshToken", res.refresh_token, decodedrefersh["exp"]);
-        setUserId(decoded);
-        setUser(jwtDecode(res.id_token));
-        setAuthError(undefined);
-        router.push("/dashboard");
-      }
-    } catch (err) {
-      //console.log(err);
-    }
-  };
+  // const handleLoginAuth = async (body) => {
+  //   // const res = await post("/user/auth/login", body);
+  //   // //console.log(res);
+  //   try {
+  //     const res = await post("/user/auth/login", body);
+  //     if (res.statusCode != 200) {
+  //       setAuthError(res);
+  //     } else {
+  //       const decoded = jwtDecode(res.access_token);
+  //       const decodedrefersh = jwtDecode(res.refresh_token);
+  //       setToken(
+  //         "accessToken",
+  //         res.access_token,
+  //         decoded["exp"],
+  //         "ACCESS_TOKEN"
+  //       );
+  //       setToken("refreshToken", res.refresh_token, decodedrefersh["exp"]);
+  //       setUserId(decoded);
+  //       setUser(jwtDecode(res.id_token));
+  //       setAuthError(undefined);
+  //       router.push("/dashboard");
+  //     }
+  //   } catch (err) {
+  //     //console.log(err);
+  //   }
+  // };
 
   const Logout = async () => {
     try {
@@ -74,7 +82,7 @@ export const AuthContextProvider = ({ children }) => {
         setUserId(undefined);
 
         setAuthError(undefined);
-      }else{
+      } else {
         setAuthError(res);
       }
     } catch (error) {}
@@ -129,7 +137,6 @@ export const AuthContextProvider = ({ children }) => {
     } catch (error) {
       setUser(undefined);
       setUserId(undefined);
-     
     }
   };
 
@@ -137,15 +144,15 @@ export const AuthContextProvider = ({ children }) => {
   //   unsubscribe();
   // }, []);
 
-  useEffect(() => {
-    const tokenRefreshInterval = setInterval(getToken, 10 * 60 * 1000);
+  // useEffect(() => {
+  //   const tokenRefreshInterval = setInterval(getToken, 10 * 60 * 1000);
 
-    return () => clearInterval(tokenRefreshInterval);
-  }, []);
+  //   return () => clearInterval(tokenRefreshInterval);
+  // }, []);
 
   return (
     <AuthContext.Provider
-      value={{ user, handleLoginAuth, Logout, userId, authError }}
+      value={{ user, Logout, userId, authError }}
     >
       {children}
     </AuthContext.Provider>

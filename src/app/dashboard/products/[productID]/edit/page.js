@@ -14,10 +14,15 @@ export const metadata = {
 
 
 
-const Page = async (props) => {
+const Page = async ({params}) => {
+  // const category = await getCategories()
+  // const brands = await getBrands()
+  // console.log(params);
+  
+  const result = await getRecord(params)
 
-  const session = await getServerSession(authOptions);
-  const product = await ProductServices.getSingleProducts(props.params.productID, session["accessToken"])
+  // console.log(result);
+  
 
   return (
     <>
@@ -31,3 +36,13 @@ const Page = async (props) => {
 export default Page;
 
 
+export const getRecord = async (params) => {
+  console.log(params);
+  
+  const product = await ProductServices.getSingleProducts(params.productID, params.token)
+  const brands = await masterServices.getAllBrands({},params.token)
+  const category = await masterServices.getAllcategories({},params.token)
+  
+  return { product, brands, category }
+
+}

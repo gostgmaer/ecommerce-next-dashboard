@@ -1,30 +1,49 @@
-
-// import { getServerSession } from 'next-auth';
-// import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { NextResponse } from 'next/server'
 import { secret } from './config/setting';
-// import { authOptions } from './app/api/auth/[...nextauth]/route';
 
-// This function can be marked `async` if using `await` inside
-export async function middleware(req, res) {
-
-  const authorised = await getToken({ req, secret:secret });
-
+/**
+ * @param {import('next/server').NextRequest} req
+ */
+export async function middleware(req) {
   const { pathname } = req.nextUrl;
 
-  // If the request is for /dashboard or any child page under /dashboard
-  if (pathname.startsWith('/dashboard') || pathname === '/checkout' || pathname.startsWith('/order')) {
-    // If the user is not authenticated, redirect to the login page
-    if (!authorised) {
-      return NextResponse.redirect(new URL(`/auth/login`, req.url));
+  // Skip static files and API routes
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/favicon.ico') ||
+    pathname.startsWith('/images') ||
+    pathname.startsWith('/static')
+  ) {
+    return NextResponse.next();
+  }
+
+  const isProtectedRoute =
+    pathname.startsWith('/dashboard');
+
+  const isAuthRoute = pathname.startsWith('/auth') || pathname === '/';
+
+  if (isProtectedRoute || isAuthRoute) {
+    const token = await getToken({ req, secret });
+
+    if (isProtectedRoute && !token) {
+      return NextResponse.redirect(new URL('/auth/login', req.url));
+    }
+
+    if (isAuthRoute && token) {
+      return NextResponse.redirect(new URL('/dashboard', req.url));
     }
   }
 
-  // If the user is authenticated and trying to access the login page, redirect them to the dashboard
-  if (pathname.startsWith('/auth') && authorised) {
-    return NextResponse.redirect(new URL('/dashboard', req.url));
-  }
-
+  return NextResponse.next();
 }
 
+
+export const config = {
+  matcher: [
+    '/dashboard/:path*',
+    '/auth/:path*',
+    '/', // homepage
+  ],
+};
