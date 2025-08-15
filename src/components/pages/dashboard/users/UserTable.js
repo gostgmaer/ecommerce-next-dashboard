@@ -16,6 +16,8 @@ import { useRouter } from "next/navigation";
 import { exportExcelFile, generateUrlFromNestedObject } from "@/helper/function";
 
 const UserTable = (props) => {
+  console.log(props);
+  
 
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,18 +26,18 @@ const UserTable = (props) => {
   const route = useRouter()
 
 
-  const loadusers = () => {
+  const loadusers = React.useCallback(() => {
     const query = {
       limit: itemsPerPage,
       page: currentPage,
     };
     const checkQuerydata = generateUrlFromNestedObject({ ...query });
     route.push(`/dashboard/users${checkQuerydata}`);
-  };
+  }, [itemsPerPage, currentPage, route]);
 
   useEffect(() => {
     loadusers();
-  }, [itemsPerPage, currentPage]);
+  }, [loadusers]);
 
   const DeleteProduct = async (id) => {
     const res = await del("/users", id);
@@ -65,8 +67,8 @@ const UserTable = (props) => {
             width={50}
             height={50}
             className=" rounded-2xl"
-            src={record.profilePicture}
-            alt={record.profilePicture}
+            src={record?.profilePicture||"/images/user_placeholder.png"}
+            alt={record?.profilePicture||"User Image"}
             style={{ maxWidth: "100px" }}
           />
         </div>
@@ -88,6 +90,13 @@ const UserTable = (props) => {
       title: "is Verified",
       dataIndex: "isVerified",
       key: "isVerified",
+       render: (text, record) => (
+        <div className=" flex gap-1 items-center justify-start">
+          <span className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${record.isVerified ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+            {record.isVerified ? 'Yes' : 'No'}
+          </span>
+        </div>
+      ),
     },
     {
       title: "Email Address",
@@ -158,7 +167,11 @@ const UserTable = (props) => {
       <div>
         <TableFilter
           searchKey={searchKey}
-          options={["", "false", "true"]}
+          options={[
+            { key: "", label: "All" },
+            { key: "false", label: "Not Verified" },
+            { key: "true", label: "Verified" }
+          ]}
           setSearchKey={setSearchKey}
           status={status}
           setStatus={setStatus}

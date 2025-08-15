@@ -48,6 +48,7 @@ const ImageUpload = ({ imagePreview, setImagePreview,label }) => {
 
   useEffect(() => {
     onFileUpload();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file]);
 
   return (

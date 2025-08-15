@@ -142,13 +142,13 @@ export function parseUrlWithQueryParams(url) {
   return nestedObject;
 }
 
-export function storeCookiesOfObject(data) {
+export function storeCookiesOfObject(data,exp) {
   if (data) {
     const userKeys = Object.keys(data);
 
     userKeys.forEach(key => {
       const value = data[key];
-      Cookies.set(key, value);
+      Cookies.set(key, value,exp);
     });
   }
 }
@@ -178,4 +178,21 @@ export const exportExcelFile = (data, columnobj, filename) => {
 
   exportData(xlsdata, filename);
 
+}
+
+
+export function fillNullIfEmpty(obj) {
+ const filled = {};
+  Object.keys(obj).forEach(field => {
+    if (
+      obj[field] === undefined ||
+      obj[field] === "" ||
+      (Array.isArray(obj[field]) && obj[field].length === 0)
+    ) {
+      filled[field] = null;
+    } else {
+      filled[field] = obj[field];
+    }
+  });
+  return filled;
 }
