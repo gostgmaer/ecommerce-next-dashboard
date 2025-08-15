@@ -60,14 +60,14 @@ console.log(result);
       dataIndex: "images",
       key: "images",
       render: (images) => (
-        <Image
+       images ? <Image
           width={50}
           height={50}
           className=" rounded-2xl"
           src={images[0]?.url}
           alt={images[0]?.title}
           style={{ maxWidth: "100px" }}
-        />
+        />:""
       ),
     },
     {
