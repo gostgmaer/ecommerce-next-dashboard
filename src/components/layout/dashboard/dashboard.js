@@ -6,6 +6,7 @@ import Sidebar from "./sidebar";
 // import Link from "next/link";
 import NextUiProvider from "@/context/nextUiProvider";
 import StoreProvider from "@/store/storeProvider";
+import FetchRedux from "./fetchRedux";
 
 const Dashboardlayout = async ({ children }) => {
   // const session = await getServerSession(authOptions);
