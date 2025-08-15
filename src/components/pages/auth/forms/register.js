@@ -1,6 +1,7 @@
 "use client";
 import PasswordField from "@/components/global/fields/PasswordField";
 import { post } from "@/lib/http";
+import { notifyerror } from "@/lib/notify/notice";
 import { registerValidationSchema } from "@/utils/validation/validation";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
@@ -23,7 +24,8 @@ const RegisterForm = () => {
       }
     } catch (error) {
       setError(error);
-      //console.log(error);
+      notifyerror(error.message);
+      console.log(error);
     }
   };
 

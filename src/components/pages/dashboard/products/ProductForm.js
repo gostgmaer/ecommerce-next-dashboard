@@ -640,10 +640,10 @@ const ProductForm = ({ data, initialValues }) => {
             className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full"
             id="product-tags"
           >
-            <div className="col-span-1">
+            {/* <div className="col-span-1">
               <h4 className=" font-semibold text-xl">Tags</h4>
               <p className="mt-2">Add your product&lsquo;s tag here</p>
-            </div>
+            </div> */}
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="flex items-end gap-3">
                 {/* <TextField

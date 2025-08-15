@@ -11,8 +11,7 @@ const Page = async () => {
 
   const results = await getRequiredData()
 
-  console.log(results);
-  
+
 
   return (
     <Dashboardlayout>
@@ -53,7 +52,6 @@ const Page = async () => {
 };
 
 export default Page;
-
 
 export const getRequiredData = async (query) => {
 

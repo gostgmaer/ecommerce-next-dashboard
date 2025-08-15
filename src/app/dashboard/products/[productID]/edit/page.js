@@ -1,11 +1,8 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Dashboardlayout from "@/components/layout/dashboard/dashboard";
 import ProductForm from "@/components/pages/dashboard/products/ProductForm";
-import { baseurl } from "@/config/setting";
-import { serverMethod } from "@/helper/serverCall/datafetch";
-import masterServices from "@/helper/services/masterDataServices";
 import ProductServices from "@/helper/services/ProductServices";
-import Head from "next/head";
-import { useParams } from "next/navigation";
+import { getServerSession } from "next-auth";
 import React from "react";
 
 export const metadata = {
@@ -30,7 +27,7 @@ const Page = async ({params}) => {
   return (
     <>
       <Dashboardlayout>
-        <ProductForm data={{ ...result }} initialValues={result.product.results} />
+        <ProductForm data={product.results} />
       </Dashboardlayout>
     </>
   );
