@@ -3,63 +3,44 @@ import React, { useEffect, useState } from "react";
 import TopStepper from "../TopStepper";
 import Heading from "../heading";
 import { useParams, useRouter } from "next/navigation";
+import { getsingle, patch, post } from "@/lib/http";
+import { useAxios } from "@/lib/interceptors";
 import { notifySuccess } from "@/lib/notify/notice";
+import { productSchema } from "@/utils/validation/validation";
 import { useFormik } from "formik";
-import { Select } from "@/components/global/fields/SelectField";
+import TextField from "@/components/global/fields/TextField";
+import SelectField, { Select } from "@/components/global/fields/SelectField";
+import { generateSlug } from "@/helper/function";
 import MultiImageUploadr from "@/components/global/fields/multiImageUploadr";
 import { FaDollarSign } from "react-icons/fa";
 import Input from "@/components/global/fields/input";
+import { orderStatus } from "@/assets/static/data";
+import { SelectItem } from "@nextui-org/react";
 // import MultiSelect from "@/components/global/fields/multiSelect";
 import MultiSelect from "react-multi-select-component";
 import ProductServices from "@/helper/services/ProductServices";
+import masterServices from "@/helper/services/masterDataServices";
 import { useSession } from "next-auth/react";
-import { useSelector } from "react-redux";
-import FetchRedux from "@/components/layout/dashboard/fetchRedux";
 
 const options = [
   { label: "Track inventory for this product", value: "yes" },
   { label: "Do not track inventory for this product", value: "no" },
 ];
 
-<<<<<<< HEAD
-const ProductForm = ({ data }) => {
-=======
 const ProductForm = ({ data, initialValues }) => {
   console.log(initialValues);
 
   const { data: session } = useSession();
   //  console.log(session);
   const params = useParams();
->>>>>>> 3a7d988e8aa85ecaa4655aece356db23b07d16eb
 
-  // const [data, setData] = useState(null);
+  const router = useRouter();
+  const productID = params["productID"];
+  const [currData, setCurrData] = useState(data);
   const [tags, setTags] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selected, setSelected] = useState([]);
 
-<<<<<<< HEAD
-  const { categories, brands, status, error } = useSelector((state) => state["master"]);
-
-  const { data: session } = useSession()
-  const params = useParams();
-  const productID = params["productID"];
-  const router = useRouter();
-
-  console.log(data);
-
-  // const getCurrectProduct = async () => {
-  //   const product = await ProductServices.getSingleProducts(params.productID, null, session["accessToken"])
-  //   setData(product.results)
-  // }
-
-  // useEffect(() => {
-  //   if (params.productID) {
-  //     getCurrectProduct()
-  //   }
-
-  // }, [params.productID, session]);
-
-=======
   // const getRecord = async () => {
 
   //   const product = await ProductServices.getSingleProducts(params.productID, session["accessToken"])
@@ -73,11 +54,11 @@ const ProductForm = ({ data, initialValues }) => {
   // useEffect(() => {
   //    getRecord()
   // }, [productID]);
->>>>>>> 3a7d988e8aa85ecaa4655aece356db23b07d16eb
 
   const saveProduct = async (status) => {
     const body = generateProductBody();
-    const res = await ProductServices.createProducts({ ...body, status: status }, null, session["accessToken"])
+    //console.log(body);
+    const res = await post("/products", { ...body, status: status });
     if (res.statusCode === 201) {
       // notifySuccess(res.message, 3000);
     }
@@ -85,7 +66,12 @@ const ProductForm = ({ data, initialValues }) => {
 
   const UpdateProduct = async (status) => {
     const body = generateProductBody();
-    const res = await ProductServices.updateProductPatch(productID, body, null, session["accessToken"])
+
+    const res = await patch(
+      "/products",
+      { ...body, status: status },
+      productID
+    );
     if (res.statusCode === 200) {
       // notifySuccess(res.message, 3000);
     }
@@ -105,41 +91,9 @@ const ProductForm = ({ data, initialValues }) => {
   };
 
   const formik = useFormik({
-    initialValues: {
-      title: data ? data.title : "",
-      sku: data ? data.sku : "",
-      productType: data ? data.productType : "",
-      categories: [], // Assuming you'll populate this with category ObjectId(s)
-      category: data ? data.productType : "", // Single category ObjectId
-      descriptions: data ? data.descriptions : "", // Object structure (depends on your design)
-      status: data ? data.status : "",
-      images: [], // Array of objects for image URLs or file references
-      price: data ? data.price : 0,
-      discount: data ? data.discount : 0,
-      costPrice: data ? data.costPrice : 0,
-      retailPrice: data ? data.retailPrice : 0,
-      salePrice: data ? data.salePrice : 0,
-      trackInventory: 'yes', // Default value
-      currentStockLevel: data ? data.currentStockLevel : 0,
-      lowStockLevel: data ? data.lowStockLevel : 0,
-      stock: data ? data.stock : 0,
-      gtin: '',
-      manufacturerPartNumber: '',
-      brand: '', // Assuming this will hold a Brand ObjectId
-      overview: '',
-  
-      slug: data ? data.slug : "",
-      productUPCEAN: '',
-     
-      tags: [], // Array of strings
-     
-      features: [], // Array of strings for product features
-      specifications: {}, // Map-like structure for specifications
-      isFeatured: false, // Boolean flag
-      isAvailable: true, // Boolean flag
-    },
+    initialValues: initialValues,
     onSubmit: async (values, { resetForm }) => {
-      console.log(formik.initialValues);
+      console.log(selected);
 
       try {
         // Disable the submit button during submission
@@ -151,7 +105,9 @@ const ProductForm = ({ data, initialValues }) => {
             saveProduct("draft");
             break;
           case "update":
-            UpdateProduct();
+            console.log(currData["product"]["results"]["status"]);
+
+            UpdateProduct(currData["product"]["results"]["status"]);
             break;
           case "create":
             saveProduct("pending");
@@ -168,27 +124,21 @@ const ProductForm = ({ data, initialValues }) => {
     },
   });
 
-  const optionsdata = categories?.map((item) => ({
+  const optionsdata = data.category.results.map((item) => ({
     label: item.title,
     value: item._id,
   }));
 
   return (
     <div>
-      <FetchRedux />
       <Heading
         ishow={false}
         data={undefined}
         label={productID ? "Edit Product" : "Add Product"}
-<<<<<<< HEAD
-        btn={"Product"}
-        url={"/dashboard/products/create"} exportevent={null} />
-=======
         btn={productID && "Product"}
         url={"/dashboard/products/create"}
         exportevent={undefined}
       />
->>>>>>> 3a7d988e8aa85ecaa4655aece356db23b07d16eb
       <TopStepper
         links={[
           { text: "Summary", id: "summary" },
@@ -280,7 +230,7 @@ const ProductForm = ({ data, initialValues }) => {
                 <Select
                   label={"category"}
                   id={"category"}
-                  options={categories}
+                  options={data.category.results}
                   optionkeys={{ key: "_id", value: "title" }}
                   placeholder={undefined}
                   additionalAttrs={{ ...formik.getFieldProps("category") }}
@@ -310,14 +260,14 @@ const ProductForm = ({ data, initialValues }) => {
                 <Select
                   label={"Brand"}
                   id={"brandName"}
-                  options={brands}
+                  options={data.brands.results}
                   optionkeys={{ key: "_id", value: "name" }}
                   placeholder={undefined}
                   additionalAttrs={{ ...formik.getFieldProps("brandName") }}
                 />
-                {formik.errors.brand && formik.touched.brand && (
+                {formik.errors.brandName && formik.touched.brandName && (
                   <div className="text-red-500 text-sm">
-                    {formik.errors.brand}
+                    {formik.errors.brandName}
                   </div>
                 )}
               </div>
@@ -690,10 +640,10 @@ const ProductForm = ({ data, initialValues }) => {
             className=" mt-8 grid p-6 gap-4 sm:grid-cols-3 col-span-full"
             id="product-tags"
           >
-            <div className="col-span-1">
+            {/* <div className="col-span-1">
               <h4 className=" font-semibold text-xl">Tags</h4>
               <p className="mt-2">Add your product&lsquo;s tag here</p>
-            </div>
+            </div> */}
             <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="flex items-end gap-3">
                 {/* <TextField

@@ -84,7 +84,7 @@ const MultiImageUploadr = ({ selectedFiles, setSelectedFiles, label }) => {
       <label className="block text-gray-700 text-sm font-bold mb-2">
         {label}
       </label>
-      <div className="relative border-dashed border-2 border-gray-300 bg-gray-100 rounded-md">
+      <div className="relative border-dashed border-2 bg-white rounded-md">
         <input
           type="file"
           multiple

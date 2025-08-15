@@ -9,16 +9,9 @@ import React from "react";
 
 const Page = async () => {
 
-<<<<<<< HEAD
-
-  return (
-    <Dashboardlayout>
-      <ProductForm  />
-=======
   const results = await getRequiredData()
 
-  console.log(results);
-  
+
 
   return (
     <Dashboardlayout>
@@ -54,10 +47,28 @@ const Page = async () => {
         isFeatured: false,
         isAvailable: true,
       }} />
->>>>>>> 3a7d988e8aa85ecaa4655aece356db23b07d16eb
     </Dashboardlayout>
   );
 };
 
 export default Page;
 
+export const getRequiredData = async (query) => {
+
+  const params = {
+    method: "get",
+    header: {},
+    query: { ...query },
+  };
+  const brands = await serverMethod(
+    `/brands`,
+    params
+  );
+  const category = await serverMethod(
+    `/categories`,
+    params
+  );
+
+  return { category, brands }
+
+}

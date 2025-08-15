@@ -128,7 +128,7 @@ export const post = async (endpint, data) => {
       notifySuccess(response.data?.message || "Created successfully");
   } catch (e) {
     error = e.response.data;
- notifyerror(response.data?.message || "Something went wrong");
+ notifyerror(error.message || "Something went wrong");
     // throw new Error(JSON.stringify(e.response));
   }
 
