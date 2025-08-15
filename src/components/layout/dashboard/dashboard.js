@@ -26,10 +26,6 @@ const Dashboardlayout = async ({ children }) => {
     <NextUiProvider>
       <StoreProvider>
         <div className="flex min-h-screen flex-grow bg-white">
-<<<<<<< HEAD
-        
-=======
->>>>>>> 3a7d988e8aa85ecaa4655aece356db23b07d16eb
           <aside className="bottom-0 start-0 z-50 h-full w-[270px] border-e-2 border-gray-100 bg-white 2xl:w-72 fixed dark:bg-gray-50 xl:block">
             <Sidebar />
           </aside>
@@ -37,11 +33,7 @@ const Dashboardlayout = async ({ children }) => {
           <div className="flex w-full flex-col xl:ms-[270px] xl:w-[calc(100%-270px)] 2xl:ms-72 2xl:w-[calc(100%-288px)]">
             <Header />
 
-<<<<<<< HEAD
-            <div className=" md:px-5 lg:px-6 2xl:py-5 3xl:px-8 4xl:px-10 text-black">
-=======
             <div className=" md:px-5 lg:px-6 2xl:py-5 3xl:px-8 4xl:px-10 text-black bg-gray-100">
->>>>>>> 3a7d988e8aa85ecaa4655aece356db23b07d16eb
               {children}
             </div>
           </div>

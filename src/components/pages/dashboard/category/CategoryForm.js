@@ -22,7 +22,7 @@ const CategoryForm = (props) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const handleNameChange = (e) => {
     const newName = e.target.value;
-    formik.setFieldValue("name", newName);
+  
     formik.setFieldValue("slug", generateSlug(newName));
   };
   const generateCategoryBody = () => {
@@ -144,10 +144,7 @@ const CategoryForm = (props) => {
                   id={"title"}
                 />
               </div>
-            <div>
-              <MultiSelect></MultiSelect>
-            </div>
-              <div>
+                <div>
                 <TextField
                   label={"Slug"}
                   type={"text"}
@@ -160,7 +157,8 @@ const CategoryForm = (props) => {
                   id={"slug"}
                 />
               </div>
-              <div>
+            <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
                 <SelectField
                   options={props.data.categories.results}
                   onChange={formik.handleChange}
@@ -171,6 +169,9 @@ const CategoryForm = (props) => {
                   datakey={"_id"}
                   heading={"Parent Category"} additionalAttrs={undefined} />
               </div>
+            </div>
+            
+            
 
               <div className=" col-span-2">
                 <div className=" flex flex-col">
@@ -180,7 +181,7 @@ const CategoryForm = (props) => {
                     </span>
                     <textarea
                       rows={10}
-                      className={` flex items-center peer w-full transition duration-200 px-3.5 py-1 text-sm  rounded-md bg-transparent [&amp;.is-focus]:ring-[0.6px] border border-gray-300 [&amp;_input::placeholder]:text-gray-500 hover:border-gray-1000 [&amp;.is-focus]:border-gray-1000 [&amp;.is-focus]:ring-gray-1000   text-gray-700 focus:outline-none `}
+                      className={` flex items-center peer w-full transition duration-200 px-3.5 py-1 text-sm  rounded-md  [&amp;.is-focus]:ring-[0.6px] border border-gray-300 [&amp;_input::placeholder]:text-gray-500 hover:border-gray-1000 [&amp;.is-focus]:border-gray-1000 [&amp;.is-focus]:ring-gray-1000   text-gray-700 focus:outline-none `}
                       placeholder={"Descriptions"}
                       id="descriptions"
                       name="descriptions"
