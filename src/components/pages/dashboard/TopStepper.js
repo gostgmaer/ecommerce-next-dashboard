@@ -14,6 +14,7 @@ import React from "react";
 // ];
 
 const TopStepper = ({ links }) => {
+  const router = useRouter()
 
 
 
@@ -28,10 +29,19 @@ const TopStepper = ({ links }) => {
   // //console.log(pathname);
 
 
+  const navigateElement = (id) => {
+   router.push(`#${id}`)
+
+
+
+
+  }
+
+
 
 
   return (
-    <div className="sticky top-[68px] z-20 border-b border-gray-300 bg-white py-0 font-medium text-gray-500 ">
+    <div className="sticky top-[68px] z-20 border-b border-gray-300 bg-white py-0 font-medium text-gray-500  max-w-7xl m-auto rounded-xl dark:bg-gray-700 p-5 ">
       <div data-simplebar="init" className="">
         <div className="simplebar-wrapper">
           <div className="simplebar-height-auto-observer-wrapper">
@@ -47,13 +57,14 @@ const TopStepper = ({ links }) => {
                 <div className="simplebar-content">
                   <div className="inline-grid max-w-[-webkit-fill-available] overflow-x-auto justify-between grid-flow-col gap-5 text-sm md:gap-7 lg:gap-10">
                     {links.map((link) => (
-                      <Link
-                        href={`#${link.id}`}
+                      <span
+                      //  onClick={}
                         key={link.id}
-                        className="relative cursor-pointer whitespace-nowrap py-4 hover:text-gray-1000 active before:absolute before:bottom-0 before:left-0 before:z-[1] before:h-0.5 before:w-full before:bg-gray-1000 font-semibold text-gray-1000"
+                        className={`relative cursor-pointer whitespace-nowrap py-4 hover:text-gray-1000 active before:absolute before:bottom-0 before:left-0 before:z-[1] before:h-0.5 before:w-full before:bg-gray-1000 font-semibold text-gray-1000`}
+                        onClick={() => navigateElement(link.id)}
                       >
                         {link.text}
-                      </Link>
+                      </span>
                     ))}
                   </div>
                 </div>

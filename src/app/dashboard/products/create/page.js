@@ -11,6 +11,8 @@ const Page = async () => {
 
   const results = await getRequiredData()
 
+  console.log(results);
+  
 
   return (
     <Dashboardlayout>

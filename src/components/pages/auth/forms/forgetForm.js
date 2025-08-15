@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 const ForgetForm = () => {
-  const { handleLoginAuth, user, userId } = useAuthContext();
+  const { handleLoginAuth, user, userId } = useAuthContext();     
   const [axios, spinner] = useAxios();
   const [error, setError] = useState(undefined);
   const router = useRouter();

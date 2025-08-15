@@ -8,7 +8,7 @@ import { notifySuccess, notifyinfo } from "@/lib/notify/notice";
 import { useFormik } from "formik";
 import TextField from "@/components/global/fields/TextField";
 import SelectField from "@/components/global/fields/SelectField";
-import { generateSlug } from "@/helper/function";
+import { fillNullIfEmpty, generateSlug } from "@/helper/function";
 import MultiImageUploadr from "@/components/global/fields/multiImageUploadr";
 import MultiSelect from "@/components/global/fields/multiSelect";
 // import {  ExamplecomboBox } from "@/components/global/fields/comboBox";
@@ -45,7 +45,7 @@ const CategoryForm = (props) => {
   };
 
   const saveCategory = async (status) => {
-    const body = generateCategoryBody();
+    const body = fillNullIfEmpty(generateCategoryBody());
 
     const res = await post("/categories", { ...body, status: status });
 
