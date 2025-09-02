@@ -88,8 +88,8 @@ const ProductsPageElement = (props) => {
             width={50}
             height={50}
             className=" rounded-full h-10 w-10 object-cover"
-            src={record?.image[0]}
-            alt={record?.image[0]}
+            src={record?.images[0].url}
+            alt={record?.images[0].name}
             style={{ maxWidth: "100px" }}
           />
           <p>{record.title}</p>
@@ -217,7 +217,7 @@ const ProductsPageElement = (props) => {
       />
       <div className=" relative">
         <div className=" sticky">
-          {" "}
+   
           <TableFilter
             searchKey={searchKey}
             setSearchKey={setSearchKey}

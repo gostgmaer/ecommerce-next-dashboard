@@ -162,7 +162,7 @@ const BrandForm = ({ initialValues }) => {
 
                 {formik.errors.slug && formik.touched.slug && (
                   <div className="text-red-500 text-sm">
-                    {formik["errors"]["slug"]}
+                    {formik.errors.slug}
                   </div>
                 )}
               </div>
