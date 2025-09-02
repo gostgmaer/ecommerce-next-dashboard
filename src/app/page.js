@@ -1,3 +1,4 @@
+import GridComponent from '@/components/global/element/tableElement';
 import Link from 'next/link';
 export const metadata = {
   title: "Ecommerce Dashboard",
@@ -46,6 +47,13 @@ export default function Home() {
           <span className="text-xl font-semibold text-gray-600">WooCommerce</span>
           <span className="text-xl font-semibold text-gray-600">Magento</span>
           <span className="text-xl font-semibold text-gray-600">BigCommerce</span>
+        </div>
+      </section>
+
+        <section className="py-10 bg-white px-6 text-center">
+        <p className="text-gray-500 uppercase tracking-wide text-sm mb-6">Trusted by top brands</p>
+        <div className="flex justify-center flex-wrap gap-10 opacity-80">
+        <GridComponent />
         </div>
       </section>
 

@@ -9,7 +9,7 @@ const Heading = ({ data, ishow = true, label, btn, url,exportevent,isbedcrumb =t
   const segments = pathname.split("/").filter((segment) => segment !== "");
 
   return (
-    <div className="mmb-6 flex justify-between xs:-mt-2 lg:mb-7">
+    <div className="mb-2 flex justify-between  xs:-mt-2 lg:mb-2 top-20 sticky p-5 bg-gray-200 ">
       <div>
         <h2 className="  font-semibold  text-4xl lg:text-2xl ">
           {label}

@@ -30,7 +30,7 @@ const Page = async () => {
         trackInventory: 'yes',
         currentStockLevel: 0,
         lowStockLevel: 0,
-        gtin: '',
+  
         manufacturerPartNumber: '',
         brandName: '', 
         overview: '',
