@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
         <AuthContextProvider>
           <html lang="en">
             <body className={inter.className} suppressHydrationWarning={true}>
-              <Suspense fallback={<Spinner></Spinner>}>
+              <Suspense >
                 <NextTopLoader />
                 <main className="bg-light w-full min-h-screen text-dark">
                   {children}

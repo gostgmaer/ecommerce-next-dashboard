@@ -16,14 +16,12 @@ const GridComponent = () => {
     const debounceTimer = useRef(null);
 
     const [rowData, setRowData] = useState([]);
-    // const [pageSize, setPageSize] = useState(20);
-
     const [columnDefs] = useState([
-        { field: 'athlete', sortable: true, filter: true },
-        { field: 'age', sortable: true, filter: 'agNumberColumnFilter' },
-        { field: 'date', sortable: true, filter: 'agDateColumnFilter' },
-        { field: 'country', sortable: true, filter: true },
-        { field: 'sport', sortable: true, filter: true },
+        { field: 'athlete', sortable: true},
+        { field: 'age', sortable: true },
+        { field: 'date', sortable: true },
+        { field: 'country', sortable: true, },
+        { field: 'sport', sortable: true,  },
         { field: 'gold', sortable: true },
         { field: 'silver', sortable: true },
         { field: 'bronze', sortable: true },
@@ -34,7 +32,7 @@ const GridComponent = () => {
 
     const getSafeSortModel = useCallback(() => {
 
-     const api = gridApiRef.current;
+        const api = gridApiRef.current;
         const state = api.getColumnState() || [];
         const sortModel = state.filter(s => s.sort).map(sd => ({ colId: sd.colId, sort: sd.sort }));
         return sortModel;
@@ -49,7 +47,7 @@ const GridComponent = () => {
 
         const sortModel = getSafeSortModel();
         const sortKey = serializeSort(sortModel);
-  
+
 
         const filterModel = api.getFilterModel?.() || {};
         const filterKey = JSON.stringify(filterModel);
@@ -58,35 +56,28 @@ const GridComponent = () => {
         const pageSize = api.paginationGetPageSize?.() ?? 20;
 
         // Guard: only fetch if something actually changed
-           console.log('Fetch:', { reason, currentPage, sortKey, filterKey,pageSize,sizeRef,prevPageRef });
+        // console.log('Fetch:', { reason, currentPage, sortKey, filterKey, pageSize, sizeRef, prevPageRef });
 
         const changed =
             sortKey !== prevSortRef.current ||
             filterKey !== prevFilterRef.current ||
-            currentPage !== prevPageRef.current ;
+            currentPage !== prevPageRef.current;
 
         if (!changed && reason !== 'gridReady') return;
 
         prevSortRef.current = sortKey;
         prevFilterRef.current = filterKey;
         prevPageRef.current = currentPage;
-         const startRow = currentPage * pageSize;
-    const endRow = startRow + pageSize;
+        const startRow = currentPage * pageSize;
+        const endRow = startRow + pageSize;
 
-
-        // Build your API URL here. Demo uses array endpoint.
         const url = 'https://www.ag-grid.com/example-assets/olympic-winners.json';
 
-     
+
         const res = await fetch(url);
         const data = await res.json();
-
-        // This endpoint returns an array, not {rows, totalCount}
         setRowData(Array.isArray(data) ? data : (data.rows || []));
-
-        // Do NOT call api.paginationSetRowCount — not available on client-side model
-        // The grid will paginate whatever rows you pass in
-    }, [getSafeSortModel]);
+    }, []);
 
     const onGridReady = useCallback((params) => {
         gridApiRef.current = params.api;
@@ -108,11 +99,6 @@ const GridComponent = () => {
         fetchData('paginationChanged');
     }, [fetchData]);
 
-//      const handlePageSizeChange = (e) => {
-   
-//     gridApiRef.current?.paginationSetPageSize(newSize);
-//     fetchData('pageSizeChanged');
-//   };
 
 
     return (
