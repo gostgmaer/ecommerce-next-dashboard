@@ -1,6 +1,7 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Dashboardlayout from "@/components/layout/dashboard/dashboard";
 import ProductForm from "@/components/pages/dashboard/products/ProductForm";
+import masterServices from "@/helper/services/masterDataServices";
 import ProductServices from "@/helper/services/ProductServices";
 import { getServerSession } from "next-auth";
 import React from "react";
@@ -27,7 +28,7 @@ const Page = async ({params}) => {
   return (
     <>
       <Dashboardlayout>
-        <ProductForm data={product.results} />
+        <ProductForm data={result.product} initialValues={undefined} />
       </Dashboardlayout>
     </>
   );
