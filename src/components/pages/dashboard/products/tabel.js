@@ -25,6 +25,9 @@ import {
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Switch } from "@nextui-org/react";
+import GridComponent from "@/components/global/element/tableElement";
+import ProductServices from "@/helper/services/ProductServices";
+import { filterProps } from "framer-motion";
 
 const ProductsPageElement = (props) => {
   const { data: session } = useSession();
@@ -77,101 +80,194 @@ const ProductsPageElement = (props) => {
     const res = await patch("/products", { status: "publish" }, id);
     // res.statusCode == 200 && handleSearch();
   };
+  // const columns = [
+  //   {
+  //     title: "Product",
+  //     dataIndex: "title",
+  //     key: "title",
+  //     render: (text, record) => (
+  //       <div className=" flex gap-1 items-center justify-start">
+  //         <Image
+  //           width={50}
+  //           height={50}
+  //           className=" rounded-full h-10 w-10 object-cover"
+  //           src={record?.images[0].url}
+  //           alt={record?.images[0].name}
+  //           style={{ maxWidth: "100px" }}
+  //         />
+  //         <p>{record.title}</p>
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     title: "SKU",
+  //     dataIndex: "sku",
+  //     key: "sku",
+  //   },
+  //   {
+  //     title: "CATEGORY",
+  //     dataIndex: ["category", "title"],
+  //     key: "category.title",
+  //   },
+  //   {
+  //     title: "Price",
+  //     dataIndex: "retailPrice",
+  //     key: "retailPrice",
+  //     sorter: (a, b) => a.price - b.price, // Enable sorting for this column
+  //   },
+  //   {
+  //     title: "Sale Price",
+  //     dataIndex: "price",
+  //     key: "price",
+  //     sorter: (a, b) => a.price - b.price, // Enable sorting for this column
+  //   },
+  //   {
+  //     title: "Stock",
+  //     dataIndex: "stock",
+  //     key: "stock",
+  //     sorter: (a, b) => a.stock - b.stock, // Enable sorting for this column
+  //   },
+
+  //   // {
+  //   //   title: "Total Review",
+  //   //   dataIndex: "totalReviews",
+  //   //   key: "totalReviews",
+  //   // },
+  //   // {
+  //   //   title: "Rating",
+  //   //   dataIndex: "averageRating",
+  //   //   key: "averageRating",
+  //   //   render: (text, record) => (
+  //   //     <div className=" flex gap-1 items-center justify-start">
+  //   //       <p>{record.averageRating?.toFixed(1)}</p>
+  //   //     </div>
+  //   //   ),
+  //   // },
+  //   {
+  //     title: "Status",
+  //     dataIndex: "status",
+  //     key: "status",
+  //   },
+  //   // {
+  //   //   title: "is Show",
+  //   //   key: "published",
+  //   //   render: (item, index) => (
+  //   //     <div className="flex items-center">
+  //   //       <Switch defaultSelected>
+  //   //         Automatic updates
+  //   //       </Switch>
+  //   //     </div>
+  //   //   ),
+  //   // },
+  //   {
+  //     title: (
+  //       <div className="flex items-center justify-center gap-1 opacity-95">
+  //         <div>Actions</div>
+  //       </div>
+  //     ),
+  //     key: "actions",
+  //     render: (item, index) => (
+  //       <div className="flex items-center justify-end gap-3 pe-4">
+  //         <Link href={`/dashboard/products/${item._id}/edit`}>
+  //           {" "}
+  //           <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
+  //             <FaPen />
+  //           </button>
+  //         </Link>
+  //         <Link href={`/dashboard/products/${item._id}`}>
+  //           <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
+  //             <FaEye />
+  //           </button>
+  //         </Link>
+  //         {/* <button
+  //           onClick={() => updateRecord(item._id)}
+  //           className={`rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700 ${item.status === "publish" &&
+  //             " text-green-400 hover:!border-green-600 border-green-400 hover:text-green-600"
+  //             }`}
+  //         >
+  //           <FaCheck />
+  //         </button> */}
+  //         <button
+  //           onClick={() => DeleteProduct(item._id)}
+  //           className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700"
+  //         >
+  //           <FaTrash />
+  //         </button>
+  //       </div>
+  //     ),
+  //   },
+  // ];
+
+  // const UserCellRenderer = (props) => {
+  //   const { name, avatarUrl } = props.data;
+
+  //   return (
+  //     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+  //       <img
+  //         src={avatarUrl}
+  //         alt={name}
+  //         style={{ width: 32, height: 32, borderRadius: '50%' }}
+  //       />
+  //       <span>{name}</span>
+  //     </div>
+  //   );
+  // };
+
+  const ProductCellRenderer = (props) => {
+    const { name, avatarUrl } = props.data;
+    console.log(props.data);
+
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <img
+          src={avatarUrl}
+          alt={name}
+          style={{ width: 32, height: 32, borderRadius: '50%' }}
+        />
+        <span>{name}</span>
+      </div>
+    );
+  };
+
+
   const columns = [
     {
-      title: "Product",
-      dataIndex: "title",
-      key: "title",
-      render: (text, record) => (
-        <div className=" flex gap-1 items-center justify-start">
-          <Image
-            width={50}
-            height={50}
-            className=" rounded-full h-10 w-10 object-cover"
-            src={record?.images[0].url}
-            alt={record?.images[0].name}
-            style={{ maxWidth: "100px" }}
-          />
-          <p>{record.title}</p>
+      field: 'Product', sortable: true,
+      headerName: " Product",
+     cellRenderer: (params) => {
+      const { title, images ,age} = params.data;
+      return (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <img src={images[0].url} alt={title} style={{ width: 32, height: 32, borderRadius: '50%' }} />
+          <span>{title}</span>
         </div>
-      ),
-    },
-    {
-      title: "SKU",
-      dataIndex: "sku",
-      key: "sku",
-    },
-    {
-      title: "CATEGORY",
-      dataIndex: ["category", "title"],
-      key: "category.title",
-    },
-    {
-      title: "Price",
-      dataIndex: "retailPrice",
-      key: "retailPrice",
-      sorter: (a, b) => a.price - b.price, // Enable sorting for this column
-    },
-    {
-      title: "Sale Price",
-      dataIndex: "price",
-      key: "price",
-      sorter: (a, b) => a.price - b.price, // Enable sorting for this column
-    },
-    {
-      title: "Stock",
-      dataIndex: "stock",
-      key: "stock",
-      sorter: (a, b) => a.stock - b.stock, // Enable sorting for this column
+      );
     },
 
-    // {
-    //   title: "Total Review",
-    //   dataIndex: "totalReviews",
-    //   key: "totalReviews",
-    // },
-    // {
-    //   title: "Rating",
-    //   dataIndex: "averageRating",
-    //   key: "averageRating",
-    //   render: (text, record) => (
-    //     <div className=" flex gap-1 items-center justify-start">
-    //       <p>{record.averageRating?.toFixed(1)}</p>
-    //     </div>
-    //   ),
-    // },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
+      headerClass: "header-product",
+
+       minWidth: 300,
     },
-    // {
-    //   title: "is Show",
-    //   key: "published",
-    //   render: (item, index) => (
-    //     <div className="flex items-center">
-    //       <Switch defaultSelected>
-    //         Automatic updates
-    //       </Switch>
-    //     </div>
-    //   ),
-    // },
+    { field: 'sku', sortable: true },
+    { field: 'stock', sortable: true },
+    { field: 'price', sortable: true, },
+    { field: 'salePrice', sortable: true, },    
+    { field: 'status', sortable: true,filter: false },
     {
-      title: (
-        <div className="flex items-center justify-center gap-1 opacity-95">
-          <div>Actions</div>
-        </div>
-      ),
-      key: "actions",
-      render: (item, index) => (
+       field: 'Action', sortable: false,filter: false,
+       
+      headerName: " ",
+     cellRenderer: (params) => {
+      const { _id} = params.data;
+      return (
         <div className="flex items-center justify-end gap-3 pe-4">
-          <Link href={`/dashboard/products/${item._id}/edit`}>
+          <Link href={`/dashboard/products/${_id}/edit`}>
             {" "}
             <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
               <FaPen />
             </button>
           </Link>
-          <Link href={`/dashboard/products/${item._id}`}>
+          <Link href={`/dashboard/products/${_id}`}>
             <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
               <FaEye />
             </button>
@@ -185,15 +281,19 @@ const ProductsPageElement = (props) => {
             <FaCheck />
           </button> */}
           <button
-            onClick={() => DeleteProduct(item._id)}
+            onClick={() => DeleteProduct(_id)}
             className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700"
           >
             <FaTrash />
           </button>
         </div>
-      ),
+      );
     },
-  ];
+
+     
+    
+    }
+  ]
 
   const exportbtnclick = () => {
     const objectofkeys = {
@@ -217,7 +317,7 @@ const ProductsPageElement = (props) => {
       />
       <div className=" relative">
         <div className=" sticky">
-   
+
           <TableFilter
             searchKey={searchKey}
             setSearchKey={setSearchKey}
@@ -227,17 +327,7 @@ const ProductsPageElement = (props) => {
           />
         </div>
         {props.product.results ? (
-          <Table
-            data={props.product.results}
-            tableColumn={columns}
-            pagination={{
-              total: props.product.total,
-              page: currentPage,
-              limit: itemsPerPage,
-              setPage: setCurrentPage,
-              setLimit: setItemsPerPage,
-            }}
-          />
+          <GridComponent columns={columns} apiUrl={ProductServices.getAllProducts} />
         ) : (
           <div></div>
         )}
