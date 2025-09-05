@@ -53,6 +53,8 @@ export const Select = ({
     value: option[optionkeys.key],
     label: option[optionkeys.value],
   }));
+  console.log(formattedOptions);
+  
 
   return (
     <div className={className}>

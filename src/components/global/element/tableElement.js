@@ -11,12 +11,11 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 const GridComponent = ({
   apiUrl,
   columns = [],
-  // pageSize = 20,
   height = "80vh",
+  defaultsort ,
   defaultColDef = {
     sortable: true,
     filter: true,
-    // floatingFilter: true,
     resizable: false,
     flex: 1,
     minWidth: 100,
@@ -24,14 +23,12 @@ const GridComponent = ({
 }) => {
   const gridApiRef = useRef(null);
   const columnApiRef = useRef(null);
-
-  const prevSortRef = useRef("");
+  const prevSortRef = useRef(defaultsort);
   const prevFilterRef = useRef("");
   const prevPageRef = useRef(0);
+  const prevPageSizeRef = useRef(0);
   const debounceTimer = useRef(null);
-
   const [rowData, setRowData] = useState([]);
-  const [pageSize, setPageSize] = useState(20);
 
   const getSafeSortModel = useCallback(() => {
     const api = gridApiRef.current;
@@ -43,53 +40,58 @@ const GridComponent = ({
 
   const serializeSort = (sortModel) =>
     sortModel.map((s) => `${s.colId}:${s.sort}`).join("|");
+const fetchData = useCallback(
+  async (reason = "") => {
+    const api = gridApiRef.current;
+    if (!api || !apiUrl) return;
+    const sortModel = getSafeSortModel();
+    const sortKey = serializeSort(sortModel);
+    const filterModel = api.getFilterModel?.() || {};
+    const filterKey = JSON.stringify(filterModel);
 
-  const fetchData = useCallback(
-    async (reason = "") => {
-      const api = gridApiRef.current;
-      if (!api || !apiUrl) return;
+    const currentPage = api.paginationGetCurrentPage?.() ?? 0;
+    const currentPageSize = api.paginationGetPageSize?.() ?? 20;
 
-      const sortModel = getSafeSortModel();
-      const sortKey = serializeSort(sortModel);
+    const changed =
+      sortKey !== prevSortRef.current ||
+      filterKey !== prevFilterRef.current ||
+      currentPage !== prevPageRef.current ||
+      currentPageSize !== prevPageSizeRef.current;
 
-      const filterModel = api.getFilterModel?.() || {};
-      const filterKey = JSON.stringify(filterModel);
+    if (!changed && reason !== "gridReady") return;
 
-      const currentPage = api.paginationGetCurrentPage?.() ?? 0;
-      const currentPageSize = api.paginationGetPageSize?.() ?? pageSize;
+    prevSortRef.current = sortKey;
+    prevFilterRef.current = filterKey;
+    prevPageRef.current = currentPage;
+    prevPageSizeRef.current = currentPageSize;
 
-      const changed =
-        sortKey !== prevSortRef.current ||
-        filterKey !== prevFilterRef.current ||
-        currentPage !== prevPageRef.current;
+    const params = new URLSearchParams({
+      page: String(currentPage + 1),
+      limit: String(currentPageSize), // <-- add this line
+      sort: sortKey || defaultsort,
+      filter: filterKey,
+      type: "ag-grid", // <-- add this line
+    });
 
-      if (!changed && reason !== "gridReady") return;
-
-      prevSortRef.current = sortKey;
-      prevFilterRef.current = filterKey;
-      prevPageRef.current = currentPage;
-
-      const startRow = currentPage * currentPageSize;
-      const endRow = startRow + currentPageSize;
-
-      const params = new URLSearchParams({
-        start: startRow,
-        end: endRow,
-        sort: sortKey,
-        filter: filterKey,
-      });
-
-      try {
-        const res = await apiUrl(params);
-        console.log(res);
-
-        setRowData(Array.isArray(res.results) ? res.results : []);
-      } catch (err) {
-        console.error("Fetch error:", err);
-      }
-    },
-    [apiUrl, getSafeSortModel, pageSize]
-  );
+    // Place params in the browser URL query string
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location);
+      url.search = params.toString();
+      window.history.replaceState({}, '', url);
+    }
+    
+    try {
+      const res = await apiUrl(params.toString());
+      console.log(res);
+      
+      setRowData(Array.isArray(res.results) ? res.results : []);
+    } catch (err) {
+      console.error("Fetch error:", err);
+    }
+  },
+  [apiUrl, getSafeSortModel]
+);
+// ...existing code...
 
   const onGridReady = useCallback(
     (params) => {
@@ -97,19 +99,8 @@ const GridComponent = ({
       columnApiRef.current = params.columnApi;
       fetchData("gridReady");
     }
-      // gridApiRef.current = params.api;
-      // columnApiRef.current = params.columnApi;
-      // fetchData("gridReady");
-
    ,[fetchData]
   );
-
-  const handlePageSizeChange = (newSize) => {
-    setPageSize(newSize);
-    gridApiRef.current.paginationSetPageSize(newSize);
-    gridApiRef.current.refreshServerSideStore({ purge: true });
-    fetchData("pageSizeChanged");
-  };
 
   const onSortChanged = useCallback(() => {
     fetchData("sortChanged");
@@ -132,20 +123,18 @@ const GridComponent = ({
         defaultColDef={defaultColDef}
         enableRowPinning={true}
         pagination={true}
-        paginationPageSize={pageSize}
-        // enableAdvancedFilter={true}
+        paginationPageSize={20}
         enableCellTextSelection={true}
         paginationPageSizeSelector={true}
-        cacheBlockSize={pageSize}
-
+        rowSelection={{
+          mode: "multiRow",
+        }}
         onRowResizeStarted={onPaginationChanged}
         paginationAutoPageSize={false}
         onGridReady={onGridReady}
         onSortChanged={onSortChanged}
         onFilterChanged={onFilterChanged}
         onPaginationChanged={onPaginationChanged}
-        // rowModelType="infinite"
-        // ServerSideRowModelModule ={true}
         animateRows={true}
       />
     </div>
@@ -153,3 +142,5 @@ const GridComponent = ({
 };
 
 export default GridComponent;
+
+

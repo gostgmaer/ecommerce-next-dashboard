@@ -16,19 +16,13 @@ export const metadata = {
 
 
 const Page = async ({params}) => {
-  // const category = await getCategories()
-  // const brands = await getBrands()
-  // console.log(params);
-  
   const result = await getRecord(params)
-
-  // console.log(result);
+  console.log(result);
   
-
   return (
     <>
       <Dashboardlayout>
-        <ProductForm data={result.product} initialValues={undefined} />
+        <ProductForm data={result} initialValues={result.product.results} />
       </Dashboardlayout>
     </>
   );
@@ -38,7 +32,7 @@ export default Page;
 
 
 export const getRecord = async (params) => {
-  console.log(params);
+  // console.log(params);
   
   const product = await ProductServices.getSingleProducts(params.productID, params.token)
   const brands = await masterServices.getAllBrands({},params.token)
