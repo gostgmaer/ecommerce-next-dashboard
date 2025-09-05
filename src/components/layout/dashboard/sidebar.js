@@ -19,6 +19,7 @@ import {
   AlertCircle,
   Gift
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 // Remove TypeScript interfaces and use plain JS objects
 
@@ -26,86 +27,97 @@ const navItems = [
   {
     id: 'dashboard',
     label: 'Dashboard',
-    icon: <Home className="w-5 h-5" />
+    icon: <Home className="w-5 h-5" />,
+    url: '/dashboard' // dashboard is the starting page
   },
   {
     id: 'orders',
     label: 'Orders',
     icon: <ShoppingCart className="w-5 h-5" />,
+    url: '/dashboard/orders',
     children: [
-      { id: 'orders-all', label: 'All Orders', icon: <ShoppingCart className="w-4 h-4" /> },
-      { id: 'orders-pending', label: 'Pending', icon: <AlertCircle className="w-4 h-4" /> },
-      { id: 'orders-processing', label: 'Processing', icon: <Package className="w-4 h-4" /> },
-      { id: 'orders-shipped', label: 'Shipped', icon: <Truck className="w-4 h-4" /> },
-      { id: 'orders-delivered', label: 'Delivered', icon: <UserCheck className="w-4 h-4" /> }
+      { id: 'orders-all', label: 'All Orders', icon: <ShoppingCart className="w-4 h-4" />, url: '/dashboard/orders' },
+      { id: 'orders-pending', label: 'Pending', icon: <AlertCircle className="w-4 h-4" />, url: '/dashboard/orders/pending' },
+      { id: 'orders-processing', label: 'Processing', icon: <Package className="w-4 h-4" />, url: '/dashboard/orders/processing' },
+      { id: 'orders-shipped', label: 'Shipped', icon: <Truck className="w-4 h-4" />, url: '/dashboard/orders/shipped' },
+      { id: 'orders-delivered', label: 'Delivered', icon: <UserCheck className="w-4 h-4" />, url: '/dashboard/orders/delivered' }
     ]
   },
   {
     id: 'products',
     label: 'Products',
     icon: <Package className="w-5 h-5" />,
+    url: '/dashboard/products',
     children: [
-      { id: 'products-all', label: 'All Products', icon: <Package className="w-4 h-4" /> },
-      { id: 'products-categories', label: 'Categories', icon: <Tag className="w-4 h-4" /> },
-      { id: 'products-inventory', label: 'Inventory', icon: <BarChart3 className="w-4 h-4" /> },
-      { id: 'products-reviews', label: 'Reviews', icon: <Star className="w-4 h-4" /> }
+      { id: 'products-all', label: 'All Products', icon: <Package className="w-4 h-4" />, url: '/dashboard/products' },
+      { id: 'products-categories', label: 'Categories', icon: <Tag className="w-4 h-4" />, url: '/dashboard/products/categories' },
+      { id: 'products-inventory', label: 'Inventory', icon: <BarChart3 className="w-4 h-4" />, url: '/dashboard/products/inventory' },
+      { id: 'products-reviews', label: 'Reviews', icon: <Star className="w-4 h-4" />, url: '/dashboard/products/reviews' }
     ]
   },
   {
     id: 'customers',
     label: 'Customers',
     icon: <Users className="w-5 h-5" />,
+    url: '/dashboard/customers',
     children: [
-      { id: 'customers-all', label: 'All Customers', icon: <Users className="w-4 h-4" /> },
-      { id: 'customers-segments', label: 'Segments', icon: <Tag className="w-4 h-4" /> }
+      { id: 'customers-all', label: 'All Customers', icon: <Users className="w-4 h-4" />, url: '/dashboard/customers' },
+      { id: 'customers-segments', label: 'Segments', icon: <Tag className="w-4 h-4" />, url: '/dashboard/customers/segments' }
     ]
   },
   {
     id: 'analytics',
     label: 'Analytics',
     icon: <BarChart3 className="w-5 h-5" />,
+    url: '/dashboard/analytics',
     children: [
-      { id: 'analytics-sales', label: 'Sales Report', icon: <TrendingUp className="w-4 h-4" /> },
-      { id: 'analytics-products', label: 'Product Analytics', icon: <Package className="w-4 h-4" /> },
-      { id: 'analytics-customers', label: 'Customer Insights', icon: <Users className="w-4 h-4" /> }
+      { id: 'analytics-sales', label: 'Sales Report', icon: <TrendingUp className="w-4 h-4" />, url: '/dashboard/analytics/sales' },
+      { id: 'analytics-products', label: 'Product Analytics', icon: <Package className="w-4 h-4" />, url: '/dashboard/analytics/products' },
+      { id: 'analytics-customers', label: 'Customer Insights', icon: <Users className="w-4 h-4" />, url: '/dashboard/analytics/customers' }
     ]
   },
   {
     id: 'marketing',
     label: 'Marketing',
     icon: <Gift className="w-5 h-5" />,
+    url: '/dashboard/marketing',
     children: [
-      { id: 'marketing-campaigns', label: 'Campaigns', icon: <Gift className="w-4 h-4" /> },
-      { id: 'marketing-coupons', label: 'Coupons', icon: <Tag className="w-4 h-4" /> }
+      { id: 'marketing-campaigns', label: 'Campaigns', icon: <Gift className="w-4 h-4" />, url: '/dashboard/marketing/campaigns' },
+      { id: 'marketing-coupons', label: 'Coupons', icon: <Tag className="w-4 h-4" />, url: '/dashboard/marketing/coupons' }
     ]
   },
   {
     id: 'payments',
     label: 'Payments',
-    icon: <CreditCard className="w-5 h-5" />
+    icon: <CreditCard className="w-5 h-5" />,
+    url: '/dashboard/payments'
   },
   {
     id: 'settings',
     label: 'Settings',
     icon: <Settings className="w-5 h-5" />,
+    url: '/dashboard/settings',
     children: [
-      { id: 'settings-general', label: 'General', icon: <Settings className="w-4 h-4" /> },
-      { id: 'settings-shipping', label: 'Shipping', icon: <Truck className="w-4 h-4" /> },
-      { id: 'settings-payments', label: 'Payment Methods', icon: <CreditCard className="w-4 h-4" /> }
+      { id: 'settings-general', label: 'General', icon: <Settings className="w-4 h-4" />, url: '/dashboard/settings/general' },
+      { id: 'settings-shipping', label: 'Shipping', icon: <Truck className="w-4 h-4" />, url: '/dashboard/settings/shipping' },
+      { id: 'settings-payments', label: 'Payment Methods', icon: <CreditCard className="w-4 h-4" />, url: '/dashboard/settings/payments' }
     ]
   }
 ];
+// ...existing
 
 // Convert Sidebar to JS, remove type annotations
-const Sidebar = ({ isCollapsed, onToggle, activeItem, onItemClick }) => {
+const Sidebar = ({ isCollapsed, onToggle, activeItem,   onItemClick }) => {
   const [expandedItems, setExpandedItems] = useState([]);
+  const router = useRouter();
 
   const toggleExpanded = (itemId) => {
     setExpandedItems(prev =>
-      prev.includes(itemId)
-        ? prev.filter(id => id !== itemId)
-        : [...prev, itemId]
+      prev.includes(itemId.id)
+        ? prev.filter(id => id !== itemId.id)
+        : [...prev, itemId.id]
     );
+    router.push(itemId.url)
   };
 
   const renderNavItem = (item, depth = 0) => {
@@ -116,49 +128,49 @@ const Sidebar = ({ isCollapsed, onToggle, activeItem, onItemClick }) => {
 
     return (
       <div key={item.id}>
-        <button
-          onClick={() => {
-            if (hasChildren) {
-              toggleExpanded(item.id);
-            } else {
-              onItemClick(item.id);
-            }
-          }}
-          className={`
-            w-full flex items-center gap-3 p-3 ${isCollapsed ?'justify-center':" justify-start" }  rounded-lg transition-all duration-200
-          
-            ${isActive 
-              ? 'bg-blue-600 text-white shadow-md' 
-              : 'text-gray-300 hover:bg-slate-700/50 hover:text-white'
-            }
-          `}
-        >
-          <span className="flex-shrink-0">
-            {item.icon}
+      <button
+        onClick={() => {
+        if (hasChildren) {
+          toggleExpanded(item);
+        } else {
+          onItemClick(item);
+          router.push(item.url);
+        }
+        }}
+        className={`
+        w-full flex items-center gap-3 p-3 ${isCollapsed ? 'justify-center' : " justify-start"}  rounded-lg transition-all duration-200
+        ${isActive
+          ? 'bg-blue-600 text-white shadow-md'
+          : 'text-gray-300 hover:bg-slate-700/50 hover:text-white'
+        }
+        `}
+      >
+        <span className="flex-shrink-0">
+        {item.icon}
+        </span>
+        {!isCollapsed && (
+        <div className='flex items-center justify-between flex-1'>
+          <span className=" font-medium text-sm">
+          {item.label}
           </span>
-          {!isCollapsed && (
-            <div className='flex items-center justify-between flex-1'>
-              <span className=" font-medium text-sm">
-                {item.label}
-              </span>
-              {hasChildren && (
-                <span className="flex-shrink-0">
-                  {isExpanded ? (
-                    <ChevronUp className="w-4 h-4" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4" />
-                  )}
-                </span>
-              )}
-            </div>
+          {hasChildren && (
+          <span className="flex-shrink-0">
+            {isExpanded ? (
+            <ChevronUp className="w-4 h-4" />
+            ) : (
+            <ChevronDown className="w-4 h-4" />
+            )}
+          </span>
           )}
-        </button>
-        
-        {hasChildren && isExpanded && !isCollapsed && (
-          <div className="mt-1 space-y-1">
-            {item.children.map(child => renderNavItem(child, depth + 1))}
-          </div>
+        </div>
         )}
+      </button>
+
+      {hasChildren && isExpanded && !isCollapsed && (
+        <div className="mt-1 space-y-1">
+        {item.children.map(child => renderNavItem(child, depth + 1))}
+        </div>
+      )}
       </div>
     );
   };

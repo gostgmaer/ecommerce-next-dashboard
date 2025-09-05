@@ -6,12 +6,13 @@ import React from 'react'
 
 const Page = async (props) => {
 
-  const result = await CategoryServices.getCategories(props.searchParams)
+  // const result = await CategoryServices.getCategories(props.searchParams)
 
 
   return (
     <Dashboardlayout>
-      <Categorytable data={result} />
+      {/* <Categorytable data={result} /> */}
+      <Categorytable />
     </Dashboardlayout>
   )
 }

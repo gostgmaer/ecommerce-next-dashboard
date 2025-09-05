@@ -9,7 +9,7 @@ import NextUiProvider from "@/context/nextUiProvider";
 import StoreProvider from "@/store/storeProvider";
 
 
-const Dashboardlayout = async ({ children }) => {
+const Dashboardlayout =  ({ children }) => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [activeItem, setActiveItem] = useState('dashboard');
 
@@ -18,7 +18,7 @@ const Dashboardlayout = async ({ children }) => {
   };
 
   const handleItemClick = (itemId) => {
-    setActiveItem(itemId);
+    setActiveItem(itemId.id);
   };
   return (
     <NextUiProvider>

@@ -15,7 +15,7 @@ export async function fetchData(endpoint, options = {}) {
 
     // const tokens = getCookiesData();
 
-
+const decoded = decodeURIComponent(query);
 
     // Validate token and endpoint
     if (!endpoint || typeof endpoint !== "string" || endpoint.trim() === "") {
@@ -55,6 +55,8 @@ export async function fetchData(endpoint, options = {}) {
       if (queryString) {
         url += `?${queryString}`;
       }
+    }else{
+      url += `?${decoded}`;
     }
     const defaultHeaders = {
       'Content-Type': 'application/json',
@@ -90,6 +92,7 @@ export async function fetchData(endpoint, options = {}) {
 
 const requests = {
   get: async (endpoint, query, params, headers, cacheTime = 3600, token) =>
+    
     await fetchData(endpoint, {
       method: 'GET',
       cacheTime: cacheTime,

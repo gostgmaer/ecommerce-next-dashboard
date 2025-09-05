@@ -12,14 +12,14 @@ const ProductServices = {
   },
 
   // Get all products
-  getAllProducts: async (query, headers) => {
-    return requests.get("/products", query, null, headers, 1);
+  getAllProducts: async (query, headers, token) => {
+    return requests.get("/products", query, null, headers, 1, token);
   },
 
-
-  // Get a single product by ID
   getSingleProducts: async (id,token) => {
-    return requests.get(`/products/${id}`, null, null, {}, 1,token);
+    console.log(id,token);
+    
+    return requests.get(`/products/${id}`, {}, {}, {}, 1,token);
   },
 
 

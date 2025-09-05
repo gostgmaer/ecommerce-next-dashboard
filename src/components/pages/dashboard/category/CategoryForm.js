@@ -7,7 +7,7 @@ import { get, getsingle, patch, post } from "@/lib/http";
 import { notifySuccess, notifyinfo } from "@/lib/notify/notice";
 import { useFormik } from "formik";
 import TextField from "@/components/global/fields/TextField";
-import SelectField from "@/components/global/fields/SelectField";
+import SelectField, { Select } from "@/components/global/fields/SelectField";
 import { fillNullIfEmpty, generateSlug } from "@/helper/function";
 import MultiImageUploadr from "@/components/global/fields/multiImageUploadr";
 import MultiSelect from "@/components/global/fields/multiSelect";
@@ -19,10 +19,10 @@ const CategoryForm = (props) => {
   const params = useParams();
   const router = useRouter();
   const cateID = params["cateID"];
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState(props.initialValues.images || []);
   const handleNameChange = (e) => {
     const newName = e.target.value;
-  
+
     formik.setFieldValue("slug", generateSlug(newName));
   };
   const generateCategoryBody = () => {
@@ -71,7 +71,7 @@ const CategoryForm = (props) => {
             saveCategory("draft");
             break;
           case "update":
-            updateCategory(props.initialValues["status"]);
+            updateCategory(values.status);
             break;
           case "create":
             saveCategory("pending");
@@ -107,7 +107,7 @@ const CategoryForm = (props) => {
         data={undefined}
         label={cateID ? "Edit Category" : "Create A Category"}
         btn={cateID && "Category"}
-        url={"/dashboard/categories/create"} exportevent={undefined}      />
+        url={"/dashboard/categories/create"} exportevent={undefined} />
       <TopStepper
         links={[
           { text: "Summary", id: "summary" },
@@ -144,7 +144,7 @@ const CategoryForm = (props) => {
                   id={"title"}
                 />
               </div>
-                <div>
+              <div>
                 <TextField
                   label={"Slug"}
                   type={"text"}
@@ -157,21 +157,43 @@ const CategoryForm = (props) => {
                   id={"slug"}
                 />
               </div>
-            <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div>
-                <SelectField
-                  options={props.data.categories.results}
-                  onChange={formik.handleChange}
-                  value={formik.values.parent}
-                  id={"parent"}
-                  label={"title"}
-                  placeholder={undefined}
-                  datakey={"_id"}
-                  heading={"Parent Category"} additionalAttrs={undefined} />
+              <div className="col-span-1 sm:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div>
+                  <Select
+                    label={"Status"}
+                    id={"status"}
+                    options={[
+                      { key: "active", label: "Active" },
+                      { key: "inactive", label: "Inactive" },
+                      { key: "draft", label: "Draft" },
+                      { key: "pending", label: "Pending" },
+                      { key: "archived", label: "Archived" },
+                      { key: "published", label: "Published" },
+                    ]}
+                    optionkeys={{ key: "key", value: "label" }}
+                    placeholder={undefined}
+                    additionalAttrs={{ ...formik.getFieldProps("status") }}
+                  />
+                  {formik.errors.status && formik.touched.status && (
+                    <div className="text-red-500 text-sm">
+                      {formik.errors.status}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <SelectField
+                    options={props.data.categories.results}
+                    onChange={formik.handleChange}
+                    value={formik.values.parent}
+                    id={"parent"}
+                    label={"title"}
+                    placeholder={undefined}
+                    datakey={"_id"}
+                    heading={"Parent Category"} additionalAttrs={undefined} />
+                </div>
               </div>
-            </div>
-            
-            
+
+
 
               <div className=" col-span-2">
                 <div className=" flex flex-col">

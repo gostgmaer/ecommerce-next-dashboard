@@ -6,6 +6,7 @@ import Dashboardlayout from "@/components/layout/dashboard/dashboard";
 import ProductsPageElement from "@/components/pages/dashboard/products/tabel";
 // import { parseUrlWithQueryParams } from "@/helper/function";
 import { serverMethod } from "@/helper/serverCall/datafetch";
+import ProductServices from "@/helper/services/ProductServices";
 import { cookies } from "next/headers";
 import React from "react";
 
@@ -15,7 +16,7 @@ const Page = async (props) => {
 
   return (
     <Dashboardlayout>
-      <ProductsPageElement product={result}  />
+      <ProductsPageElement />
     </Dashboardlayout>
   );
 };
@@ -23,22 +24,13 @@ const Page = async (props) => {
 export default Page;
 
 
-export const getAllRecord = async (query) => {
+export const getAllRecord = async (props) => {
 
-  const cookieStore  = await cookies()
-  const tokendata = "Bearer " + cookieStore.get("headerPayload").value + "." + cookieStore.get("signature").value;
+  console.log(props);
+  
 
-
-  const params = {
-    method: "get",
-    header: {
-      Authorization: tokendata,
-    },
-    query: { ...query },
-  };
-  const result = await serverMethod(
-    `/products`,
-    params
-  );
-  return result
+  // const cookieStore  = await cookies()
+  // const tokendata =cookieStore.get("headerPayload").value + "." + cookieStore.get("signature").value;
+  // const result = await ProductServices.getAllProducts(query,{}, tokendata);
+  // return result
 }

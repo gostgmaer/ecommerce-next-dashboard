@@ -11,134 +11,117 @@ import Image from "next/image";
 import { generateUrlFromNestedObject } from "@/helper/function";
 import { useRouter } from "next/navigation";
 import CategoryServices from "@/helper/services/CategoryServices";
+import GridComponent from "@/components/global/element/tableElement";
 
 const Categorytable = (props) => {
- 
+
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchKey, setSearchKey] = useState("");
   const [status, setStatus] = useState("");
   const route = useRouter()
 
-  const handleSearch = async () => {
+  // const handleSearch = async () => {
 
-    const result = await CategoryServices.getCategories(props.searchParams)
+  //   const result = await CategoryServices.getCategories(props.searchParams)
 
-console.log(result);
+  //   console.log(result);
 
-    const paramsQuery = {
-      limit: itemsPerPage,
-       page: currentPage,
-    };
-    const checkQuerydata = generateUrlFromNestedObject({ ...paramsQuery });
-    route.push(`/dashboard/categories${checkQuerydata}`);
-  };
-
-
+  //   const paramsQuery = {
+  //     limit: itemsPerPage,
+  //     page: currentPage,
+  //   };
+  //   const checkQuerydata = generateUrlFromNestedObject({ ...paramsQuery });
+  //   route.push(`/dashboard/categories${checkQuerydata}`);
+  // };
 
 
 
-  useEffect(() => {
-    handleSearch()
-  }, [itemsPerPage, currentPage]);
+
+
+  // useEffect(() => {
+  //   handleSearch()
+  // }, [itemsPerPage, currentPage]);
 
 
 
   const deleteCategory = async (id) => {
     //console.log(id);
     const res = await del("/categories", id);
-    res.statusCode == 200 && handleSearch();
+    // res.statusCode == 200 && handleSearch();
   };
 
-  const updateRecord = async (id) => {
-    const res = await patch("/categories", { status: "publish" }, id);
-    res.statusCode == 200 && handleSearch();
-  };
+  // const updateRecord = async (id) => {
+  //   const res = await patch("/categories", { status: "publish" }, id);
+  //   res.statusCode == 200 && handleSearch();
+  // };
+
+  // console.log(CategoryServices);
+  
+
+
   const columns = [
     {
-      title: "Image",
-      dataIndex: "images",
-      key: "images",
-      render: (images) => (
-       images ? <Image
-          width={50}
-          height={50}
-          className=" rounded-2xl"
-          src={images[0]?.url}
-          alt={images[0]?.title}
-          style={{ maxWidth: "100px" }}
-        />:""
-      ),
+      field: 'title', sortable: true,
+      headerName: " Category Name",
+      cellRenderer: (params) => {
+        const { title, images } = params.data;
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <img src={images[0]?.url} alt={title} style={{ width: 32, height: 32, borderRadius: '50%' }} />
+            <span>{title}</span>
+          </div>
+        );
+      },
+
+      headerClass: "header-product",
+
+      minWidth: 300,
     },
     {
-      title: "Category Name",
-      dataIndex: "title",
-      key: "title",
-      sorter: (a, b) => a.title - b.title, // Enable sorting for this column
+      field: 'total', sortable: true,
+      headerName: " Total",
+
+
+
+      minWidth: 300,
     },
+ 
+    { field: 'status', sortable: true, filter: false },
     {
-      title: "Slug",
-      dataIndex: "slug",
-      key: "slug",
-      sorter: (a, b) => a.slug - b.slug, // Enable sorting for this column
-    },
-    {
-      title: (
-        <div className="flex items-center gap-1">
-          <div>Status</div>
-        </div>
-      ),
-      dataIndex: "status",
-      key: "status",
-    },
-    {
-      title: (
-        <div className="flex items-center gap-1">
-          <div>Total</div>
-        </div>
-      ),
-      dataIndex: "total",
-      key: "total",
-    },
-    {
-      title: (
-        <div className="flex items-center gap-1 opacity-0">
-          <div>Actions</div>
-        </div>
-      ),
-      key: "actions",
-      render: (record, index) => (
-        <div className="flex items-center justify-end gap-3 pe-4">
-          <Link href={`/dashboard/categories/${record["_id"]}/edit`}>
-            {" "}
-            <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
-              <FaPen />
+      field: 'Action', sortable: false, filter: false,
+
+      headerName: " ",
+      cellRenderer: (params) => {
+        const { _id } = params.data;
+        return (
+          <div className="flex items-center justify-end gap-3 pe-4">
+            <Link href={`/dashboard/categories/${_id}/edit`}>
+              {" "}
+              <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
+                <FaPen />
+              </button>
+            </Link>
+            <Link href={`/dashboard/categories/${_id}`}>
+              <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
+                <FaEye />
+              </button>
+            </Link>
+
+            <button
+              onClick={() => deleteCategory(_id)}
+              className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700"
+            >
+              <FaTrash />
             </button>
-          </Link>
-          <Link href={`/dashboard/categories/${record["_id"]}`}>
-            <button className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30">
-              <FaEye />
-            </button>
-          </Link>
-          <button
-            onClick={() => updateRecord(record._id)}
-            className={`rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700 ${
-              record.status === "publish" &&
-              " text-green-400 hover:!border-green-600 border-green-400 hover:text-green-600"
-            }`}
-          >
-            <FaCheck />
-          </button>
-          <button
-            onClick={() => deleteCategory(record["_id"])}
-            className="rizzui-action-icon-root inline-flex items-center justify-center active:enabled:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-50 transition-colors duration-200 p-0.5 w-7 h-7 rounded-md bg-transparent border focus-visible:ring-offset-2 border-gray-300 hover:enabled:border-gray-1000 focus-visible:enabled:border-gray-1000 focus-visible:ring-gray-900/30 cursor-pointer hover:!border-gray-900 hover:text-gray-700"
-          >
-            <FaTrash />
-          </button>
-        </div>
-      ),
-    },
-  ];
+          </div>
+        );
+      },
+
+
+
+    }
+  ]
 
   return (
     <div>
@@ -146,19 +129,13 @@ console.log(result);
         data={undefined}
         label="Categories"
         btn={"category"}
-        url={"/dashboard/categories/create"} exportevent={undefined}      />
+        url={"/dashboard/categories/create"} exportevent={undefined} />
       <div>
-        <TableFilter
-          searchKey={searchKey}
-          setSearchKey={setSearchKey}
-          status={status}
-          setStatus={setStatus}
-          searchEvent={handleSearch}
-        />
-           <Table data={props.data.results} tableColumn={columns} pagination={{ total: props.data.total, page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} />
-       
+        
+        <GridComponent defaultsort="title:desc" columns={columns} apiUrl={CategoryServices.getCategories} />
+        {/* <Table data={props.data.results} tableColumn={columns} pagination={{ total: props.data.total, page: currentPage, limit: itemsPerPage, setPage: setCurrentPage, setLimit: setItemsPerPage }} /> */}
+
       </div>
-      
     </div>
   );
 };

@@ -28,7 +28,7 @@ const options = [
 ];
 
 const ProductForm = ({ data, initialValues }) => {
-  console.log(initialValues);
+  console.log(initialValues,data);
 
   const { data: session } = useSession();
   //  console.log(session);
@@ -38,23 +38,10 @@ const ProductForm = ({ data, initialValues }) => {
   const productID = params["productID"];
   const [currData, setCurrData] = useState(data);
   const [tags, setTags] = useState([]);
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState(initialValues.images || []);
   const [selected, setSelected] = useState([]);
   
 
-  // const getRecord = async () => {
-
-  //   const product = await ProductServices.getSingleProducts(params.productID, session["accessToken"])
-  //   const brands = await masterServices.getAllBrands({}, session["accessToken"])
-  //   const category = await masterServices.getAllcategories({}, session["accessToken"])
-
-  //   return { product, brands, category }
-
-  // }
-
-  // useEffect(() => {
-  //    getRecord()
-  // }, [productID]);
 
   const saveProduct = async (status) => {
     const body = generateProductBody();
@@ -108,9 +95,9 @@ const ProductForm = ({ data, initialValues }) => {
             saveProduct("draft");
             break;
           case "update":
-            console.log(currData["product"]["results"]["status"]);
+            // console.log(currData["product"]["results"]["status"]);
 
-            UpdateProduct(currData["product"]["results"]["status"]);
+            UpdateProduct(values.status);
             break;
           case "create":
             saveProduct("pending");
@@ -207,6 +194,29 @@ const ProductForm = ({ data, initialValues }) => {
                   </div>
                 )}
               </div>
+ <div>
+                <Select
+                  label={"Status"}
+                  id={"status"}
+                  options={[
+                    { key: "active", label: "Active" },
+                    { key: "inactive", label: "Inactive" },
+                    { key: "draft", label: "Draft" },
+                    { key: "pending", label: "Pending" },
+                    { key: "archived", label: "Archived" },
+                    { key: "published", label: "Published" },
+                  ]}
+                  optionkeys={{ key: "key", value: "label" }}
+                  placeholder={undefined}
+                  additionalAttrs={{ ...formik.getFieldProps("status") }}
+                />
+                {formik.errors.status && formik.touched.status && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.status}
+                  </div>
+                )}
+              </div>
+
               <div>
                 <Select
                   label={"Product Type"}
@@ -225,6 +235,7 @@ const ProductForm = ({ data, initialValues }) => {
                   </div>
                 )}
               </div>
+
               <div>
                 <Select
                   label={"Category"}
@@ -276,6 +287,7 @@ const ProductForm = ({ data, initialValues }) => {
                   </div>
                 )}
               </div>
+
               {/* <div>
                 <Input
                   label={"Overview"}
