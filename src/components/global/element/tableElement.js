@@ -1,7 +1,7 @@
 
 "use client";
 import { AgGridReact } from "ag-grid-react";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { ServerSideRowModelModule } from 'ag-grid-enterprise';
 // import 'ag-grid-community/styles/ag-grid.css';
@@ -110,6 +110,13 @@ const GridComponent = ({
   //   }
   //  ,[fetchData]
   // );
+
+
+   const rowSelection = useMemo(() => {
+    return {
+      mode: "multiRow",
+    };
+  }, []);
   const onGridReady = useCallback((params) => {
     gridApiRef.current = params.api;
     columnApiRef.current = params.columnApi;
@@ -203,8 +210,12 @@ console.log(params,request);
         rowModelType="serverSide"
         serverSideDatasource={serverSideDatasource}
         columnDefs={columns}
+           rowSelection={{
+          mode: "multiRow",
+        }}
         defaultColDef={defaultColDef}
         pagination={true}
+        // rowSelection={rowSelection}
         paginationPageSize={20}
         cacheBlockSize={20}
         animateRows={true}
