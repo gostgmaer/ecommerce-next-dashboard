@@ -7,7 +7,7 @@ import React from "react";
 const Page = async (props) => {
 
 
-  const orders = await getAllRecord(props.searchParams)
+  // const orders = await getAllRecord(props.searchParams)
   // console.log(orders);
   
 
@@ -15,7 +15,7 @@ const Page = async (props) => {
 
   return (
     <Dashboardlayout>
-      <Datatable orders={orders} />
+      <Datatable />
     </Dashboardlayout>
   );
 };
@@ -43,22 +43,22 @@ export default Page;
 
 // }
 
-export const getAllRecord = async (query) => {
+// export const getAllRecord = async (query) => {
 
-  const cookieStore  = await cookies()
-  const tokendata = "Bearer " + cookieStore.get("headerPayload").value + "." + cookieStore.get("signature").value;
+//   const cookieStore  = await cookies()
+//   const tokendata = "Bearer " + cookieStore.get("headerPayload").value + "." + cookieStore.get("signature").value;
 
 
-  const params = {
-    method: "get",
-    header: {
-      Authorization: tokendata,
-    },
-    query: { ...query },
-  };
-  const result = await serverMethod(
-    `/orders`,
-    params
-  );
-  return result
-}
+//   const params = {
+//     method: "get",
+//     header: {
+//       Authorization: tokendata,
+//     },
+//     query: { ...query },
+//   };
+//   const result = await serverMethod(
+//     `/orders`,
+//     params
+//   );
+//   return result
+// }

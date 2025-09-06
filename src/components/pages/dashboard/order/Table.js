@@ -14,6 +14,8 @@ import Link from "next/link";
 import moment from "moment";
 import { generateUrlFromNestedObject } from "@/helper/function";
 import { useRouter } from "next/navigation";
+import GridComponent from "@/components/global/element/tableElement";
+import OrderServices from "@/helper/services/OrderServices";
 
 const Datatable = (props) => {
   const { data: session } = useSession();
@@ -26,18 +28,18 @@ const Datatable = (props) => {
   const [setstatusData, setSetstatusData] = useState("");
   const route = useRouter();
 
-  const loadorder = React.useCallback(() => {
-    const query = {
-      limit: itemsPerPage,
-      page: currentPage,
-    };
-    const checkQuerydata = generateUrlFromNestedObject({ ...query });
-    route.push(`/dashboard/orders${checkQuerydata}`);
-  }, [itemsPerPage, currentPage, route]);
+  // const loadorder = React.useCallback(() => {
+  //   const query = {
+  //     limit: itemsPerPage,
+  //     page: currentPage,
+  //   };
+  //   const checkQuerydata = generateUrlFromNestedObject({ ...query });
+  //   route.push(`/dashboard/orders${checkQuerydata}`);
+  // }, [itemsPerPage, currentPage, route]);
 
-  useEffect(() => {
-    loadorder();
-  }, [loadorder]);
+  // useEffect(() => {
+  //   loadorder();
+  // }, [loadorder]);
 
   // const fetch = async (statuskey) => {
   //   const header = {
@@ -77,103 +79,145 @@ const Datatable = (props) => {
   };
   const columns = [
     {
-      title: "Order id",
-      dataIndex: "order_id",
-      key: "order_id",
-      render: (index, record) => (
-        <Link
-          href={`/dashboard/orders/${record["order_id"]}`}
-          className="flex items-center justify-start text-blue-500"
-        >
-          {`#${record.order_id}`}
-        </Link>
-      ),
+      field: "order_id",
+      sortable: true,
+      headerName: " ID",
+      // key: "order_id",
+
+      cellRenderer: (params) => {
+        const { title, images } = params.data;
+        return (
+          <Link
+            href={`/dashboard/orders/${params.data["order_id"]}`}
+            className="flex items-center justify-start text-blue-500"
+          >
+
+            {`#${params.data["order_id"]}`}
+          </Link>
+        );
+      },
+
+      headerClass: "header-product",
+
+      minWidth: 300,
+
+
     },
 
     {
-      title: "Date",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      sorter: (a, b) => a.name - b.name, // Enable sorting for this column
-      render: (index, record) => (
-        <div className="flex items-center justify-start">
-          {`${
-            record.createdAt
-              ? moment(record.createdAt).format("DD MMM YYYY, h:mm a")
+      title: "createdAt",
+      headerName: " Order Date",
+      sortable: true,
+      cellRenderer: (params) => {
+        // const { title, images } = params.data;
+        return (
+          <div className="flex items-center justify-start">
+            {`${params.data.createdAt
+              ? moment(params.data.createdAt).format("DD MMM YYYY, h:mm a")
               : ""
-          }`}
-        </div>
-      ),
+              }`}
+          </div>
+        );
+      },
+      // sorter: (a, b) => a.name - b.name, // Enable sorting for this column
+
     },
     {
-      title: "Customer Name",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      sorter: (a, b) => a.name - b.name,
-      render: (index, record) => (
-        <div className="flex items-center justify-start">
-          {`${record.firstName} ${record.lastName}`}
-        </div>
-      ),
+      headerName: "Customer Name",
+      sortable: true,
+      // dataIndex: "customerName",
+      field: "customerName",
+      // sorter: (a, b) => a.name - b.name,
+
+
+      cellRenderer: (params) => {
+        // const { title, images } = params.data;
+        return (
+          <div className="flex items-center justify-start">
+            {`${params.data.firstName} ${params.data.lastName}`}
+          </div>
+        );
+      },
+
+
     },
     {
-      title: "Payment Status",
-      dataIndex: "payment_status",
-      key: "payment_status",
-      render: (index, record) => (
-        <div className={`status-${record.payment_status} capitalize`}>
-          {record.payment_status}
+      headerName: "Payment Status",
+      field: "payment_status",
+      sortable: true,
+       cellRenderer: (params) => {
+        // const { title, images } = params.data;
+        return (
+          <div className={`status-${params.data.payment_status} capitalize`}>
+          {params.data.payment_status}
         </div>
-      ),
+        );
+      },
+      // render: (index, record) => (
+      //   <div className={`status-${record.payment_status} capitalize`}>
+      //     {record.payment_status}
+      //   </div>
+      // ),
     },
 
     {
-      title: "Method",
-      dataIndex: "payment_method",
-      key: "payment_method",
+    
+       headerName: "Payment Method",
+      field: "payment_method",
+      sortable: true,
     },
     {
-      title: "Order Status",
-      dataIndex: "status",
-      key: "status",
-      render: (index, record) => (
-        <div className={`status-${record.status} capitalize`}>
-          {record.status}
-        </div>
-      ),
+      headerName: "Order Status",
+      field: "status",
+       sortable: true,
+        cellRenderer: (params) => {
+          // const { title, images } = params.data;
+          return (
+            <div className={`status-${params.data.status} capitalize`}>
+            {params.data.status}
+          </div>
+          );
+        },
+     
     },
 
     {
-      title: "Amount",
-      dataIndex: "totalPrice",
-      key: "totalPrice",
-      render: (index, record) => (
-        <div className="flex items-center justify-start">
-          {`$${Number(record?.totalPrice).toFixed(2)}`}
+      headerName: "Amount",
+      field: "totalPrice",
+     sortable: true,
+      cellRenderer: (params) => {
+        // const { title, images } = params.data;
+        return (
+          <div className="flex items-center justify-start">
+          {`$${Number(params.data?.totalPrice).toFixed(2)}`}
         </div>
-      ),
+        );
+      },
+     
     },
     {
       title: "Actions",
+       sortable: false,
       key: "actions",
-      render: (text, record) => {
-        console.log(record.status != "completed", record);
-        
+       filter: false,
+      cellRenderer: (param) => {
+        // console.log(record.status != "completed", record);
+
         return (
           <div className="flex items-center justify-start gap-3">
-           <Select
-                className="flex items-center justify-start gap-2"
-                options={orderStatus}
-                id={"order-status-data"}
-                // disabled={record.status !== "completed"}
-                additionalAttrs={{
-                  onChange: (e) => updateRecord(record._id, e.target.value),
-                  value: record.status, disabled: record.status === "completed"
-                }}
-                placeholder={"Select"}
-                optionkeys={{ key: "key", value: "label" }}
-                label={undefined}
-              ></Select>
+          {param.data.status !== "completed" && <Select
+              className="flex items-center justify-start gap-2"
+              options={orderStatus}
+              id={"order-status-data"}
+              // disabled={record.status !== "completed"}
+              additionalAttrs={{
+                onChange: (e) => updateRecord(param.data._id, e.target.value),
+                value: param.data.status, disabled: param.data.status === "completed"
+              }}
+              placeholder={"Select"}
+              optionkeys={{ key: "key", value: "label" }}
+              label={undefined}
+            ></Select>}
           </div>
         );
       },
@@ -190,31 +234,18 @@ const Datatable = (props) => {
         exportevent={undefined}
       />
       <div>
-        <TableFilter
+        {/* <TableFilter
           searchKey={searchKey}
           setSearchKey={setSearchKey}
           status={status}
           setStatus={setStatus}
           searchEvent={fetch}
-        />
-        <Table
-          data={props.orders?.["results"]}
-          tableColumn={columns}
-          pagination={{
-            total: props.orders?.["total"],
-            page: currentPage,
-            limit: itemsPerPage,
-            setPage: setCurrentPage,
-            setLimit: setItemsPerPage,
-          }}
-        />
-        {/* <PaginatedList
-          length={categories["total"]}
-          itemsPerPage={itemsPerPage}
-          setItemsPerPage={setItemsPerPage}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
         /> */}
+        <GridComponent
+          defaultsort={'createdAt:desc'}
+          columns={columns}
+          apiUrl={OrderServices.getOrders}
+        />
       </div>
     </div>
   );
