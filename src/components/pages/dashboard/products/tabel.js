@@ -92,7 +92,7 @@ const ProductsPageElement = (props) => {
         const { title, images, age } = params.data;
         return (
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <img src={images[0].url} alt={title} style={{ width: 32, height: 32, borderRadius: '50%' }} />
+            <img src={images[0]?.url} alt={title} style={{ width: 32, height: 32, borderRadius: '50%' }} />
             <span>{title}</span>
           </div>
         );
