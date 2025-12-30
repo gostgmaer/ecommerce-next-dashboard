@@ -12,7 +12,7 @@ const stats = [
   //   linkText: 'View Revenue',
   //   linkHref: '/dashboard/revenue',
   // },
-   {
+  {
     label: 'Employee',
     value: '253',
     change: '+1.9%',
@@ -30,7 +30,7 @@ const stats = [
     linkText: 'All Customers',
     linkHref: '/dashboard/customers',
   },
-    {
+  {
     label: 'Total Products',
     value: '1,245',
     change: '+3.2%',
@@ -57,7 +57,7 @@ const stats = [
   //   linkText: 'View Sales',
   //   linkHref: '/dashboard/sales',
   // },
-    {
+  {
     label: 'This Month Revinue',
     value: '$70,232',
     change: '+0.7%',
@@ -78,15 +78,7 @@ const stats = [
 ]
 
 const stats2 = [
-  {
-    label: 'Today Orders',
-    value: '1,245',
-    change: '+3.2%',
-    icon: <FiShoppingCart className="text-cyan-500" size={24} />,
-    changeType: 'up',
-    linkText: 'View Orders',
-    linkHref: '/dashboard/orders',
-  },
+ 
   {
     label: 'Total Orders',
     value: '18,420',
@@ -117,58 +109,41 @@ const stats2 = [
 ]
 export default function DashboardStats() {
   return (
-    <div className="bg-gray-100 p-6 mb-5 flex flex-col gap-5">
-      <div className="flex justify-between items-center ">
-        <h1 className="text-2xl font-semibold">Ecommerce</h1>
-        <Link href={'/dashboard/products/create'} className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
-          Add Product
-        </Link>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
-        {stats.map((stat, index) => (
-          <div key={index} className="bg-white p-5 rounded shadow flex flex-col justify-between">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-gray-500">{stat.label}</p>
-                <h3 className="text-2xl font-bold">{stat.value}</h3>
-                {stat.change && (
-                  <p className={`text-sm ${stat.changeType === 'down' ? 'text-red-500' : 'text-green-500'}`}>
-                    {stat.changeType === 'down' ? '↓' : '↑'} {stat.change}
-                  </p>
-                )}
-              </div>
-              <div>{stat.icon}</div>
-            </div>
-            <Link href={stat.linkHref} className="mt-4 text-sm text-indigo-600 hover:underline">
-              {stat.linkText}
-            </Link>
-          </div>
+    <div className="bg-gray-100 p-2 mb-5 flex flex-col gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-3  gap-5">
+        {stats2.map((stat, index) => (
+          <DashboardStatsbelow key={index} {...stat} />
         ))}
       </div>
-      <DashboardStatsbelow/>
     </div>
   )
 }
 
 
 
-export function DashboardStatsbelow() {
+export function DashboardStatsbelow(stat) {
   return (
-   
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {stats2.map((stat, index) => (
-          <div key={index} className="bg-white p-5 rounded shadow flex flex-col justify-between">
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-gray-500">{stat.label}</p>
-                <h3 className="text-2xl font-bold">{stat.value}</h3>
-               
-              </div>
-              <div>{stat.icon}</div>
-            </div>
-            
-          </div>
-        ))}
+
+
+
+    <div className="bg-white p-4 rounded-md shadow flex items-end justify-between">
+      <div className=" flex flex-col gap-5">
+        <div>{stat.icon}</div>
+        <div>
+          <p className="text-gray-500 text-sm">{stat.label}</p>
+          <h3 className="text-3xl font-bold">{stat.value}</h3>
+
+        </div>
+
       </div>
+      <div>
+        {stat.change && (
+          <p className={`text-sm ${stat.changeType === 'down' ? 'text-red-500' : 'text-green-500'}`}>
+            {stat.changeType === 'down' ? '↓' : '↑'} {stat.change}
+          </p>
+        )}
+      </div>
+
+    </div>
   )
 }

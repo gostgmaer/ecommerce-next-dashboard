@@ -30,6 +30,7 @@ export const orderStatus = [
     { key: "outForDelivery", label: "Out for Delivery" },
 
     { key: "orderAccepted", label: "Order Accepted" },
-    { key: "orderDeclined", label: "Order Declined" }
+    { key: "orderDeclined", label: "Order Declined" },
+    { key: "completed", label: "completed" }, 
 
 ];

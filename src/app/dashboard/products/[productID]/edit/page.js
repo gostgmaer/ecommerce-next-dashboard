@@ -1,6 +1,7 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Dashboardlayout from "@/components/layout/dashboard/dashboard";
 import ProductForm from "@/components/pages/dashboard/products/ProductForm";
+import masterServices from "@/helper/services/masterDataServices";
 import ProductServices from "@/helper/services/ProductServices";
 import { getServerSession } from "next-auth";
 import React from "react";
@@ -15,19 +16,13 @@ export const metadata = {
 
 
 const Page = async ({params}) => {
-  // const category = await getCategories()
-  // const brands = await getBrands()
-  // console.log(params);
-  
   const result = await getRecord(params)
-
-  // console.log(result);
+  console.log(result);
   
-
   return (
     <>
       <Dashboardlayout>
-        <ProductForm data={product.results} />
+        <ProductForm data={result} initialValues={result.product.results} />
       </Dashboardlayout>
     </>
   );
@@ -37,7 +32,7 @@ export default Page;
 
 
 export const getRecord = async (params) => {
-  console.log(params);
+  // console.log(params);
   
   const product = await ProductServices.getSingleProducts(params.productID, params.token)
   const brands = await masterServices.getAllBrands({},params.token)

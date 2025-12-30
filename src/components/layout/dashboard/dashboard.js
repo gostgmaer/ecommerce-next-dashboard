@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+import React, { useState } from "react";
 import Header from "./header";
 import Sidebar from "./sidebar";
 // import { getServerSession } from "next-auth/next";
@@ -6,34 +7,27 @@ import Sidebar from "./sidebar";
 // import Link from "next/link";
 import NextUiProvider from "@/context/nextUiProvider";
 import StoreProvider from "@/store/storeProvider";
-import FetchRedux from "./fetchRedux";
 
-const Dashboardlayout = async ({ children }) => {
-  // const session = await getServerSession(authOptions);
 
-  // if (!session) {
-  //   return (
-  //     <div>
-  //       <p>{"You Must logged in"}</p>
-  //       {/* Use the Link component for navigation to the login page */}
-  //       <Link href={`/auth/login`}>
-  //         Login
-  //       </Link>
-  //     </div>
-  //   );
-  // }
+const Dashboardlayout =  ({ children }) => {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [activeItem, setActiveItem] = useState('dashboard');
+
+  const handleSidebarToggle = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
+
+  const handleItemClick = (itemId) => {
+    setActiveItem(itemId.id);
+  };
   return (
     <NextUiProvider>
       <StoreProvider>
         <div className="flex min-h-screen flex-grow bg-white">
-          <aside className="bottom-0 start-0 z-50 h-full w-[270px] border-e-2 border-gray-100 bg-white 2xl:w-72 fixed dark:bg-gray-50 xl:block">
-            <Sidebar />
-          </aside>
-
-          <div className="flex w-full flex-col xl:ms-[270px] xl:w-[calc(100%-270px)] 2xl:ms-72 2xl:w-[calc(100%-288px)]">
+          <Sidebar isCollapsed={isSidebarCollapsed} onToggle={handleSidebarToggle} activeItem={activeItem} onItemClick={handleItemClick} />
+          <div className={`flex w-full flex-col   ${isSidebarCollapsed ? 'w-[calc(100%-80px)]' : 'w-[calc(100%-256px)]'}`}>
             <Header />
-
-            <div className=" md:px-5 lg:px-6 2xl:py-5 3xl:px-8 4xl:px-10 text-black bg-gray-100">
+            <div className="p-4 text-black bg-gray-200">
               {children}
             </div>
           </div>

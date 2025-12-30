@@ -13,7 +13,9 @@ const CategoryServices = {
 
   // Get all categories
   getCategories: async (query, headers) => {
-    return requests.get("/categories", query, null, headers, 1);
+    console.log(query, headers);
+    
+    return requests.get("/categories", query, {}, headers, 1);
   },
 
   // Get a single category by ID
